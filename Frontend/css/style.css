@@ -1,0 +1,113 @@
+:root {
+    --green: #16c451;
+    --green-dark: #12a543;
+    --green-light: #e9faf0;
+}
+/* BACKGROUND */
+body{
+    background: linear-gradient(to right, #e9f1ec, #cde3d6);
+    font-family: Arial, sans-serif;
+}
+/* LOGO */
+.logo{
+    font-size: 28px;
+    font-weight: bold;
+    color:var(--green);
+}
+
+.logo span{
+    color: #000;
+}
+
+/* CARD */
+.card-login{
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* TITLE */
+.title span{
+    color: #16c451;
+}
+
+/* TABS */
+.top-tabs{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.top-tabs button{
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s;
+    background: #fff;
+    color: var(--green);
+    border: 1px solid var(--green);
+}
+
+.top-tabs .active{
+    background: var(--green);
+    color: #fff;
+    border: 1px solid transparent;
+
+}
+.top-tabs button:hover {
+    background: var(--green);
+    color: #fff;
+    border: 1px solid transparent;
+}
+/* BUTTON */
+.btn-green{
+    background:var(--green);
+    border: 1px solid transparent;
+    color:#fff;
+    transition: 0.3s;
+}
+
+.btn-green:hover{
+    background:#fff;
+    color:var(--green);
+    border:1px solid var(--green);
+}
+
+/* SOCIAL */
+.social-btn{
+    border:1px solid #ddd;
+    padding:10px;
+    border-radius:10px;
+    background:#fff;
+}
+
+/* DIVIDER */
+.divider{
+    text-align:center;
+    margin:20px 0;
+    font-size:14px;
+    color:#777;
+}
+
+/* FORGOT */
+.forgot{
+    color: var(--green);
+    font-size:13px;
+    text-decoration:none;
+}
+
+
+/* hon */
+.password-msg {
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+.signin-link {
+    font-size: 13px;
+    color: var(--green);
+    text-decoration: none;
+}
+.social-btn {
+    cursor: pointer; /* à ajouter */
+}

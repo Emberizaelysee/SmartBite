@@ -1,0 +1,156 @@
+:root {
+  --green: #16c451;
+  --green-dark: #12a543;
+  --green-light: #e9faf0;
+}
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #e9f1ec, #cde3d6);
+}
+/* navbar*/
+.navbar-nav .nav-link{
+  position: relative;
+  color: #333;
+  font-weight: 500;
+  transition:color 0.3s;
+}
+
+/* hover couleur */
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active-page {
+  color: var(--green);
+}
+
+.navbar-nav .nav-link::after {
+  content: "";        /* crée l'élément */
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;          /* invisible au départ */
+  height: 2px;
+  background: var(--green);
+  transition: 0.3s;
+}
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active-page::after {
+  width: 100%;
+}
+.badge-meal {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+  letter-spacing: 0.3px;
+}
+/* Lunch / Dinner */
+.meal-title{
+font-weight:600;
+margin-bottom:10px;
+}
+
+.time-container{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.time-btn {
+  border: 1.5px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+/* hover vert */
+.time-btn:hover{
+background:white;
+color:#16c451; 
+border-color:#16c451;
+}
+
+/* bouton sélectionné */
+.time-btn.active{
+background:#16c451;
+color:white;
+border-color:#16c451;
+}
+
+/* couleurs pr icons */
+.icon-green{
+  color:#16c451;
+}
+.icon-green:hover{
+  color:#12a543;
+}
+.card {
+  border-radius: 20px;
+}
+.summary-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #999;
+}
+
+.summary-value {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+  margin-top: 2px;
+}
+.btn-green {
+  background: #16c451;
+  border: 1px solid transparent;
+  color: white;
+  transition: 0.3s;
+  border-radius: 10px;
+}
+
+.btn-green:hover {
+  background: white;
+  color: #16c451;
+  border: 1px solid #16c451;
+}
+
+.sticky-top {
+  top: 90px;
+}
+
+@media (max-width: 768px) {
+  .time-btn {
+    padding: 7px 12px;
+    font-size: 0.82rem;
+  }
+  .sticky-top {
+    position: static !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .time-container {
+    gap: 8px;
+  }
+  .time-btn {
+    flex: 1 1 calc(33% - 8px);
+    text-align: center;
+    padding: 8px 6px;
+    font-size: 0.8rem;
+  }
+}
+
+
+/*LOGO*/
+.logo{
+  font-size:28px;
+  font-weight:bold;
+  color: #000;
+}
+
+.logo span{
+  color:#16c451;
+}
+

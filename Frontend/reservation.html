@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SmartBite | Book a Table</title>
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- CSS -->
+<link rel="stylesheet" href="css/reservation.css">
+<!-- font awesome-->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg shadow-sm">
+<div class="container">
+
+<a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
+  <div class="logo">
+    <i class="fa-solid fa-utensils me-2 icon-green"></i>
+    <span>Smart</span>Bite
+    </div>
+    </a>
+
+<button class="navbar-toggler border-0" data-bs-toggle="collapse" data-bs-target="#menu">
+<span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="menu">
+
+    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+
+      <li class="nav-item">
+        <a class="nav-link" href="#">Menu</a>
+      </li>
+<li class="nav-item">
+<a class="nav-link active-page" href="#">Reservations</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#">Events</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="#">Contact</a>
+</li>
+<li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+<button class="btn btn-green px-4">Log In</button>
+</li>
+
+</ul>
+
+</div>
+</div>
+</nav>
+
+<!-- TITLE -->
+<div class="container mt-5">
+<h1 class="fw-bold">Book a Table</h1>
+<p class="text-muted">
+Experience modern dining with fresh, local ingredients.
+</p>
+
+</div>
+
+<!-- MAIN RESERVATION SECTION -->
+<div class="container mt-4">
+    <form action="reservation.php" method="POST" id="reservationForm">
+<div class="row g-4">
+<!-- LEFT SIDE -->
+<div class="col-lg-8">
+<!-- PARTY SIZE -->
+<div class="card border-0 shadow-sm p-4 mb-4">
+<h5 class="fw-semibold mb-3 d-flex align-items-center gap-2">
+  <i class="fa-solid fa-calendar-days icon-green"></i>
+  Party Size & Date
+</h5>
+
+<div class="row">
+<div class="col-md-4">
+<label class="form-label fw-medium">
+    <i class="fa-solid fa-users icon-green"></i>
+    Number of Guests</label>
+<select class="form-select" id="guestsSelect" name="guests">
+<option value="1">1 Person</option>
+<option value="2" selected>2 People</option>
+<option value="3" >3 People</option>
+<option value="4">4 People</option>
+<option value="5">5 People</option>
+<option value="6">6 People</option>
+<option value="7">7 People</option>
+<option value="8">8 People</option>
+<option value="9">9 People</option>
+<option value="10">10 People</option>
+
+</select>
+</div>
+
+<div class="col-md-8">
+<label class="form-label fw-medium">
+<i class="fa-solid fa-calendar icon-green"></i>
+Select Date</label>
+<input type="date" class="form-control" name="date" id="dateInput" required>
+</div>
+</div>
+</div>
+
+<!-- TIME -->
+
+<div class="card border-0 shadow-sm p-4 mb-4">
+
+<h5 class="fw-semibold mb-4 d-flex align-items-center gap-2">
+  <i class="fa-regular fa-clock icon-green"></i>
+  Available Times
+</h5>
+<input type="hidden" name="time" id="selectedTime">
+<!-- LUNCH -->
+<h6 class="meal-title d-flex align-items-center gap-2">
+  <span class="badge-meal">☀️ Lunch</span>
+</h6>
+
+    <div class="time-container mb-4" 
+    role="group" aria-label="Lunch time slots">
+<button type="button" class="time-btn" data-time="11:30 AM">11:30 AM</button>
+<button type="button" class="time-btn" data-time="12:00 PM">12:00 PM</button>
+<button type="button" class="time-btn" data-time="12:30 PM">12:30 PM</button>
+<button type="button" class="time-btn" data-time="1:00 PM">1:00 PM</button>
+<button type="button" class="time-btn" data-time="1:30 PM">1:30 PM</button>
+<button type="button" class="time-btn" data-time="2:00 PM">2:00 PM</button>
+</div>
+
+<!-- DINNER -->
+<h6 class="meal-title mt-4 d-flex align-items-center gap-2">
+  <span class="badge-meal">🌙 Dinner</span>
+</h6>
+    <div class="time-container"
+     role="group" aria-label="Dinner time slots">
+<button type="button" class="time-btn" data-time="5:30 PM">5:30 PM</button>
+<button type="button" class="time-btn" data-time="6:00 PM">6:00 PM</button>
+<button type="button" class="time-btn" data-time="6:30 PM">6:30 PM</button>
+<button type="button" class="time-btn" data-time="7:00 PM">7:00 PM</button>
+<button type="button" class="time-btn" data-time="7:30 PM">7:30 PM</button>
+<button type="button" class="time-btn" data-time="8:00 PM">8:00 PM</button>     
+</div>
+
+</div>
+<!-- SPECIAL REQUEST -->
+
+<div class="card border-0 shadow-sm p-4">
+ 
+<h5 class="fw-semibold mb-3 d-flex align-items-center gap-2">
+  <i class="fa-solid fa-comment-dots icon-green"></i>
+  Special Requests
+</h5>
+
+<textarea
+class="form-control" rows="3" name="requests"
+placeholder="Add any special requests (allergies, birthday, anniversary...)"
+></textarea>
+
+</div>
+</div>
+
+<!-- RIGHT SIDE -->
+
+<div class="col-lg-4">
+    <div class="card border-0 shadow-sm p-4 sticky-top">
+
+<h5 class="fw-semibold mb-4">
+    <i class="fa-solid fa-receipt icon-green me-2"></i>
+    Reservation Summary</h5>
+    <ul class="list-unstyled">
+  <li class="d-flex align-items-start gap-3 mb-3">
+    <i class="fa-solid fa-calendar icon-green mt-1"></i>
+    <div>
+      <div class="summary-label">Date</div>
+      <div class="summary-value" id="summaryDate">—</div>
+    </div>
+  </li>
+  <li class="d-flex align-items-start gap-3 mb-3">
+    <i class="fa-regular fa-clock icon-green mt-1"></i>
+    <div>
+      <div class="summary-label">Time</div>
+      <div class="summary-value" id="summaryTime">—</div>
+    </div>
+  </li>
+  <li class="d-flex align-items-start gap-3">
+    <i class="fa-solid fa-users icon-green mt-1"></i>
+    <div>
+      <div class="summary-label">Guests</div>
+      <div class="summary-value" id="summaryGuests">2 People</div>
+    </div>
+  </li>
+</ul>
+<hr class="my-3">
+<div id="alertTime" class="alert alert-warning d-none py-2 small" role="alert">
+  <i class="fa-solid fa-triangle-exclamation me-1"></i>
+  Please select a time slot.
+</div>
+
+<button type="submit" class="btn btn-green w-100 mt-2 py-2 fw-semibold">
+<i class="fa-solid fa-check me-2"></i>Complete Reservation
+</button>
+
+</div>
+</div>
+</div>
+</div>
+</form>
+
+<!-- FOOTER -->
+<footer class="text-center py-4 text-muted border-top small">
+© 2026 SmartBite Restaurants. All rights reserved.
+</footer>
+
+<script src="js/reservation.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
