@@ -1,0 +1,372 @@
+/*--------------first child navbar---------*/
+
+:root {
+    --green: #16c451;}
+
+/* LOGO */
+.logo{
+    font-size: 28px;
+    font-weight: bold;
+    color:var(--green);
+    text-align: center;
+}
+
+.logo span{
+    color: #000;}
+
+
+   /* navbar*/
+.navbar-nav .nav-link{
+  position: relative;
+  color: #333;
+  font-weight: 500;
+  transition:color 0.3s;
+}
+
+/* hover couleur */
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active-page {
+  color: var(--green);
+}
+
+.navbar-nav .nav-link::after {
+  content: "";        /* crée l'élément */
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;          /* invisible au départ */
+  height: 2px;
+  background: var(--green);
+  transition: 0.3s;
+}
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active-page::after {
+  width: 100%;
+} 
+
+
+.btn-green {
+  background: #16c451;
+  border: 1px solid transparent;
+  color: white;
+  transition: 0.3s;
+  border-radius: 10px;
+}
+
+.btn-green:hover {
+  background: white;
+  color: #16c451;
+  border: 1px solid #16c451;
+}
+
+
+/*-------Second child-------*/
+.bar{
+   background:var(--green);
+    
+}
+
+
+/*------------------------Third child------------------------------*/
+.hero {
+    height: 80vh;
+    background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4') center/cover;
+    position: relative;
+    color: white;
+}
+
+/* Dark overlay on hero image */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+}
+
+
+.hero-content {
+    position: relative;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.search-box {
+    margin-top: 20px;
+    display: inline-flex;
+    border-radius: 30px;
+    overflow: hidden;
+    background: white;
+}
+
+.search-box input {
+    padding: 12px 20px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    width: 250px;
+}
+
+.search-box button {
+    padding: 12px 20px;
+    border: none;
+    background: #16c451;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search-box button:hover {
+    background: #13a844;
+}
+
+/*-------------------------------fifth child  About section-----------------------------------------*/
+/* Section header (title + divider) */
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+   
+}
+
+.section-header h2 {
+    font-size: 32px;
+    color:var(--green);
+}
+
+.section-header h3 {
+    
+    color:var(--green);
+}
+/* Decorative divider */
+.divider {
+    width: 80px;
+    height: 3px;
+    background:var(--green) ;
+    margin: 10px auto;
+}
+
+/* About layout */
+.about {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Image styling */
+.about-image {
+    flex: 1;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Text styling */
+.about-text {
+    flex: 1;
+}
+
+.about-text h3 {
+    color: var(--green);
+    margin-bottom: 15px;
+}
+
+/* Features row */
+.about-features {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+/* Each feature item */
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #eef7f1;
+    padding: 10px 15px;
+    border-radius: 20px;
+}
+
+/* Icon style */
+.feature i {
+    color: var(--green);
+}
+
+/*----------------------------- fourth child --------------*/
+
+/* menu card */
+
+.card-img-top{
+    width:100%;
+    height:200px;
+    object-fit: contain;
+}
+
+.card {
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  background: #fff;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: cover; /* better than contain for modern look */
+  border-bottom: 1px solid #eee;
+}
+
+.card-body {
+  text-align: center;
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 1.1rem;
+  color: #28a745;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.btn-primary {
+  border: var(--green);
+  background-color: var(--green);
+  color: white;
+  border-radius: 30px;
+  padding: 8px 20px;
+  font-size: 0.9rem;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: white;
+  border:var(--green);
+  color:var(--green);
+}
+
+
+
+.card {
+  animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-img-top {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 10px 15px;
+}
+
+.card-title {
+  font-size: 1rem;
+}
+
+.card-text {
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+
+/* side bar*/
+.backg{
+    background: white;
+     border-radius: 20px ;
+     border:var(--green) ;
+}
+
+.sidebar {
+  background: white;
+  min-height: 100vh;
+  padding: 20px 10px;
+  border-right: 1px solid #eee;
+}
+
+.text-sidebar {
+  color: #198754;
+  text-align: left;
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  padding-left: 10px;
+}
+
+.nav-item {
+  text-align:center;
+}
+
+.cat-sidebar {
+  display: block;
+  padding: 12px 18px;
+  margin: 6px 0;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.cat-sidebar:hover {
+  background-color: var(--green);
+  color: #fff;
+  transform: translateX(5px);
+}
+
+.cat-sidebar.active {
+  background-color: #198754;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+}
+
+
+
+
+
+
+/*----------------------------last child---------------------------*/
+/* CSS for Social */
+.social ul{
+    list-style-type: none;
+}
+.social ul li{
+    display: inline;
+    padding: 1%;
+}
+
+
+
+
+
+
+
+
+
+
