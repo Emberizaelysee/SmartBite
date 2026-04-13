@@ -1,0 +1,167 @@
+:root {
+    --green: #16c451;
+}
+
+/* LOGO */
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--green);
+}
+
+.logo span {
+    color: #000;
+}
+
+/* NAVBAR */
+.navbar-nav .nav-link {
+    position: relative;
+    color: #333;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active-page {
+    color: var(--green);
+}
+
+.navbar-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0%;
+    height: 2px;
+    background: var(--green);
+    transition: 0.3s;
+}
+
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active-page::after {
+    width: 100%;
+}
+
+/* BUTTON */
+.btn-green {
+    background: var(--green);
+    color: white;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.btn-green:hover {
+    background: white;
+    color: var(--green);
+    border: 1px solid var(--green);
+}
+
+/* SECOND BAR */
+.bar {
+    background: var(--green);
+}
+
+/* SECTION HEADER */
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-header h2 {
+    font-size: 32px;
+    color: #1a4d2e;
+}
+
+.divider {
+    width: 80px;
+    height: 3px;
+    background: var(--green);
+    margin: 10px auto;
+}
+
+/* TABLE */
+.table {
+    border-radius: 15px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.table thead {
+    background: var(--green);
+    color: #fff;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+    padding: 15px;
+}
+
+.table tbody tr:hover {
+    background: #f5fff8;
+}
+
+/* IMAGE */
+.cart_img {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* INPUT */
+.table input {
+    width: 70px;
+    margin: auto;
+    text-align: center;
+    border-radius: 8px;
+}
+
+/* REMOVE BUTTON */
+.btn-remove {
+    background: #ff4d4d;
+    color: white;
+    border-radius: 8px;
+}
+
+.btn-remove:hover {
+    background: #cc0000;
+}
+
+/* SUBTOTAL */
+.cart-summary {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 15px;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.cart-summary strong {
+    color: var(--green);
+    font-size: 22px;
+}
+
+/* ACTIONS */
+.cart-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* OUTLINE BUTTON */
+.btn-outline-green {
+    border: 2px solid var(--green);
+    color: var(--green);
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-outline-green:hover {
+    background: var(--green);
+    color: white;
+}
