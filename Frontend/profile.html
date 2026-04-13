@@ -1,131 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartBite - Profile</title>
-    <!-- Latest compiled and minified CSS -->
+    <title>SmartBite | My Profile</title>
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./css/profile.css">
-    <!-- Icons -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Profile CSS -->
+    <link rel="stylesheet" href="./css/profile.css">
 </head>
+
 <body>
-    <header></header>
-    <main class="mt-5">
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-lg-3 col-md-4 bg-white mb-3 p-3 border rounded">
-                    <div class="card align-item-center" style="border: none !important;">
-                        <img src="./img/profile.jpg" alt="Profile Image" class="card-img-top rounded-circle mx-auto" style="width: 150px; height: 150px; object-fit: cover;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title profile-username">example</h5>
-                            <p class="card-text profile-email">example@example.com</p>
-                            <p class="card-text profile-age">Member since <span id="member-since">2026</span></p>
-                        </div>
+    <header>
+        <nav class="navbar navbar-expand-lg shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
+                    <div class="logo">
+                        <i class="fa-solid fa-utensils me-2 icon-green"></i>
+                        <span>Smart</span>Bite
                     </div>
-                    <hr>
-                    <div class="profile-inner-nav">
-                        <ul class="nav flex-column" role="tablist">
-                            <li class="nav-item ">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#order"><i class="fas fa-shopping-cart me-2"></i>My Orders</a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" data-bs-toggle="tab" href="#reservation"><i class="fas fa-calendar me-2"></i>My reservations</a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" data-bs-toggle="tab" href="#setting"><i class="fas fa-cog me-2"></i>Settings</a>
-                            </li>
-                        </ul>
-                        <hr style="text-decoration: line-through;">
-                        <ul class="nav flex-column" >
-                            <li class="nav-item ">
-                                <a class="nav-link" href="../Backend/logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" href="./dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</a>
-                            </li>
-                        </ul>
+                </a>
+                <button class="navbar-toggler border-0" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navMenu">
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#menu">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="reservation.html">Reservations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="review.html">Reviews</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+                        </li>
+                        <li class="nav-item ms-lg-3 mt-2 mt-lg-0 dropdown">
+                            <a href="#"
+                                class="link-body-emphasis text-decoration-none dropdown-toggle d-flex align-items-center fw-semibold"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-circle-user me-2 icon-green fs-5"></i>
+                                <span id="username">My Account</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end text-small bg">
+                                <li><a class="dropdown-item active-page" href="./profile.html">
+                                        <i class="fa-solid fa-user me-2 icon-green"></i>Profile</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item text-danger" href="../Backend/api/logout.php">
+                                        <i class="fa-solid fa-right-from-bracket me-2"></i>Sign out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="mt-4">
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <div class="bg-white p-3 border rounded">
+                        <div class="text-center mb-3">
+                            <img src="./img/profile.jpg" alt="Profile Photo"
+                                class="profile-avatar-ring mx-auto d-block mb-3">
+                            <h5 class="profile-username mb-0">example</h5>
+                            <p class="text-muted small profile-email mb-1">example@example.com</p>
+                            <span class="badge"
+                                style="background:var(--green-light); color:var(--green-dark); font-size:11px; border-radius:8px; padding:4px 10px;">
+                                Member since <span id="member-since">2026</span>
+                            </span>
+                        </div>
+
+                        <hr>
+                        <div class="profile-inner-nav">
+                            <ul class="nav flex-column" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#order">
+                                        <i class="fas fa-shopping-cart me-2 icon-green"></i>My Orders
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#reservation">
+                                        <i class="fas fa-calendar me-2 icon-green"></i>My Reservations
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#setting">
+                                        <i class="fas fa-cog me-2 icon-green"></i>Settings
+                                    </a>
+                                </li>
+                            </ul>
+                            <hr>
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="./dashboard.html">
+                                        <i class="fas fa-tachometer-alt me-2 icon-green"></i>Admin Dashboard
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-danger" href="../Backend/logout.php">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-8">
                     <div class="tab-content">
                         <div class="tab-pane container active" id="order">
-                            <h3><i class="fas fa-shopping-cart me-2"></i>&nbsp;My Orders</h3>
-                            <div class="orders-container">
-                                <div class="justify-content-center bg-white border rounded p-3 my-3">
-                                    <p class="text-center" style="padding: 0; margin: 0;">You have no orders yet.</p>
+                            <h3 class="mb-3"><i class="fas fa-shopping-cart me-2 icon-green"></i>My Orders</h3>
+                            <div class="bg-white border rounded p-4 text-center text-muted mb-3">
+                                <i class="fas fa-box-open mb-2" style="font-size:2rem; color:#ddd;"></i>
+                                <p class="mb-0">You have no orders yet.</p>
+                            </div>
+                            <div class="bg-white border rounded p-3 mb-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h5 class="mb-1">Order #12345</h5>
+                                        <p class="mb-0 text-muted small">Placed on: 2024-06-01</p>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-success">Delivered</span>
+                                        <p class="mb-0 mt-1 fw-semibold">$25.00</p>
+                                    </div>
                                 </div>
-                                <div class="justify-content-center bg-white border rounded p-3 my-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h5 class="mb-1">Order #12345</h5>
-                                            <p class="mb-0">Placed on: 2024-06-01</p>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-success">Delivered</span>
-                                            <p class="mb-0 pt-2">$25.00</p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="align-items-center my-3">
-                                        <div class="order-items">
-                                            <p class="mb-1"><strong>Items:</strong></p>
-                                            <ul class="mb-0">
-                                                <li><img src="./img/Margherita.jpg" alt="Margherita Pizza" class="img-fluid me-2">Margherita Pizza x1</li>
-                                                <li><img src="./img/CaesarSalad.jpg" alt="Caesar Salad" class="img-fluid me-2">Caesar Salad x1</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="align-items-center d-flex justify-content-end">
-                                        <button class="btn btn-sm btn-primary m-1">View Details</button>
-                                        <button class="btn btn-sm btn-secondary m-1">Reorder</button>
-                                    </div>
+                                <hr>
+                                <div class="order-items">
+                                    <p class="mb-2 fw-semibold small">Items:</p>
+                                    <ul class="mb-0">
+                                        <li class="d-flex align-items-center mb-1">
+                                            <img src="./img/Margherita.jpg" alt="Margherita Pizza">
+                                            Margherita Pizza &times;1
+                                        </li>
+                                        <li class="d-flex align-items-center">
+                                            <img src="./img/CaesarSalad.jpg" alt="Caesar Salad">
+                                            Caesar Salad &times;1
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="d-flex justify-content-end gap-2 mt-3">
+                                    <button class="btn btn-sm btn-green" id="viewOrderBtn12345">View Details</button>
+                                    <button class="btn btn-sm btn-outline-green" id="reorderBtn12345">Reorder</button>
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane container fade" id="reservation">
-                            <h3><i class="fas fa-calendar me-2"></i>&nbsp;My Reservations</h3>
-                            <div class="reservations-container">
-                                <div class="justify-content-center bg-white border rounded p-3 my-3">
-                                    <p class="text-center" style="padding: 0; margin: 0;">You have no reservations yet.</p>
+                            <h3 class="mb-3"><i class="fas fa-calendar me-2 icon-green"></i>My Reservations</h3>
+                            <div class="bg-white border rounded p-4 text-center text-muted mb-3">
+                                <i class="fas fa-calendar-times mb-2" style="font-size:2rem; color:#ddd;"></i>
+                                <p class="mb-0">You have no reservations yet.</p>
+                            </div>
+                            <div class="bg-white border rounded p-3 mb-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h5 class="mb-1">Reservation #12345</h5>
+                                        <p class="mb-0 text-muted small">Placed on: 2024-06-01</p>
+                                    </div>
+                                    <span class="badge bg-success">Confirmed</span>
                                 </div>
-                                <div class="justify-content-center bg-white border rounded p-3 my-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h5 class="mb-1">Reservation #12345</h5>
-                                            <p class="mb-0">Placed on: 2024-06-01</p>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-success">Confiremed</span>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="align-items-center my-3">
-                                        <div class="order-items">
-                                            <p class="mb-1"><strong>Details:</strong></p>
-                                            <ul class="mb-0">
-                                                <li><i class="fas fa-user me-2"></i>Reservation Name: John Doe</li>
-                                                <li><i class="fas fa-chair me-2"></i>Table Number: 5</li>
-                                                <li><i class="fas fa-users me-2"></i>Number of Guests: 4</li>
-                                                <li><i class="fas fa-calendar me-2"></i>Date & Time: 2024-06-10 19:00</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="align-items-center d-flex justify-content-end">
-                                        <button class="btn btn-sm btn-primary m-1">View Details</button>
-                                    </div>
+                                <hr>
+                                <ul class="mb-0 small">
+                                    <li class="mb-1"><i class="fas fa-user me-2 icon-green"></i>Reservation Name: John
+                                        Doe</li>
+                                    <li class="mb-1"><i class="fas fa-chair me-2 icon-green"></i>Table Number: 5</li>
+                                    <li class="mb-1"><i class="fas fa-users me-2 icon-green"></i>Number of Guests: 4
+                                    </li>
+                                    <li><i class="fas fa-calendar me-2 icon-green"></i>Date &amp; Time: 2024-06-10 at
+                                        19:00</li>
+                                </ul>
+                                <div class="d-flex justify-content-end mt-3">
+                                    <button class="btn btn-sm btn-green" id="viewReservationBtn12345">View
+                                        Details</button>
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane container fade" id="setting">
-                            <h3><i class="fas fa-cog me-2"></i>&nbsp;Settings</h3>
-                            <div class="settings-container">
-                                <div class="row">
-                                    <div class="col-md bg-white p-3 border rounded m-2">
-                                        <h5>Update Profile</h5>
+                            <h3 class="mb-3"><i class="fas fa-cog me-2 icon-green"></i>Settings</h3>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <div class="bg-white p-4 border rounded h-100">
+                                        <h5 class="mb-3">Update Profile</h5>
                                         <form id="update-profile-form">
                                             <div class="mb-3">
                                                 <label for="setting-username" class="form-label">Username</label>
@@ -139,39 +207,60 @@
                                                 <label for="setting-phone" class="form-label">Phone Number</label>
                                                 <input type="tel" class="form-control" id="setting-phone" disabled>
                                             </div>
-                                            <div id="setting-feedback" class="mt-2" style="display: none;"></div>
-                                            <button type="submit" id="edit-profile-btn" class="btn btn-primary">Edit Profile</button>
-                                            <button type="button" id="cancel-edit-btn" class="btn btn-secondary" style="display: none;">Cancel</button>
-                                            <button type="button" id="save-profile-btn" class="btn btn-success" style="display: none;">Save Profile</button>
+                                            <div id="setting-feedback" class="mt-2" style="display:none;"></div>
+                                            <div class="d-flex gap-2">
+                                                <button type="submit" id="edit-profile-btn" class="btn btn-green">
+                                                    <i class="fas fa-edit me-1"></i>Edit Profile
+                                                </button>
+                                                <button type="button" id="cancel-edit-btn" class="btn btn-outline-green"
+                                                    style="display:none;">Cancel</button>
+                                                <button type="button" id="save-profile-btn" class="btn btn-green"
+                                                    style="display:none;">
+                                                    <i class="fas fa-save me-1"></i>Save
+                                                </button>
+                                            </div>
                                         </form>
                                     </div>
-                                    <div class="col-md bg-white p-3 border rounded m-2">
-                                        <h5>Change Password</h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="bg-white p-4 border rounded h-100">
+                                        <h5 class="mb-3">Change Password</h5>
                                         <form id="change-password-form">
                                             <div class="mb-3">
-                                                <label for="current-password" class="form-label">Current Password</label>
-                                                <input type="password" class="form-control" id="current-password" required>
+                                                <label for="current-password" class="form-label">Current
+                                                    Password</label>
+                                                <input type="password" class="form-control" id="current-password"
+                                                    required>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="new-password" class="form-label">New Password</label>
                                                 <input type="password" class="form-control" id="new-password" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="confirm-password" class="form-label">Confirm New Password</label>
-                                                <input type="password" class="form-control" id="confirm-password" required>
+                                                <label for="confirm-password" class="form-label">Confirm New
+                                                    Password</label>
+                                                <input type="password" class="form-control" id="confirm-password"
+                                                    required>
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Change Password</button>
+                                            <button type="submit" class="btn btn-green">
+                                                <i class="fas fa-key me-1"></i>Change Password
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
-                                <div class="bg-white border rounded my-4 p-3">
-                                    <h5 class="p-3 text-danger"><i class="fas fa-trash-alt"></i>&nbsp;Delete Account</h5>
-                                    <div class="px-3 my-3">
-                                        <p class="text-danger"><i class="fas fa-exclamation-triangle"></i>&nbsp;Warning: This action cannot be undone. All your data will be permanently deleted.</p>
-                                        <button id="delete-account-btn" class="btn btn-danger">Delete My Account</button>
-                                        <div id="delete-feedback" class="mt-2" style="display: none;"></div>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="bg-white border rounded p-4">
+                                <h5 class="text-danger mb-2">
+                                    <i class="fas fa-trash-alt me-2"></i>Delete Account
+                                </h5>
+                                <p class="text-danger small">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>
+                                    Warning: This action cannot be undone. All your data will be permanently deleted.
+                                </p>
+                                <button id="delete-account-btn" class="btn btn-danger">
+                                    <i class="fas fa-trash me-1"></i>Delete My Account
+                                </button>
+                                <div id="delete-feedback" class="mt-2" style="display:none;"></div>
                             </div>
                         </div>
                     </div>
@@ -179,99 +268,105 @@
             </div>
         </div>
     </main>
-    <section>
-        <!--- Modals --->
-        <div>
-            <!-- Order Details Modal -->
-            <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Loading order details...</p>
-                            <div>
-                                <!-- Order items -->
-                                <h5>Order #12345</h5>
-                                <ul>
-                                    <li><img src="./img/Margherita.jpg" alt="Margherita Pizza" class="img-fluid me-2">Margherita Pizza x1 - $12.00</li>
-                                    <li><img src="./img/CaesarSalad.jpg" alt="Caesar Salad" class="img-fluid me-2">Caesar Salad x1 - $8.00</li>
-                                </ul>
-                                <hr>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
+
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius:16px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-semibold" id="orderDetailsModalLabel">
+                        <i class="fas fa-shopping-cart me-2 icon-green"></i>Order Details
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
-            <!-- Reorder Modal -->
-            <div class="modal fade" id="reorderModal" tabindex="-1" aria-labelledby="reorderModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="reorderModalLabel">Reorder Items</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Would you like to reorder the items from Order #12345?</p>
-                            <div>
-                                <!-- Reorder details -->
-                                <h5>Order #12345</h5>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <img src="./img/Margherita.jpg" alt="Margherita Pizza" class="img-fluid me-2">Margherita Pizza x1 - $12.00
-                                        <img src="./img/CaesarSalad.jpg" alt="Caesar Salad" class="img-fluid me-2">Caesar Salad x1 - $8.00
-                                    </div>
-                                    <div class="col-md-4">
-                                        <button class="btn btn-primary">Add this item to cart</button>
-                                        <button class="btn btn-primary">Add this item to cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary">Reorder everything</button>
-                        </div>
-                    </div>
+                <div class="modal-body">
+                    <h6>Order #12345</h6>
+                    <ul class="mb-0">
+                        <li class="d-flex align-items-center mb-2">
+                            <img src="./img/Margherita.jpg" alt="Margherita Pizza"
+                                style="width:40px;height:40px;object-fit:cover;border-radius:8px;margin-right:10px;">
+                            Margherita Pizza &times;1 — $12.00
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <img src="./img/CaesarSalad.jpg" alt="Caesar Salad"
+                                style="width:40px;height:40px;object-fit:cover;border-radius:8px;margin-right:10px;">
+                            Caesar Salad &times;1 — $8.00
+                        </li>
+                    </ul>
+                    <hr>
+                    <p class="fw-semibold mb-0">Total: $25.00</p>
                 </div>
-            </div>
-            <!-- Reservation Details Modal -->
-            <div class="modal fade" id="ReservationDetailsModal" tabindex="-1" aria-labelledby="reservationDetailsModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="reservationDetailsModalLabel">Reservation Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Loading reservation details...</p>
-                            <div>
-                                <!-- Reservation details -->
-                                <h5>Reservation #12345</h5>
-                                <ul>
-                                    <li><i class="fas fa-user me-2"></i>Reservation Name: John Doe</li>
-                                    <li><i class="fas fa-chair me-2"></i>Table Number: 5</li>
-                                    <li><i class="fas fa-users me-2"></i>Number of Guests: 4</li>
-                                    <li><i class="fas fa-calendar me-2"></i>Date & Time: 2024-06-10 19:00</li>
-                                </ul>
-                                <hr>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-green" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-    </section>
-    <footer></footer>
+    </div>
+
+    <div class="modal fade" id="reorderModal" tabindex="-1" aria-labelledby="reorderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius:16px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-semibold" id="reorderModalLabel">
+                        <i class="fas fa-redo me-2 icon-green"></i>Reorder Items
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Would you like to reorder the items from Order #12345?</p>
+                    <div class="d-flex align-items-center mb-2 gap-2">
+                        <img src="./img/Margherita.jpg" alt="Margherita Pizza"
+                            style="width:40px;height:40px;object-fit:cover;border-radius:8px;">
+                        <span>Margherita Pizza &times;1 — $12.00</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <img src="./img/CaesarSalad.jpg" alt="Caesar Salad"
+                            style="width:40px;height:40px;object-fit:cover;border-radius:8px;">
+                        <span>Caesar Salad &times;1 — $8.00</span>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-green" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-green">
+                        <i class="fas fa-check me-1"></i>Reorder Everything
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation Details Modal -->
+    <div class="modal fade" id="ReservationDetailsModal" tabindex="-1" aria-labelledby="reservationDetailsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius:16px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-semibold" id="reservationDetailsModalLabel">
+                        <i class="fas fa-calendar me-2 icon-green"></i>Reservation Details
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>Reservation #12345</h6>
+                    <ul class="mb-0 small">
+                        <li class="mb-1"><i class="fas fa-user me-2 icon-green"></i>Name: John Doe</li>
+                        <li class="mb-1"><i class="fas fa-chair me-2 icon-green"></i>Table Number: 5</li>
+                        <li class="mb-1"><i class="fas fa-users me-2 icon-green"></i>Guests: 4</li>
+                        <li><i class="fas fa-calendar me-2 icon-green"></i>Date &amp; Time: 2024-06-10 at 19:00</li>
+                    </ul>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-green" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        © 2026 SmartBite Restaurants. All rights reserved.
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./js/profile.js"></script>
 </body>
+
 </html>
