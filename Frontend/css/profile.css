@@ -1,3 +1,15 @@
+/* =====================================================================
+ * SmartBite - Profile Stylesheet
+ * 
+ * Provides all custom styling for the customer profile page:
+ * - Color variables and typography matched to dashboard
+ * - User avatar styling (ring wrapper, custom edit button)
+ * - Navigation and tab content
+ * - Theming for order/reservation cards
+ * - The complete custom Modal System (reorder, cancel, delete)
+ * ===================================================================== */
+
+/* ─── Variables & Base Theme ─────────────────────────────────── */
 :root {
     --green: #16c451;
     --green-dark: #12a543;
@@ -6,11 +18,11 @@
     --primary-color-dark: #12a543;
     --secondary-color: #4caf50;
     --white-color: #fff;
-    --background-color: #f5f8f6;
+    --background-color: linear-gradient(to right, #e9f1ec, #cde3d6);
     --text-color: #333;
     --border-radius: 15px !important;
     --padding: 20px;
-    --font-family: "Plus Jakarta Sans", "Noto Sans", "sans-serif";
+    --font-family: "Open Sans", "Noto Sans", "sans-serif";
     --green: #16c451;
     --green-dark: #12a543;
     --green-light: #e9faf0;
@@ -19,6 +31,7 @@
     --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
 }
 
+/* ─── Layout & Typography ────────────────────────────────────── */
 body {
     font-family: var(--font-family);
     background-color: var(--background-color);
@@ -46,7 +59,7 @@ h5 {
     background-color: #f5f8f6 !important;
 }
 
-/* navbar*/
+/* ─── Global Navigation (Navbar) ─────────────────────────────── */
 .navbar-nav .nav-link {
     position: relative;
     color: var(--text-color);
@@ -93,6 +106,15 @@ h5 {
     color: var(--green-dark);
 }
 
+.nav-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--green-light);
+}
+
+/* ─── Avatar Component (Profile Sidebar) ─────────────────────── */
 .profile-inner-nav .nav-link i,
 .profile-inner-nav .nav-link .icon-green {
     color: var(--green) !important;
@@ -108,6 +130,36 @@ h5 {
     object-fit: cover;
 }
 
+.profile-avatar-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.avatar-edit-btn {
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 0;
+    background: var(--green);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.avatar-edit-btn:hover {
+    background: var(--green-dark);
+    transform: scale(1.05);
+}
+
+/* ─── Sidebar Navigation (Left column Tabs) ──────────────────── */
 .profile-inner-nav {
     border-radius: var(--border-radius);
 }
@@ -141,6 +193,7 @@ h5 {
     font-weight: 700;
 }
 
+/* ─── Cards (Orders & Reservations Layouts) ──────────────────── */
 .card,
 .border.rounded {
     border-radius: var(--border-radius) !important;
@@ -154,6 +207,7 @@ h5 {
     transform: translateY(-2px);
 }
 
+/* ─── Buttons & Interactive Elements ─────────────────────────── */
 .btn-green {
     background: var(--green);
     border: 1px solid transparent;
@@ -195,6 +249,7 @@ h5 {
     color: var(--green) !important;
 }
 
+/* ─── Order Items & Badges ───────────────────────────────────── */
 .order-items img {
     width: 40px;
     height: 40px;
@@ -242,6 +297,257 @@ ul {
     color: var(--green);
 }
 
+/* ─── Modal System (Premium UI) ────────────────────────────────
+ * Comprehensive overrides for Bootstrap modals to achieve a 
+ * "glassmorphism" inspired, modern appearance with custom headers
+ * and smooth entrance animations. Shared design with Dashboard.
+ * ──────────────────────────────────────────────────────────── */
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-24px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes modalIconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+.modal.show .modal-dialog {
+    animation: modalSlideIn 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.modal-backdrop.show {
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    border: 0;
+    border-radius: 20px !important;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(22, 196, 81, 0.06);
+    overflow: hidden;
+}
+
+.modal-header {
+    border-bottom: none !important;
+    background: linear-gradient(135deg, #f0fdf4 0%, #f8fffb 50%, #ffffff 100%);
+    padding: 1.35rem 1.5rem 1rem;
+    position: relative;
+}
+
+.modal-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(22, 196, 81, 0.2), transparent);
+}
+
+.modal-title {
+    font-weight: 700;
+    color: #1a2e1f;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-title .modal-title-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--green), var(--green-dark));
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(22, 196, 81, 0.3);
+    animation: modalIconPulse 2s ease-in-out infinite;
+}
+
+.modal-body {
+    padding: 1.25rem 1.5rem;
+    background: #fff;
+}
+
+.modal .form-label {
+    font-weight: 600;
+    color: #35443b;
+    font-size: 0.85rem;
+}
+
+.modal .form-control,
+.modal .form-select {
+    border-radius: 12px;
+    border: 1.5px solid rgba(22, 196, 81, 0.18);
+    box-shadow: none;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.92rem;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.2s;
+    background-color: #fafffe;
+}
+
+.modal .form-control:hover,
+.modal .form-select:hover {
+    border-color: rgba(22, 196, 81, 0.35);
+    background-color: #fff;
+}
+
+.modal .form-control:focus,
+.modal .form-select:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(22, 196, 81, 0.12);
+    background-color: #fff;
+}
+
+.modal .form-control::placeholder {
+    color: #a7bfad;
+}
+
+.modal-footer {
+    border-top: none !important;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fffb 100%);
+    padding: 1rem 1.5rem 1.25rem;
+    position: relative;
+    gap: 0.5rem;
+}
+
+.modal-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(22, 196, 81, 0.15), transparent);
+}
+
+.modal-footer .btn {
+    border-radius: 12px;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: all 0.25s ease;
+}
+
+.modal-footer .btn-outline-secondary {
+    border-color: #d1ddd6;
+    color: #5f7569;
+}
+
+.modal-footer .btn-outline-secondary:hover {
+    background: #f0f5f2;
+    border-color: #b3c4ba;
+    color: #3a5043;
+}
+
+.modal .btn-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background-color: rgba(22, 196, 81, 0.06);
+    opacity: 0.7;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.modal .btn-close:hover {
+    opacity: 1;
+    background-color: rgba(22, 196, 81, 0.12);
+    transform: rotate(90deg);
+}
+
+/* Reorder modal items */
+.modal #reorder-items-container .border.rounded {
+    border-radius: 14px !important;
+    border-color: rgba(22, 196, 81, 0.15) !important;
+    background: #f8fdf9 !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* ─── Delete Confirm Modal ───────────────────────────────────── */
+.modal-delete-confirm .modal-content {
+    border-radius: 20px !important;
+}
+
+.modal-delete-confirm .modal-header {
+    background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+}
+
+.modal-delete-confirm .modal-header::after {
+    background: linear-gradient(90deg, transparent, rgba(220, 53, 69, 0.18), transparent);
+}
+
+.modal-delete-confirm .modal-title-icon {
+    background: linear-gradient(135deg, #dc3545, #c82333) !important;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3) !important;
+    animation: none !important;
+}
+
+.modal-delete-confirm .delete-confirm-message {
+    text-align: center;
+    padding: 0.75rem 0;
+}
+
+.modal-delete-confirm .delete-confirm-message i {
+    font-size: 2.5rem;
+    color: #dc3545;
+    margin-bottom: 0.75rem;
+    display: block;
+    opacity: 0.85;
+}
+
+.modal-delete-confirm .delete-confirm-message p {
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+.modal-delete-confirm .modal-footer::before {
+    background: linear-gradient(90deg, transparent, rgba(220, 53, 69, 0.12), transparent);
+}
+
+.modal-delete-confirm .btn-danger {
+    border-radius: 12px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    border: none;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
+    transition: all 0.25s ease;
+}
+
+.modal-delete-confirm .btn-danger:hover {
+    box-shadow: 0 6px 18px rgba(220, 53, 69, 0.35);
+    transform: translateY(-1px);
+}
+
+.btn-outline-green {
+    background: transparent;
+    border: 1px solid var(--green);
+    color: var(--green);
+    border-radius: 10px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-outline-green:hover {
+    background: var(--green);
+    color: white;
+}
+
+/* ─── Footer ─────────────────────────────────────────────────── */
 footer {
     text-align: center;
     padding: 28px 0 16px;
@@ -251,6 +557,7 @@ footer {
     margin-top: 40px;
 }
 
+/* ─── Responsive Adjustments ─────────────────────────────────── */
 @media (max-width: 768px) {
     .profile-inner-nav {
         margin-bottom: 20px;
@@ -259,5 +566,14 @@ footer {
     .profile-avatar-ring {
         width: 110px;
         height: 110px;
+    }
+
+    .profile-avatar-wrapper {
+        width: 110px;
+        height: 110px;
+    }
+
+    .modal-dialog {
+        margin: 0.8rem;
     }
 }

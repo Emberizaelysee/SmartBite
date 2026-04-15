@@ -1,28 +1,33 @@
 <!DOCTYPE html>
+<!-- Admin dashboard page -->
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBite | Admin Dashboard</title>
-    <!-- Bootstrap -->
+
+    <!-- External dependencies -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Dashboard CSS -->
+
+    <!-- Project stylesheet -->
     <link rel="stylesheet" href="./css/dashboard.css">
-</head>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath fill='%2316c451' d='M127.9 78.4C127.1 70.2 120.2 64 112 64C103.8 64 96.9 70.2 96 78.3L81.9 213.7C80.6 219.7 80 225.8 80 231.9C80 277.8 115.1 315.5 160 319.6L160 544C160 561.7 174.3 576 192 576C209.7 576 224 561.7 224 544L224 319.6C268.9 315.5 304 277.8 304 231.9C304 225.8 303.4 219.7 302.1 213.7L287.9 78.3C287.1 70.2 280.2 64 272 64C263.8 64 256.9 70.2 256.1 78.4L242.5 213.9C241.9 219.6 237.1 224 231.4 224C225.6 224 220.8 219.6 220.2 213.8L207.9 78.6C207.2 70.3 200.3 64 192 64C183.7 64 176.8 70.3 176.1 78.6L163.8 213.8C163.3 219.6 158.4 224 152.6 224C146.8 224 142 219.6 141.5 213.9L127.9 78.4zM512 64C496 64 384 96 384 240L384 352C384 387.3 412.7 416 448 416L480 416L480 544C480 561.7 494.3 576 512 576C529.7 576 544 561.7 544 544L544 96C544 78.3 529.7 64 512 64z'/%3E%3C/svg%3E">
+
 
 <body>
+
+    <!-- Header -->
     <header>
         <nav class="navbar navbar-expand-lg shadow-sm">
             <div class="container">
-                <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
+                <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="./index.html">
                     <div class="logo">
                         <i class="fa-solid fa-utensils me-2 icon-green"></i>
                         <span>Smart</span>Bite
@@ -43,13 +48,14 @@
                             <a class="nav-link" href="review.html">Reviews</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+                            <a class="nav-link" href="cart.html"><i class="fa-solid fa-cart-arrow-down"></i> <sup>2</sup></a>
                         </li>
                         <li class="nav-item ms-lg-3 mt-2 mt-lg-0 dropdown">
                             <a href="#"
                                 class="link-body-emphasis text-decoration-none dropdown-toggle d-flex align-items-center fw-semibold"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-circle-user me-2 icon-green fs-5"></i>
+                                <img src="./img/profile.jpg" alt="Profile" class="nav-avatar me-2"
+                                    id="nav-dashboard-avatar">
                                 <span id="username">Admin</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end text-small bg">
@@ -67,9 +73,12 @@
             </div>
         </nav>
     </header>
+    <!-- Main content -->
     <main class="mt-5">
         <div class="container mt-5">
             <div class="row">
+
+                <!-- Sidebar tabs -->
                 <div class="col-lg-3 col-md-4 mb-4">
                     <div class="profile-inner-nav bg-white p-3 border rounded">
                         <ul class="nav flex-column" role="tablist">
@@ -81,6 +90,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#menu">
                                     <i class="fas fa-utensils me-2 icon-green"></i>Menu
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#order">
+                                    <i class="fas fa-receipt me-2 icon-green"></i>Orders
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -100,6 +114,7 @@
                             </li>
                         </ul>
                         <hr>
+                        <!-- Secondary links -->
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="./profile.html">
@@ -114,8 +129,11 @@
                         </ul>
                     </div>
                 </div>
+                <!-- Right panel -->
                 <div class="col-lg-9 col-md-8">
                     <div class="tab-content">
+
+                        <!-- Dashboard tab -->
                         <div class="tab-pane container active" id="dashboard">
 
                             <div class="d-flex align-items-center mb-4">
@@ -124,6 +142,7 @@
                                     <p class="text-muted mb-0 small">Welcome back! Here's what's happening.</p>
                                 </div>
                             </div>
+                            <!-- KPI cards -->
                             <div class="row g-3 mb-4">
                                 <div class="col-sm-6 col-xl-3">
                                     <div class="card bg-white border rounded p-3">
@@ -131,7 +150,7 @@
                                             <div class="stat-icon">
                                                 <i class="fas fa-calendar icon-green"></i>
                                             </div>
-                                            <span class="stat-badge">+0%</span>
+                                            <span class="stat-badge" id="stat-badge-reservations">+0%</span>
                                         </div>
                                         <p class="mb-1 text-muted small">Pending Reservations</p>
                                         <h4 class="fw-bold mb-0" id="stat-reservations">0</h4>
@@ -143,7 +162,7 @@
                                             <div class="stat-icon">
                                                 <i class="fas fa-user icon-green"></i>
                                             </div>
-                                            <span class="stat-badge">+0%</span>
+                                            <span class="stat-badge" id="stat-badge-users">+0%</span>
                                         </div>
                                         <p class="mb-1 text-muted small">Active Users</p>
                                         <h4 class="fw-bold mb-0" id="stat-users">0</h4>
@@ -155,7 +174,7 @@
                                             <div class="stat-icon">
                                                 <i class="fas fa-chart-line icon-green"></i>
                                             </div>
-                                            <span class="stat-badge">+0%</span>
+                                            <span class="stat-badge" id="stat-badge-orders">+0%</span>
                                         </div>
                                         <p class="mb-1 text-muted small">Order Growth</p>
                                         <h4 class="fw-bold mb-0" id="stat-orders">0</h4>
@@ -167,7 +186,7 @@
                                             <div class="stat-icon">
                                                 <i class="fas fa-dollar-sign icon-green"></i>
                                             </div>
-                                            <span class="stat-badge">+0%</span>
+                                            <span class="stat-badge" id="stat-badge-sales">+0%</span>
                                         </div>
                                         <p class="mb-1 text-muted small">Total Sales</p>
                                         <h4 class="fw-bold mb-0" id="stat-sales">$0</h4>
@@ -175,6 +194,7 @@
                                 </div>
                             </div>
 
+                            <!-- Weekly sales chart -->
                             <div class="bg-white border rounded p-3 mb-4">
                                 <div class="mb-3">
                                     <h5 class="mb-0">Weekly Sales Overview</h5>
@@ -186,6 +206,7 @@
                             </div>
 
                         </div>
+                        <!-- Menu tab -->
                         <div class="tab-pane container fade" id="menu">
                             <div class="p-0">
                                 <div class="d-flex align-items-center mb-3">
@@ -195,29 +216,37 @@
                                         <p class="text-muted small mb-0">Keep your offerings fresh. Tweak prices, swap
                                             out seasonal dishes, or drop something entirely new in.</p>
                                     </div>
-                                    <button class="btn btn-green ms-auto px-3">
+                                    <button id="add-menu-btn" class="btn btn-green ms-auto px-3">
                                         <i class="fas fa-plus me-1"></i>Add Item
                                     </button>
                                 </div>
+                                <!-- Search -->
                                 <div class="my-3">
                                     <form class="d-flex gap-2">
-                                        <input type="text" class="form-control" placeholder="Search menu items...">
-                                        <button type="button" class="btn btn-outline-green">
+                                        <input id="search-menu-input" type="text" class="form-control"
+                                            placeholder="Search menu items...">
+                                        <button id="search-menu-btn" type="button" class="btn btn-outline-green">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </form>
                                 </div>
+                                <!-- Menu table -->
                                 <div class="bg-white border rounded p-3">
                                     <div class="table-responsive">
                                         <table class="table table-hover align-middle">
                                             <thead>
                                                 <tr>
+                                                    <th data-sort-table="menu" data-sort-key="name" role="button">Dish
+                                                        Name</th>
+                                                    <th data-sort-table="menu" data-sort-key="description"
+                                                        role="button">Description</th>
+                                                    <th data-sort-table="menu" data-sort-key="category" role="button">
+                                                        Category</th>
+                                                    <th data-sort-table="menu" data-sort-key="price" role="button">Price
+                                                    </th>
                                                     <th>Image</th>
-                                                    <th>Dish Name</th>
-                                                    <th>Description</th>
-                                                    <th>Category</th>
-                                                    <th>Price</th>
-                                                    <th>Stock Status</th>
+                                                    <th data-sort-table="menu" data-sort-key="quantity" role="button">
+                                                        Stock Status</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -235,23 +264,24 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane container fade" id="reservation">
+                        <!-- Orders tab -->
+                        <div class="tab-pane container fade" id="order">
                             <div class="p-0">
                                 <div class="d-flex align-items-center mb-3">
                                     <div>
-                                        <h3 class="mb-0"><i class="fas fa-calendar me-2 icon-green"></i>Reservations
-                                            Management</h3>
-                                        <p class="text-muted small mb-0">Manage your reservations with ease. View
-                                            upcoming bookings, confirm or cancel.</p>
+                                        <h3 class="mb-0"><i class="fas fa-receipt me-2 icon-green"></i>Orders Management
+                                        </h3>
+                                        <p class="text-muted small mb-0">Track and manage all customer orders.</p>
                                     </div>
-                                    <button class="btn btn-green ms-auto px-3">
-                                        <i class="fas fa-plus me-1"></i>Add Reservation
+                                    <button id="add-order-btn" class="btn btn-green ms-auto px-3">
+                                        <i class="fas fa-plus me-1"></i>Add Order
                                     </button>
                                 </div>
                                 <div class="my-3">
                                     <form class="d-flex gap-2">
-                                        <input type="text" class="form-control" placeholder="Search reservations...">
-                                        <button type="button" class="btn btn-outline-green">
+                                        <input id="search-order-input" type="text" class="form-control"
+                                            placeholder="Search orders...">
+                                        <button id="search-order-btn" type="button" class="btn btn-outline-green">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </form>
@@ -261,12 +291,75 @@
                                         <table class="table table-hover align-middle">
                                             <thead>
                                                 <tr>
-                                                    <th>Date</th>
-                                                    <th>Time</th>
-                                                    <th>Guests</th>
-                                                    <th>Status</th>
-                                                    <th>Customer</th>
-                                                    <th>Table No.</th>
+                                                    <th data-sort-table="order" data-sort-key="order_date"
+                                                        role="button">Date</th>
+                                                    <th data-sort-table="order" data-sort-key="id" role="button">Order
+                                                        ID</th>
+                                                    <th data-sort-table="order" data-sort-key="username" role="button">
+                                                        User</th>
+                                                    <th data-sort-table="order" data-sort-key="total_amount"
+                                                        role="button">Total</th>
+                                                    <th data-sort-table="order" data-sort-key="status" role="button">
+                                                        Status</th>
+                                                    <th data-sort-table="order" data-sort-key="special_instructions"
+                                                        role="button">Notes</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="7" class="text-center py-4 text-muted">
+                                                        <i class="fas fa-receipt mb-2 d-block"
+                                                            style="font-size:2rem; color:#ddd;"></i>
+                                                        No orders found.
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Reservations tab -->
+                        <div class="tab-pane container fade" id="reservation">
+                            <div class="p-0">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div>
+                                        <h3 class="mb-0"><i class="fas fa-calendar me-2 icon-green"></i>Reservations
+                                            Management</h3>
+                                        <p class="text-muted small mb-0">Manage your reservations with ease. View
+                                            upcoming bookings, confirm or cancel.</p>
+                                    </div>
+                                    <button id="add-reservation-btn" class="btn btn-green ms-auto px-3">
+                                        <i class="fas fa-plus me-1"></i>Add Reservation
+                                    </button>
+                                </div>
+                                <div class="my-3">
+                                    <form class="d-flex gap-2">
+                                        <input id="search-reservation-input" type="text" class="form-control"
+                                            placeholder="Search reservations...">
+                                        <button id="search-reservation-btn" type="button" class="btn btn-outline-green">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="bg-white border rounded p-3">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th data-sort-table="reservation" data-sort-key="date"
+                                                        role="button">Date</th>
+                                                    <th data-sort-table="reservation" data-sort-key="time"
+                                                        role="button">Time</th>
+                                                    <th data-sort-table="reservation" data-sort-key="guests"
+                                                        role="button">Guests</th>
+                                                    <th data-sort-table="reservation" data-sort-key="status"
+                                                        role="button">Status</th>
+                                                    <th data-sort-table="reservation" data-sort-key="customer_name"
+                                                        role="button">Customer</th>
+                                                    <th data-sort-table="reservation" data-sort-key="contact"
+                                                        role="button">Contact</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -284,14 +377,21 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Reviews tab -->
                         <div class="tab-pane container fade" id="review">
-                            <h3 class="mb-1"><i class="fas fa-star me-2 icon-green"></i>Reviews Management</h3>
+                            <div class="d-flex align-items-center mb-2">
+                                <h3 class="mb-0"><i class="fas fa-star me-2 icon-green"></i>Reviews Management</h3>
+                                <button id="add-review-btn" class="btn btn-green ms-auto px-3">
+                                    <i class="fas fa-plus me-1"></i>Add Review
+                                </button>
+                            </div>
                             <p class="text-muted small mb-3">See what people are saying about the food. Keep an eye on
                                 the feedback!</p>
                             <div class="my-3">
                                 <form class="d-flex gap-2">
-                                    <input type="text" class="form-control" placeholder="Search reviews...">
-                                    <button type="button" class="btn btn-outline-green">
+                                    <input id="search-review-input" type="text" class="form-control"
+                                        placeholder="Search reviews...">
+                                    <button id="search-review-btn" type="button" class="btn btn-outline-green">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </form>
@@ -323,14 +423,21 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Users tab -->
                         <div class="tab-pane container fade" id="users">
-                            <h3 class="mb-1"><i class="fas fa-users me-2 icon-green"></i>Users Management</h3>
+                            <div class="d-flex align-items-center mb-2">
+                                <h3 class="mb-0"><i class="fas fa-users me-2 icon-green"></i>Users Management</h3>
+                                <button id="add-user-btn" class="btn btn-green ms-auto px-3">
+                                    <i class="fas fa-plus me-1"></i>Add User
+                                </button>
+                            </div>
                             <p class="text-muted small mb-3">Keep an eye on your regulars and new faces. Manage user
                                 accounts and track activity.</p>
                             <div class="my-3">
                                 <form class="d-flex gap-2">
-                                    <input type="text" class="form-control" placeholder="Search users...">
-                                    <button type="button" class="btn btn-outline-green">
+                                    <input id="search-user-input" type="text" class="form-control"
+                                        placeholder="Search users...">
+                                    <button id="search-user-btn" type="button" class="btn btn-outline-green">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </form>
@@ -340,11 +447,15 @@
                                     <table class="table table-hover align-middle">
                                         <thead>
                                             <tr>
-                                                <th>Username</th>
-                                                <th>Email</th>
-                                                <th>Phone</th>
-                                                <th>Registered On</th>
-                                                <th>Role</th>
+                                                <th data-sort-table="user" data-sort-key="username" role="button">
+                                                    Username</th>
+                                                <th data-sort-table="user" data-sort-key="email" role="button">Email
+                                                </th>
+                                                <th data-sort-table="user" data-sort-key="phone" role="button">Phone
+                                                </th>
+                                                <th data-sort-table="user" data-sort-key="created_at" role="button">
+                                                    Registered On</th>
+                                                <th data-sort-table="user" data-sort-key="role" role="button">Role</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -366,17 +477,367 @@
             </div>
         </div>
     </main>
+    <!-- Modals -->
+
+    <!-- Menu form modal -->
+    <div class="modal fade" id="menuFormModal" tabindex="-1" aria-labelledby="menuFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="menu-form">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="menuFormModalLabel">
+                            <span class="modal-title-icon"><i class="fas fa-utensils"></i></span>
+                            Add Menu Item
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="menu-form-id">
+                        <div class="form-group-styled">
+                            <label for="menu-form-name" class="form-label"><i class="fas fa-tag"></i> Name</label>
+                            <input id="menu-form-name" type="text" class="form-control"
+                                placeholder="e.g. Margherita Pizza" required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="menu-form-description" class="form-label"><i class="fas fa-align-left"></i>
+                                Description</label>
+                            <textarea id="menu-form-description" class="form-control" rows="2"
+                                placeholder="A brief description of the dish..."></textarea>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="menu-form-category" class="form-label"><i class="fas fa-layer-group"></i>
+                                Category</label>
+                            <input id="menu-form-category" type="text" class="form-control" value="Mains" required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="menu-form-price" class="form-label"><i class="fas fa-dollar-sign"></i>
+                                Price</label>
+                            <input id="menu-form-price" type="number" step="0.01" min="0.01" class="form-control"
+                                placeholder="0.00" required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="menu-form-quantity" class="form-label"><i class="fas fa-cubes"></i>
+                                Quantity</label>
+                            <input id="menu-form-quantity" type="number" min="0" class="form-control" value="0"
+                                required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label class="form-label"><i class="fas fa-box-open"></i> Stock Preview</label>
+                            <div id="menu-form-stock-preview">Out of stock (0 left)</div>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="menu-form-image" class="form-label"><i class="fas fa-image"></i> Image
+                                URL</label>
+                            <input id="menu-form-image" type="text" class="form-control" value="./img/placeholder.jpg">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-green">
+                            <i class="fas fa-check me-1"></i>Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation form modal -->
+    <div class="modal fade" id="reservationFormModal" tabindex="-1" aria-labelledby="reservationFormModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="reservation-form">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reservationFormModalLabel">
+                            <span class="modal-title-icon"><i class="fas fa-calendar-alt"></i></span>
+                            Add Reservation
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="reservation-form-id">
+                        <div class="form-group-styled">
+                            <label for="reservation-form-name" class="form-label"><i class="fas fa-user"></i> Customer
+                                Name</label>
+                            <input id="reservation-form-name" type="text" class="form-control" placeholder="Full name"
+                                required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="reservation-form-date" class="form-label"><i class="fas fa-calendar"></i>
+                                Date</label>
+                            <input id="reservation-form-date" type="date" class="form-control" required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="reservation-form-time" class="form-label"><i class="fas fa-clock"></i>
+                                Time</label>
+                            <input id="reservation-form-time" type="time" class="form-control" required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="reservation-form-guests" class="form-label"><i class="fas fa-users"></i>
+                                Guests</label>
+                            <input id="reservation-form-guests" type="number" min="1" class="form-control" value="2"
+                                required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="reservation-form-contact" class="form-label"><i class="fas fa-phone"></i>
+                                Contact</label>
+                            <input id="reservation-form-contact" type="text" class="form-control"
+                                placeholder="Phone or email">
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="reservation-form-status" class="form-label"><i class="fas fa-info-circle"></i>
+                                Status</label>
+                            <select id="reservation-form-status" class="form-select">
+                                <option value="Pending">Pending</option>
+                                <option value="Confirmed">Confirmed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </button>
+                        <button id="reservation-form-submit-btn" type="submit" class="btn btn-green">
+                            <i class="fas fa-check me-1"></i>Add
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order form modal -->
+    <div class="modal fade" id="orderFormModal" tabindex="-1" aria-labelledby="orderFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="order-form">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderFormModalLabel">
+                            <span class="modal-title-icon"><i class="fas fa-receipt"></i></span>
+                            Add Order
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="order-form-id">
+                        <div class="form-group-styled">
+                            <label for="order-form-user-id" class="form-label"><i class="fas fa-user-tag"></i> User
+                                ID</label>
+                            <input id="order-form-user-id" type="number" min="1" class="form-control"
+                                placeholder="Enter user ID" required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="order-form-total" class="form-label"><i class="fas fa-dollar-sign"></i> Total
+                                Amount</label>
+                            <input id="order-form-total" type="number" step="0.01" min="0.01" class="form-control"
+                                placeholder="0.00" required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="order-form-status" class="form-label"><i class="fas fa-tasks"></i>
+                                Status</label>
+                            <select id="order-form-status" class="form-select">
+                                <option value="Pending">Pending</option>
+                                <option value="Preparing">Preparing</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Delivered">Delivered</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="order-form-table-number" class="form-label"><i class="fas fa-chair"></i> Table
+                                Number <small class="text-muted fw-normal">(optional)</small></label>
+                            <input id="order-form-table-number" type="number" min="1" class="form-control"
+                                placeholder="—">
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="order-form-notes" class="form-label"><i class="fas fa-sticky-note"></i> Special
+                                Instructions</label>
+                            <textarea id="order-form-notes" class="form-control" rows="2"
+                                placeholder="Any special requests..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </button>
+                        <button id="order-form-submit-btn" type="submit" class="btn btn-green">
+                            <i class="fas fa-check me-1"></i>Add
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review form modal -->
+    <div class="modal fade" id="reviewFormModal" tabindex="-1" aria-labelledby="reviewFormModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="review-form">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reviewFormModalLabel">
+                            <span class="modal-title-icon"><i class="fas fa-star"></i></span>
+                            Add Review
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group-styled">
+                            <label for="review-form-author" class="form-label"><i class="fas fa-user-pen"></i> Author
+                                Name</label>
+                            <input id="review-form-author" type="text" class="form-control" placeholder="Reviewer name"
+                                required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="review-form-rating" class="form-label"><i class="fas fa-star-half-alt"></i>
+                                Rating</label>
+                            <input id="review-form-rating" type="number" min="1" max="5" class="form-control" value="5"
+                                required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="review-form-content" class="form-label"><i class="fas fa-comment-dots"></i>
+                                Content</label>
+                            <textarea id="review-form-content" class="form-control" rows="3"
+                                placeholder="Write a review..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-green">
+                            <i class="fas fa-check me-1"></i>Add
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- User form modal -->
+    <div class="modal fade" id="userFormModal" tabindex="-1" aria-labelledby="userFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="user-form">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="userFormModalLabel">
+                            <span class="modal-title-icon"><i class="fas fa-user-plus"></i></span>
+                            Add User
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group-styled">
+                            <label for="user-form-username" class="form-label"><i class="fas fa-user"></i>
+                                Username</label>
+                            <input id="user-form-username" type="text" class="form-control" placeholder="Enter username"
+                                required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="user-form-email" class="form-label"><i class="fas fa-envelope"></i>
+                                Email</label>
+                            <input id="user-form-email" type="email" class="form-control" placeholder="user@example.com"
+                                required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="user-form-password" class="form-label"><i class="fas fa-lock"></i>
+                                Password</label>
+                            <input id="user-form-password" type="password" class="form-control" placeholder="••••••••"
+                                required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="user-form-phone" class="form-label"><i class="fas fa-phone"></i> Phone</label>
+                            <input id="user-form-phone" type="text" class="form-control" placeholder="Optional">
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="user-form-role" class="form-label"><i class="fas fa-shield-alt"></i>
+                                Role</label>
+                            <select id="user-form-role" class="form-select">
+                                <option value="Customer">Customer</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-green">
+                            <i class="fas fa-check me-1"></i>Add
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Row details modal -->
+    <div class="modal fade" id="rowViewModal" tabindex="-1" aria-labelledby="rowViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rowViewModalLabel">
+                        <span class="modal-title-icon"><i class="fas fa-eye"></i></span>
+                        Details
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="rowViewModalBody"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete confirmation modal -->
+    <div class="modal fade modal-delete-confirm" id="deleteConfirmModal" tabindex="-1"
+        aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmModalLabel">
+                        <span class="modal-title-icon"><i class="fas fa-trash-alt"></i></span>
+                        Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="delete-confirm-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p id="deleteConfirmMessage">Are you sure you want to delete this item?</p>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger" id="deleteConfirmBtn">
+                        <i class="fas fa-trash me-1"></i>Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
     <footer>
         © 2026 SmartBite Restaurants. All rights reserved.
     </footer>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js"
         integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"
         class="astro-vvvwv3sm"></script>
-    <script src="./js/dashboard.js" class="astro-vvvwv3sm"></script>
-    <script>
-        // Chart Initialisation
+    <script src="./js/dashboard.js?v=11" class="astro-vvvwv3sm"></script>
 
+    <!-- Chart init -->
+    <script>
         document.addEventListener('DOMContentLoaded', async function () {
             const ctx = document.getElementById('salesChart');
             if (!ctx) return;

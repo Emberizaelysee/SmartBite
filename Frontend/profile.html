@@ -1,28 +1,42 @@
 <!DOCTYPE html>
+<!-- Profile page: tabs + modals are driven by profile.js -->
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBite | My Profile</title>
-    <!-- Bootstrap -->
+
+    <!-- External styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Profile CSS -->
+
+    <!-- Project stylesheet -->
     <link rel="stylesheet" href="./css/profile.css">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath fill='%2316c451' d='M127.9 78.4C127.1 70.2 120.2 64 112 64C103.8 64 96.9 70.2 96 78.3L81.9 213.7C80.6 219.7 80 225.8 80 231.9C80 277.8 115.1 315.5 160 319.6L160 544C160 561.7 174.3 576 192 576C209.7 576 224 561.7 224 544L224 319.6C268.9 315.5 304 277.8 304 231.9C304 225.8 303.4 219.7 302.1 213.7L287.9 78.3C287.1 70.2 280.2 64 272 64C263.8 64 256.9 70.2 256.1 78.4L242.5 213.9C241.9 219.6 237.1 224 231.4 224C225.6 224 220.8 219.6 220.2 213.8L207.9 78.6C207.2 70.3 200.3 64 192 64C183.7 64 176.8 70.3 176.1 78.6L163.8 213.8C163.3 219.6 158.4 224 152.6 224C146.8 224 142 219.6 141.5 213.9L127.9 78.4zM512 64C496 64 384 96 384 240L384 352C384 387.3 412.7 416 448 416L480 416L480 544C480 561.7 494.3 576 512 576C529.7 576 544 561.7 544 544L544 96C544 78.3 529.7 64 512 64z'/%3E%3C/svg%3E">
+
+
+    <!-- Open Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+    </style>
 </head>
 
 <body>
+
+    <!-- Header -->
     <header>
         <nav class="navbar navbar-expand-lg shadow-sm">
             <div class="container">
-                <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
+                <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="./index.html">
                     <div class="logo">
                         <i class="fa-solid fa-utensils me-2 icon-green"></i>
                         <span>Smart</span>Bite
@@ -43,13 +57,14 @@
                             <a class="nav-link" href="review.html">Reviews</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+                            <a class="nav-link" href="cart.html"><i class="fa-solid fa-cart-arrow-down"></i> <sup>2</sup></a>
                         </li>
                         <li class="nav-item ms-lg-3 mt-2 mt-lg-0 dropdown">
                             <a href="#"
                                 class="link-body-emphasis text-decoration-none dropdown-toggle d-flex align-items-center fw-semibold"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-circle-user me-2 icon-green fs-5"></i>
+                                <img src="./img/profile.jpg" alt="Profile" class="nav-avatar me-2"
+                                    id="nav-profile-avatar">
                                 <span id="username">My Account</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end text-small bg">
@@ -67,14 +82,27 @@
             </div>
         </nav>
     </header>
+    <!-- Main -->
     <main class="mt-4">
         <div class="container mt-4">
             <div class="row">
+
+                <!-- Sidebar profile + tab nav -->
                 <div class="col-lg-3 col-md-4 mb-4">
                     <div class="bg-white p-3 border rounded">
+
+                        <!-- Avatar uploader -->
                         <div class="text-center mb-3">
-                            <img src="./img/profile.jpg" alt="Profile Photo"
-                                class="profile-avatar-ring mx-auto d-block mb-3">
+                            <div class="profile-avatar-wrapper mx-auto mb-2">
+                                <img src="./img/profile.jpg" alt="Profile Photo" id="profile-avatar"
+                                    class="profile-avatar-ring mx-auto d-block">
+                                <button type="button" id="change-avatar-btn" class="avatar-edit-btn"
+                                    aria-label="Change profile picture">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                                <input type="file" id="avatar-input" accept="image/png, image/jpeg, image/webp" hidden>
+                            </div>
+                            <div id="avatar-feedback" class="small mt-2" style="display:none;"></div>
                             <h5 class="profile-username mb-0">example</h5>
                             <p class="text-muted small profile-email mb-1">example@example.com</p>
                             <span class="badge"
@@ -84,6 +112,7 @@
                         </div>
 
                         <hr>
+                        <!-- Section tabs -->
                         <div class="profile-inner-nav">
                             <ul class="nav flex-column" role="tablist">
                                 <li class="nav-item">
@@ -103,8 +132,9 @@
                                 </li>
                             </ul>
                             <hr>
+                            <!-- Extra links -->
                             <ul class="nav flex-column">
-                                <li class="nav-item">
+                                <li class="nav-item" id="admin-dashboard-nav-item">
                                     <a class="nav-link" href="./dashboard.html">
                                         <i class="fas fa-tachometer-alt me-2 icon-green"></i>Admin Dashboard
                                     </a>
@@ -119,8 +149,11 @@
 
                     </div>
                 </div>
+                <!-- Right content -->
                 <div class="col-lg-9 col-md-8">
                     <div class="tab-content">
+
+                        <!-- Orders tab -->
                         <div class="tab-pane container active" id="order">
                             <h3 class="mb-3"><i class="fas fa-shopping-cart me-2 icon-green"></i>My Orders</h3>
                             <div class="bg-white border rounded p-4 text-center text-muted mb-3">
@@ -158,6 +191,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Reservations tab -->
                         <div class="tab-pane container fade" id="reservation">
                             <h3 class="mb-3"><i class="fas fa-calendar me-2 icon-green"></i>My Reservations</h3>
                             <div class="bg-white border rounded p-4 text-center text-muted mb-3">
@@ -188,9 +222,11 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Settings tab -->
                         <div class="tab-pane container fade" id="setting">
                             <h3 class="mb-3"><i class="fas fa-cog me-2 icon-green"></i>Settings</h3>
                             <div class="row g-3 mb-3">
+                                <!-- Update profile -->
                                 <div class="col-md-6">
                                     <div class="bg-white p-4 border rounded h-100">
                                         <h5 class="mb-3">Update Profile</h5>
@@ -222,6 +258,7 @@
                                         </form>
                                     </div>
                                 </div>
+                                <!-- Password form -->
                                 <div class="col-md-6">
                                     <div class="bg-white p-4 border rounded h-100">
                                         <h5 class="mb-3">Change Password</h5>
@@ -249,6 +286,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Danger zone -->
                             <div class="bg-white border rounded p-4">
                                 <h5 class="text-danger mb-2">
                                     <i class="fas fa-trash-alt me-2"></i>Delete Account
@@ -269,13 +307,17 @@
         </div>
     </main>
 
+    <!-- Modals -->
+
+    <!-- Order details modal -->
     <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="border-radius:16px;">
-                <div class="modal-header border-0 pb-0">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h5 class="modal-title fw-semibold" id="orderDetailsModalLabel">
-                        <i class="fas fa-shopping-cart me-2 icon-green"></i>Order Details
+                        <span class="modal-title-icon"><i class="fas fa-shopping-cart"></i></span>
+                        Order Details
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -296,38 +338,37 @@
                     <hr>
                     <p class="fw-semibold mb-0">Total: $25.00</p>
                 </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-outline-green" data-bs-dismiss="modal">Close</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Close
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Reorder modal -->
     <div class="modal fade" id="reorderModal" tabindex="-1" aria-labelledby="reorderModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content" style="border-radius:16px;">
-                <div class="modal-header border-0 pb-0">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h5 class="modal-title fw-semibold" id="reorderModalLabel">
-                        <i class="fas fa-redo me-2 icon-green"></i>Reorder Items
+                        <span class="modal-title-icon"><i class="fas fa-redo"></i></span>
+                        Reorder Items
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Would you like to reorder the items from Order #12345?</p>
-                    <div class="d-flex align-items-center mb-2 gap-2">
-                        <img src="./img/Margherita.jpg" alt="Margherita Pizza"
-                            style="width:40px;height:40px;object-fit:cover;border-radius:8px;">
-                        <span>Margherita Pizza &times;1 — $12.00</span>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <img src="./img/CaesarSalad.jpg" alt="Caesar Salad"
-                            style="width:40px;height:40px;object-fit:cover;border-radius:8px;">
-                        <span>Caesar Salad &times;1 — $8.00</span>
-                    </div>
+                    <p id="reorder-source-order-text" class="mb-3"></p>
+                    <div id="reorder-items-container"></div>
+                    <hr>
+                    <p class="mb-0 fw-semibold">Estimated total: <span id="reorder-estimated-total">$0.00</span></p>
                 </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-outline-green" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-green">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-green" id="confirm-reorder-btn">
                         <i class="fas fa-check me-1"></i>Reorder Everything
                     </button>
                 </div>
@@ -335,14 +376,15 @@
         </div>
     </div>
 
-    <!-- Reservation Details Modal -->
+    <!-- Reservation details modal -->
     <div class="modal fade" id="ReservationDetailsModal" tabindex="-1" aria-labelledby="reservationDetailsModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="border-radius:16px;">
-                <div class="modal-header border-0 pb-0">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h5 class="modal-title fw-semibold" id="reservationDetailsModalLabel">
-                        <i class="fas fa-calendar me-2 icon-green"></i>Reservation Details
+                        <span class="modal-title-icon"><i class="fas fa-calendar-alt"></i></span>
+                        Reservation Details
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -355,18 +397,53 @@
                         <li><i class="fas fa-calendar me-2 icon-green"></i>Date &amp; Time: 2024-06-10 at 19:00</li>
                     </ul>
                 </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-outline-green" data-bs-dismiss="modal">Close</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Close
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Delete confirmation modal -->
+    <div class="modal fade modal-delete-confirm" id="deleteConfirmModal" tabindex="-1"
+        aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmModalLabel">
+                        <span class="modal-title-icon"><i class="fas fa-trash-alt"></i></span>
+                        Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="delete-confirm-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p id="deleteConfirmMessage">Are you sure you want to delete your account? This action cannot be
+                            undone!</p>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger" id="deleteConfirmBtn">
+                        <i class="fas fa-trash me-1"></i>Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
     <footer>
         © 2026 SmartBite Restaurants. All rights reserved.
     </footer>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./js/profile.js"></script>
+    <script src="./js/profile.js?v=6"></script>
 </body>
 
 </html>
