@@ -4,7 +4,7 @@
   --green-light: #e9faf0;
 }
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Open Sans", "Noto Sans", "sans-serif";
   background: linear-gradient(to right, #e9f1ec, #cde3d6);
 }
 /* navbar*/
@@ -14,7 +14,7 @@ body {
   font-weight: 500;
   transition:color 0.3s;
 }
-
+ 
 /* hover couleur */
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active-page {
@@ -67,23 +67,23 @@ gap:10px;
 /* hover vert */
 .time-btn:hover{
 background:white;
-color:#16c451; 
-border-color:#16c451;
+color:var(--green); 
+border-color:var(--green);
 }
 
 /* bouton sélectionné */
 .time-btn.active{
-background:#16c451;
+background:var(--green);
 color:white;
-border-color:#16c451;
+border-color:var(--green);
 }
 
 /* couleurs pr icons */
 .icon-green{
-  color:#16c451;
+  color:var(--green);
 }
 .icon-green:hover{
-  color:#12a543;
+  color:var(--green-dark);
 }
 .card {
   border-radius: 20px;
@@ -103,7 +103,7 @@ border-color:#16c451;
   margin-top: 2px;
 }
 .btn-green {
-  background: #16c451;
+  background:var(--green);
   border: 1px solid transparent;
   color: white;
   transition: 0.3s;
@@ -112,8 +112,8 @@ border-color:#16c451;
 
 .btn-green:hover {
   background: white;
-  color: #16c451;
-  border: 1px solid #16c451;
+  color:var(--green);
+  border: 1px solid var(--green);
 }
 
 .sticky-top {
@@ -151,6 +151,5 @@ border-color:#16c451;
 }
 
 .logo span{
-  color:#16c451;
+  color: var(--green);
 }
-

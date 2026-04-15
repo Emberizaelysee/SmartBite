@@ -6,17 +6,17 @@
 /* BACKGROUND */
 body{
     background: linear-gradient(to right, #e9f1ec, #cde3d6);
-    font-family: Arial, sans-serif;
+    font-family: "Open Sans", "Noto Sans", "sans-serif";
 }
 /* LOGO */
 .logo{
     font-size: 28px;
     font-weight: bold;
-    color:var(--green);
-}
-
-.logo span{
+    text-align: center;
     color: #000;
+}
+.logo span{
+    color:var(--green);
 }
 
 /* CARD */
@@ -88,7 +88,13 @@ body{
     font-size:14px;
     color:#777;
 }
-
+/* couleurs pr icons */
+.icon-green{
+  color:var(--green);
+}
+.icon-green:hover{
+  color:var(--green-dark);
+}
 /* FORGOT */
 .forgot{
     color: var(--green);
@@ -96,8 +102,6 @@ body{
     text-decoration:none;
 }
 
-
-/* hon */
 .password-msg {
     font-size: 13px;
     margin-top: 6px;
@@ -108,6 +112,7 @@ body{
     color: var(--green);
     text-decoration: none;
 }
-.social-btn {
-    cursor: pointer; /* à ajouter */
+.social-btn,
+.input-group-text[onclick]{
+    cursor: pointer;
 }
