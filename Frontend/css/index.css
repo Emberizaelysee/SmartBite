@@ -1,50 +1,5 @@
+
 /*--------------first child navbar---------*/
-
-:root {
-    --green: #16c451;}
-
-/* LOGO */
-.logo{
-    font-size: 28px;
-    font-weight: bold;
-    color:var(--green);
-    text-align: center;
-}
-
-.logo span{
-    color: #000;}
-
-
-   /* navbar*/
-.navbar-nav .nav-link{
-  position: relative;
-  color: #333;
-  font-weight: 500;
-  transition:color 0.3s;
-}
-
-/* hover couleur */
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link.active-page {
-  color: var(--green);
-}
-
-.navbar-nav .nav-link::after {
-  content: "";        /* crée l'élément */
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0%;          /* invisible au départ */
-  height: 2px;
-  background: var(--green);
-  transition: 0.3s;
-}
-.navbar-nav .nav-link:hover::after,
-.navbar-nav .nav-link.active-page::after {
-  width: 100%;
-} 
-
-
 .btn-green {
   background: #16c451;
   border: 1px solid transparent;
@@ -296,18 +251,18 @@
 }
 
 
-/* side bar*/
+/* side bar
 .backg{
-    background: white;
-     border-radius: 20px ;
-     border:var(--green) ;
-}
+    font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #e9f1ec, #cde3d6);
+   border-radius:10%;
+}*/
 
 .sidebar {
-  background: white;
+  
   min-height: 100vh;
   padding: 20px 10px;
-  border-right: 1px solid #eee;
+ 
 }
 
 .text-sidebar {
@@ -347,12 +302,9 @@
 }
 
 
-
-
-
-
 /*----------------------------last child---------------------------*/
-/* CSS for Social */
+/*for Social */
+
 .social ul{
     list-style-type: none;
 }
