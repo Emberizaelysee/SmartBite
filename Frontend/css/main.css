@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+
+:root {
+    --green: #16c451;
+    --green-dark: #12a543;
+    --green-light: #e9faf0;
+    --primary-color: #16c451;
+    --primary-color-dark: #12a543;
+    --secondary-color: #4caf50;
+    --white-color: #fff;
+    --background-color: linear-gradient(to right, #e9f1ec, #cde3d6);
+    --text-color: #333;
+    --border-radius: 15px !important;
+    --padding: 20px;
+    --font-family: "Open Sans", "Noto Sans", "sans-serif";
+    --text-muted: #777;
+    --border-radius: 16px;
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+}
+
+body {
+    font-family: var(--font-family);
+    background: var(--background-color);
+}
+.navbar-nav .nav-link {
+    position: relative;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+    font-family: var(--font-family);
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active-page {
+    color: var(--green);
+}
+
+.navbar-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0%;
+    height: 2px;
+    background: var(--green);
+    transition: 0.3s;
+}
+
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active-page::after {
+    width: 100%;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #000;
+}
+
+.logo span {
+    color: var(--green);
+}
+
+.icon-green {
+    color: var(--green);
+}
+
+.icon-green:hover {
+    color: var(--green-dark);
+}
+
+.nav-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--green-light);
+}

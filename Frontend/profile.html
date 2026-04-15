@@ -16,6 +16,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Project stylesheet -->
+     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/profile.css">
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath fill='%2316c451' d='M127.9 78.4C127.1 70.2 120.2 64 112 64C103.8 64 96.9 70.2 96 78.3L81.9 213.7C80.6 219.7 80 225.8 80 231.9C80 277.8 115.1 315.5 160 319.6L160 544C160 561.7 174.3 576 192 576C209.7 576 224 561.7 224 544L224 319.6C268.9 315.5 304 277.8 304 231.9C304 225.8 303.4 219.7 302.1 213.7L287.9 78.3C287.1 70.2 280.2 64 272 64C263.8 64 256.9 70.2 256.1 78.4L242.5 213.9C241.9 219.6 237.1 224 231.4 224C225.6 224 220.8 219.6 220.2 213.8L207.9 78.6C207.2 70.3 200.3 64 192 64C183.7 64 176.8 70.3 176.1 78.6L163.8 213.8C163.3 219.6 158.4 224 152.6 224C146.8 224 142 219.6 141.5 213.9L127.9 78.4zM512 64C496 64 384 96 384 240L384 352C384 387.3 412.7 416 448 416L480 416L480 544C480 561.7 494.3 576 512 576C529.7 576 544 561.7 544 544L544 96C544 78.3 529.7 64 512 64z'/%3E%3C/svg%3E">
@@ -186,8 +187,9 @@
                                     </ul>
                                 </div>
                                 <div class="d-flex justify-content-end gap-2 mt-3">
-                                    <button class="btn btn-sm btn-green" id="viewOrderBtn12345">View Details</button>
-                                    <button class="btn btn-sm btn-outline-green" id="reorderBtn12345">Reorder</button>
+                                    <button class="btn btn-sm btn-green" id="reorderBtn12345">
+                                        <i class="fas fa-redo me-1"></i>Reorder
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -216,10 +218,7 @@
                                     <li><i class="fas fa-calendar me-2 icon-green"></i>Date &amp; Time: 2024-06-10 at
                                         19:00</li>
                                 </ul>
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button class="btn btn-sm btn-green" id="viewReservationBtn12345">View
-                                        Details</button>
-                                </div>
+                               
                             </div>
                         </div>
                         <!-- Settings tab -->
@@ -229,11 +228,11 @@
                                 <!-- Update profile -->
                                 <div class="col-md-6">
                                     <div class="bg-white p-4 border rounded h-100">
-                                        <h5 class="mb-3">Update Profile</h5>
+                                        <h5 class="mb-3" style="margin-bottom: 0.9rem !important;">Update Profile</h5>
                                         <form id="update-profile-form">
                                             <div class="mb-3">
-                                                <label for="setting-username" class="form-label">Username</label>
-                                                <input type="text" class="form-control" id="setting-username" disabled>
+                                                <label for="settingUsername" class="form-label">Username</label>
+                                                <input type="text" class="form-control" id="settingUsername" disabled>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="setting-email" class="form-label">Email</label>
@@ -244,7 +243,7 @@
                                                 <input type="tel" class="form-control" id="setting-phone" disabled>
                                             </div>
                                             <div id="setting-feedback" class="mt-2" style="display:none;"></div>
-                                            <div class="d-flex gap-2">
+                                            <div class="d-flex gap-2" style="gap:.6rem !important;">
                                                 <button type="submit" id="edit-profile-btn" class="btn btn-green">
                                                     <i class="fas fa-edit me-1"></i>Edit Profile
                                                 </button>
@@ -293,7 +292,7 @@
                                 </h5>
                                 <p class="text-danger small">
                                     <i class="fas fa-exclamation-triangle me-1"></i>
-                                    Warning: This action cannot be undone. All your data will be permanently deleted.
+                                    This can't be undone. Your data will be deleted.
                                 </p>
                                 <button id="delete-account-btn" class="btn btn-danger">
                                     <i class="fas fa-trash me-1"></i>Delete My Account

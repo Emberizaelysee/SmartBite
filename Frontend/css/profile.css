@@ -1,40 +1,4 @@
-/* =====================================================================
- * SmartBite - Profile Stylesheet
- * 
- * Provides all custom styling for the customer profile page:
- * - Color variables and typography matched to dashboard
- * - User avatar styling (ring wrapper, custom edit button)
- * - Navigation and tab content
- * - Theming for order/reservation cards
- * - The complete custom Modal System (reorder, cancel, delete)
- * ===================================================================== */
-
-/* ─── Variables & Base Theme ─────────────────────────────────── */
-:root {
-    --green: #16c451;
-    --green-dark: #12a543;
-    --green-light: #e9faf0;
-    --primary-color: #16c451;
-    --primary-color-dark: #12a543;
-    --secondary-color: #4caf50;
-    --white-color: #fff;
-    --background-color: linear-gradient(to right, #e9f1ec, #cde3d6);
-    --text-color: #333;
-    --border-radius: 15px !important;
-    --padding: 20px;
-    --font-family: "Open Sans", "Noto Sans", "sans-serif";
-    --green: #16c451;
-    --green-dark: #12a543;
-    --green-light: #e9faf0;
-    --text-muted: #777;
-    --border-radius: 16px;
-    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
-}
-
-/* ─── Layout & Typography ────────────────────────────────────── */
 body {
-    font-family: var(--font-family);
-    background-color: var(--background-color);
     color: var(--text-color);
     min-height: 100vh;
 }
@@ -56,54 +20,7 @@ h5 {
 }
 
 .bg {
-    background-color: #f5f8f6 !important;
-}
-
-/* ─── Global Navigation (Navbar) ─────────────────────────────── */
-.navbar-nav .nav-link {
-    position: relative;
-    color: var(--text-color);
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link.active-page {
-    color: var(--green);
-}
-
-.navbar-nav .nav-link::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -4px;
-    width: 0%;
-    height: 2px;
-    background: var(--green);
-    transition: 0.3s;
-}
-
-.navbar-nav .nav-link:hover::after,
-.navbar-nav .nav-link.active-page::after {
-    width: 100%;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: 700;
-    color: #000;
-}
-
-.logo span {
-    color: var(--green);
-}
-
-.icon-green {
-    color: var(--green);
-}
-
-.icon-green:hover {
-    color: var(--green-dark);
+    background: linear-gradient(to right, #e9f1ec, #cde3d6) !important;
 }
 
 .nav-avatar {
@@ -114,7 +31,6 @@ h5 {
     border: 2px solid var(--green-light);
 }
 
-/* ─── Avatar Component (Profile Sidebar) ─────────────────────── */
 .profile-inner-nav .nav-link i,
 .profile-inner-nav .nav-link .icon-green {
     color: var(--green) !important;
@@ -159,7 +75,6 @@ h5 {
     transform: scale(1.05);
 }
 
-/* ─── Sidebar Navigation (Left column Tabs) ──────────────────── */
 .profile-inner-nav {
     border-radius: var(--border-radius);
 }
@@ -178,7 +93,7 @@ h5 {
 }
 
 .nav-item .nav-link:hover {
-    background: var(--green-light);
+    /*background: var(--green-light);*/
     color: var(--green-dark) !important;
 }
 
@@ -193,7 +108,6 @@ h5 {
     font-weight: 700;
 }
 
-/* ─── Cards (Orders & Reservations Layouts) ──────────────────── */
 .card,
 .border.rounded {
     border-radius: var(--border-radius) !important;
@@ -206,8 +120,7 @@ h5 {
     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
     transform: translateY(-2px);
 }
-
-/* ─── Buttons & Interactive Elements ─────────────────────────── */
+ 
 .btn-green {
     background: var(--green);
     border: 1px solid transparent;
@@ -248,8 +161,7 @@ h5 {
 .text-primary {
     color: var(--green) !important;
 }
-
-/* ─── Order Items & Badges ───────────────────────────────────── */
+  
 .order-items img {
     width: 40px;
     height: 40px;
@@ -296,12 +208,6 @@ ul {
     background: var(--green-light);
     color: var(--green);
 }
-
-/* ─── Modal System (Premium UI) ────────────────────────────────
- * Comprehensive overrides for Bootstrap modals to achieve a 
- * "glassmorphism" inspired, modern appearance with custom headers
- * and smooth entrance animations. Shared design with Dashboard.
- * ──────────────────────────────────────────────────────────── */
 
 @keyframes modalSlideIn {
     from {
@@ -474,8 +380,7 @@ ul {
     box-shadow: none !important;
     transform: none !important;
 }
-
-/* ─── Delete Confirm Modal ───────────────────────────────────── */
+ 
 .modal-delete-confirm .modal-content {
     border-radius: 20px !important;
 }
@@ -545,9 +450,7 @@ ul {
 .btn-outline-green:hover {
     background: var(--green);
     color: white;
-}
-
-/* ─── Footer ─────────────────────────────────────────────────── */
+} 
 footer {
     text-align: center;
     padding: 28px 0 16px;
@@ -556,8 +459,7 @@ footer {
     border-top: 1px solid rgba(0, 0, 0, 0.07);
     margin-top: 40px;
 }
-
-/* ─── Responsive Adjustments ─────────────────────────────────── */
+ 
 @media (max-width: 768px) {
     .profile-inner-nav {
         margin-bottom: 20px;

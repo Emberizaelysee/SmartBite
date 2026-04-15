@@ -16,6 +16,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Project stylesheet -->
+     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/dashboard.css">
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath fill='%2316c451' d='M127.9 78.4C127.1 70.2 120.2 64 112 64C103.8 64 96.9 70.2 96 78.3L81.9 213.7C80.6 219.7 80 225.8 80 231.9C80 277.8 115.1 315.5 160 319.6L160 544C160 561.7 174.3 576 192 576C209.7 576 224 561.7 224 544L224 319.6C268.9 315.5 304 277.8 304 231.9C304 225.8 303.4 219.7 302.1 213.7L287.9 78.3C287.1 70.2 280.2 64 272 64C263.8 64 256.9 70.2 256.1 78.4L242.5 213.9C241.9 219.6 237.1 224 231.4 224C225.6 224 220.8 219.6 220.2 213.8L207.9 78.6C207.2 70.3 200.3 64 192 64C183.7 64 176.8 70.3 176.1 78.6L163.8 213.8C163.3 219.6 158.4 224 152.6 224C146.8 224 142 219.6 141.5 213.9L127.9 78.4zM512 64C496 64 384 96 384 240L384 352C384 387.3 412.7 416 448 416L480 416L480 544C480 561.7 494.3 576 512 576C529.7 576 544 561.7 544 544L544 96C544 78.3 529.7 64 512 64z'/%3E%3C/svg%3E">
@@ -213,10 +214,9 @@
                                     <div>
                                         <h3 class="mb-0"><i class="fas fa-utensils me-2 icon-green"></i>Menu Management
                                         </h3>
-                                        <p class="text-muted small mb-0">Keep your offerings fresh. Tweak prices, swap
-                                            out seasonal dishes, or drop something entirely new in.</p>
+                                        <p class="text-muted small mb-0" style="margin-left: 1px;">Manage your menu items here.</p>
                                     </div>
-                                    <button id="add-menu-btn" class="btn btn-green ms-auto px-3">
+                                    <button id="add-menu-btn" class="btn btn-green ms-auto px-3" style="padding-top: .36rem;">
                                         <i class="fas fa-plus me-1"></i>Add Item
                                     </button>
                                 </div>
@@ -225,7 +225,7 @@
                                     <form class="d-flex gap-2">
                                         <input id="search-menu-input" type="text" class="form-control"
                                             placeholder="Search menu items...">
-                                        <button id="search-menu-btn" type="button" class="btn btn-outline-green">
+                                        <button id="search-menu-btn" type="button" class="btn btn-green">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </form>
@@ -281,7 +281,7 @@
                                     <form class="d-flex gap-2">
                                         <input id="search-order-input" type="text" class="form-control"
                                             placeholder="Search orders...">
-                                        <button id="search-order-btn" type="button" class="btn btn-outline-green">
+                                        <button id="search-order-btn" type="button" class="btn btn-green">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </form>
@@ -327,8 +327,7 @@
                                     <div>
                                         <h3 class="mb-0"><i class="fas fa-calendar me-2 icon-green"></i>Reservations
                                             Management</h3>
-                                        <p class="text-muted small mb-0">Manage your reservations with ease. View
-                                            upcoming bookings, confirm or cancel.</p>
+                                        <p class="text-muted small mb-0">Manage your reservations with ease. </p>
                                     </div>
                                     <button id="add-reservation-btn" class="btn btn-green ms-auto px-3">
                                         <i class="fas fa-plus me-1"></i>Add Reservation
@@ -338,7 +337,7 @@
                                     <form class="d-flex gap-2">
                                         <input id="search-reservation-input" type="text" class="form-control"
                                             placeholder="Search reservations...">
-                                        <button id="search-reservation-btn" type="button" class="btn btn-outline-green">
+                                        <button id="search-reservation-btn" type="button" class="btn btn-green">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </form>
@@ -385,13 +384,12 @@
                                     <i class="fas fa-plus me-1"></i>Add Review
                                 </button>
                             </div>
-                            <p class="text-muted small mb-3">See what people are saying about the food. Keep an eye on
-                                the feedback!</p>
+                            <p class="text-muted small mb-3">See what people are saying about the food. </p>
                             <div class="my-3">
                                 <form class="d-flex gap-2">
                                     <input id="search-review-input" type="text" class="form-control"
                                         placeholder="Search reviews...">
-                                    <button id="search-review-btn" type="button" class="btn btn-outline-green">
+                                    <button id="search-review-btn" type="button" class="btn btn-green">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </form>
@@ -416,7 +414,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-auto">
-                                        <button class="btn btn-sm btn-danger">
+                                        <button class="btn btn-sm btn-outline-danger">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -431,13 +429,12 @@
                                     <i class="fas fa-plus me-1"></i>Add User
                                 </button>
                             </div>
-                            <p class="text-muted small mb-3">Keep an eye on your regulars and new faces. Manage user
-                                accounts and track activity.</p>
+                            <p class="text-muted small mb-3">Manage user accounts and track activity.</p>
                             <div class="my-3">
                                 <form class="d-flex gap-2">
                                     <input id="search-user-input" type="text" class="form-control"
                                         placeholder="Search users...">
-                                    <button id="search-user-btn" type="button" class="btn btn-outline-green">
+                                    <button id="search-user-btn" type="button" class="btn btn-green">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </form>
@@ -494,14 +491,14 @@
                     <div class="modal-body">
                         <input type="hidden" id="menu-form-id">
                         <div class="form-group-styled">
-                            <label for="menu-form-name" class="form-label"><i class="fas fa-tag"></i> Name</label>
-                            <input id="menu-form-name" type="text" class="form-control"
+                            <label for="menuName" class="form-label"><i class="fas fa-tag"></i> Name</label>
+                            <input id="menuName" type="text" class="form-control"
                                 placeholder="e.g. Margherita Pizza" required>
                         </div>
                         <div class="form-group-styled">
-                            <label for="menu-form-description" class="form-label"><i class="fas fa-align-left"></i>
+                            <label for="menu_description" class="form-label"><i class="fas fa-align-left"></i>
                                 Description</label>
-                            <textarea id="menu-form-description" class="form-control" rows="2"
+                            <textarea id="menu_description" class="form-control" rows="2"
                                 placeholder="A brief description of the dish..."></textarea>
                         </div>
                         <div class="form-group-styled">
@@ -509,10 +506,10 @@
                                 Category</label>
                             <input id="menu-form-category" type="text" class="form-control" value="Mains" required>
                         </div>
-                        <div class="form-group-styled">
-                            <label for="menu-form-price" class="form-label"><i class="fas fa-dollar-sign"></i>
+                        <div class="form-group-styled" style="margin-bottom: 1.15rem;">
+                            <label for="menu-price" class="form-label"><i class="fas fa-dollar-sign"></i>
                                 Price</label>
-                            <input id="menu-form-price" type="number" step="0.01" min="0.01" class="form-control"
+                            <input id="menu-price" type="number" step="0.01" min="0.01" class="form-control"
                                 placeholder="0.00" required>
                         </div>
                         <div class="form-group-styled">
