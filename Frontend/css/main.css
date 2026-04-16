@@ -77,9 +77,8 @@ body {
     border: 2px solid var(--green-light);
 }
 
-
 .btn-green {
-    background: #16c451;
+    background: var(--green);
     border: 1px solid transparent;
     color: white;
     transition: 0.3s;
@@ -88,6 +87,6 @@ body {
 
 .btn-green:hover {
     background: white;
-    color: #16c451;
-    border: 1px solid #16c451;
+    color: var(--green);
+    border: 1px solid var(--green);
 }

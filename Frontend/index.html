@@ -12,6 +12,7 @@
     <!--css file-->
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/chatbot.css">
 </head>
 <body>
 <!--bootstrap js-->
@@ -226,9 +227,50 @@
 
     </div>
 </section>
-</body>
 
  
+<!-- Chatbot -->
+<button id="chatbot-toggler" aria-label="Open chatbot">
+    <span><i class="fa-regular fa-message"></i></span>
+    <span><i class="fa-solid fa-xmark"></i></span>
+  </button>
+  <div class="aiChat">
+    <div class="chatbot-popup">
+      <div class="chat-header">
+        <div class="header-info">
+          <i class="fa-solid fa-robot chatbot-logo"></i>
+          <h2 class="logo-text">SmartBite AI</h2>
+        </div>
+        <button id="close-chatbot" aria-label="Close chatbot">
+          <i class="fa-solid fa-angle-down"></i>
+        </button>
+      </div>
+      <div class="chat-body">
+        <div class="message bot-message">
+          <i class="fa-solid fa-robot bot-avatar"></i>
+          <div class="message-text">
+            Salut, je suis l'assistant SmartBite. Je peux vous aider pour le menu et les recommandations.
+          </div>
+        </div>
+      </div>
+      <div class="chat-footer">
+        <form action="#" class="chat-form">
+          <textarea class="message-input" required placeholder="Posez votre question..."></textarea>
+          <div class="chat-controls">
+            <button type="button" id="emoji-picker" aria-label="Emoji picker">
+              <i class="fa-regular fa-face-smile"></i>
+            </button>
+            <button type="submit" class="send-btn" id="send-message" aria-label="Send message">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
+  <script src="js/chatbot.js"></script>
 
 
 
