@@ -1,34 +1,15 @@
-:root {
-    --green: #16c451;
-    --green-dark: #12a543;
-    --green-light: #e9faf0;
-}
-/* BACKGROUND */
-body{
-    background: linear-gradient(to right, #e9f1ec, #cde3d6);
-    font-family: "Open Sans", "Noto Sans", "sans-serif";
-}
-/* LOGO */
-.logo{
-    font-size: 28px;
-    font-weight: bold;
-    text-align: center;
-    color: #000;
-}
-.logo span{
-    color:var(--green);
-}
-
 /* CARD */
 .card-login{
     border: none;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 400px;
+    margin: auto;
 }
 
 /* TITLE */
 .title span{
-    color: #16c451;
+    color: var(--green);
 }
 
 /* TABS */
@@ -37,7 +18,9 @@ body{
     gap: 10px;
     margin-bottom: 20px;
 }
-
+.top-tabs .tab-btn{
+    flex: 1;
+}
 .top-tabs button{
     flex: 1;
     padding: 10px;
@@ -52,28 +35,13 @@ body{
     background: var(--green);
     color: #fff;
     border: 1px solid transparent;
-
 }
 .top-tabs button:hover {
     background: var(--green);
     color: #fff;
     border: 1px solid transparent;
 }
-/* BUTTON */
-.btn-green{
-    background:var(--green);
-    border: 1px solid transparent;
-    color:#fff;
-    transition: 0.3s;
-}
-
-.btn-green:hover{
-    background:#fff;
-    color:var(--green);
-    border:1px solid var(--green);
-}
-
-/* SOCIAL */
+/*SOCIAL(Google button)*/
 .social-btn{
     border:1px solid #ddd;
     padding:10px;
@@ -81,22 +49,17 @@ body{
     background:#fff;
 }
 
-/* DIVIDER */
+/* DIVIDER(continue with) */
 .divider{
     text-align:center;
     margin:20px 0;
     font-size:14px;
-    color:#777;
+    color:var(--text-muted);
 }
-/* couleurs pr icons */
-.icon-green{
-  color:var(--green);
-}
-.icon-green:hover{
-  color:var(--green-dark);
-}
+
 /* FORGOT */
-.forgot{
+.forgot,
+.signin-link {
     color: var(--green);
     font-size:13px;
     text-decoration:none;
@@ -107,11 +70,6 @@ body{
     margin-top: 6px;
 }
 
-.signin-link {
-    font-size: 13px;
-    color: var(--green);
-    text-decoration: none;
-}
 .social-btn,
 .input-group-text[onclick]{
     cursor: pointer;

@@ -1,4 +1,4 @@
-// --- 1. DATE MINIMUM ---
+//Elements:
 const dateInput = document.getElementById("dateInput");
 const today = new Date().toISOString().split("T")[0];
 dateInput.setAttribute("min", today);
@@ -47,7 +47,9 @@ function updateSummary() {
 }
 
 dateInput.addEventListener("change", updateSummary);
+dateInput.addEventListener("change", updateAvailableTimes);
 guestsSelect.addEventListener("change", updateSummary);
+
 
 // --- 4. VALIDATION AVANT SUBMIT ---
 const form      = document.getElementById("reservationForm");
