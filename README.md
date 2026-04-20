@@ -135,12 +135,14 @@ SmartBite/
 │   ├── dashboard.html
 │   │
 │   ├── css/
-│   │   ├── style.css            
+│   │   ├── main.css
+│   │   ├── auth.css            
 │   │   ├── index.css             
 │   │   ├── cart.css 
 │   │   ├── purchase.css 
 │   │   ├── reservation.css 
-│   │   ├── review.css 
+│   │   ├── review.css
+│   │   ├── chatbot.css  
 │   │   ├── dashboard.css     
 │   │   └── profile.css       
 │   │
@@ -148,10 +150,13 @@ SmartBite/
 │   │   ├── script.js              
 │   │   ├── review.js  
 │   │   ├── dashboard.js              
-│   │   ├── reservation.js       
+│   │   ├── reservation.js
+│   │   ├── chatbot.js       
 │   │   └── profile.js          
 │   │
 │   └── img/
+│       ├── MCD_SmartBite.png
+│       ├── google.png
 │       └── profile.jpg  
 │         
 ├── Backend/
@@ -189,7 +194,7 @@ SmartBite/
 │   │   └── ProfileModel.php
 │   │
 │   └── Database/
-│       └── SmartBite.sql
+│       └── smartbite.sql
 │  
 └── README.md
 
