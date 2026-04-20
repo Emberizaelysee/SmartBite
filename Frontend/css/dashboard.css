@@ -467,6 +467,68 @@ ul {
     transform: translateY(-1px);
 }
 
+/* priviledge confirm modal */
+.modal-priviledge-confirm .modal-content {
+    border-radius: 20px;
+}
+
+.modal-priviledge-confirm .modal-header {
+    background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+}
+
+.modal-priviledge-confirm .modal-header::after {
+    background: linear-gradient(90deg, transparent, rgba(220, 53, 69, 0.18), transparent);
+}
+
+.modal-priviledge-confirm .modal-title-icon {
+    /*background: linear-gradient(135deg, #dc3545, #c82333) !important;*/
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3) !important;
+    animation: none !important;
+}
+
+.modal-priviledge-confirm .priviledge-confirm-message {
+    text-align: center;
+    padding: 0.75rem 0;
+}
+
+.modal-priviledge-confirm .priviledge-confirm-message i {
+    font-size: 2.5rem;
+    color: #dc3545;
+    margin-bottom: 0.75rem;
+    display: block;
+    opacity: 0.85;
+}
+
+.modal-priviledge-confirm .priviledge-confirm-message p {
+    font-size: 1rem;
+    /*color: #444;*/
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+.modal-priviledge-confirm .priviledge-confirm-message .fw-semibold {
+    color: #1a2e1f;
+}
+
+.modal-priviledge-confirm .modal-footer::before {
+    background: linear-gradient(90deg, transparent, rgba(220, 53, 69, 0.12), transparent);
+}
+
+.modal-priviledge-confirm .btn-success {
+    border-radius: 12px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    border: none;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
+    transition: all 0.25s ease;
+}
+
+.modal-priviledge-confirm .btn-success:hover {
+    box-shadow: 0 6px 18px rgba(220, 53, 69, 0.35);
+    transform: translateY(-1px);
+}
+
 /* Footer */
 footer {
     text-align: center;
