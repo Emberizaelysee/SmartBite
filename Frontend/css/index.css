@@ -1,19 +1,4 @@
 
-/*--------------first child navbar---------*/
-.btn-green {
-  background: #16c451;
-  border: 1px solid transparent;
-  color: white;
-  transition: 0.3s;
-  border-radius: 10px;
-}
-
-.btn-green:hover {
-  background: white;
-  color: #16c451;
-  border: 1px solid #16c451;
-}
-
 
 /*-------Second child-------*/
 .bar{
@@ -312,13 +297,5 @@
     display: inline;
     padding: 1%;
 }
-
-
-
-
-
-
-
-
 
 
