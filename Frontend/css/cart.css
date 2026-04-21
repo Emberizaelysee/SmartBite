@@ -1,17 +1,3 @@
-/* BUTTON */
-.btn-green {
-    background: var(--green);
-    color: white;
-    border-radius: 10px;
-    transition: 0.3s;
-}
-
-.btn-green:hover {
-    background: white;
-    color: var(--green);
-    border: 1px solid var(--green);
-}
-
 /* SECOND BAR */
 .bar {
     background: var(--green);
@@ -83,12 +69,33 @@
     background: #cc0000;
 }
 
+/*special requests*/
+.order-notes{
+    background:#ffffff;
+    padding:20px;
+    border-radius:15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+.order-notes h5{
+    color:var(--green);
+    font-weight: 600;
+}
+.note-input{
+    border-radius: 10px;
+    border:1px solid lightgray;
+    padding:12px;
+    transition: 0.3s;
+    resize: none;
+}
+
+
+
 /* SUBTOTAL */
 .cart-summary {
     margin-top: 30px;
     padding: 20px;
     border-radius: 15px;
-    background: #f8f9fa;
+    background: #ffffff;
     display: flex;
     justify-content: space-between;
     align-items: center;
