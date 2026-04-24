@@ -2,7 +2,10 @@
 const dateInput = document.getElementById("dateInput");
 const today = new Date().toISOString().split("T")[0];
 dateInput.setAttribute("min", today);
-
+// MAX = 2 mois à partir d'aujourd'hui
+const maxDate = new Date();
+maxDate.setMonth(maxDate.getMonth() + 2);
+dateInput.setAttribute("max", maxDate.toISOString().split("T")[0]);
 // --- 2. TIME BUTTONS ---
 const timeBtns = document.querySelectorAll(".time-btn");
 const selectedTimeInput = document.getElementById("selectedTime");
@@ -47,7 +50,6 @@ function updateSummary() {
 }
 
 dateInput.addEventListener("change", updateSummary);
-dateInput.addEventListener("change", updateAvailableTimes);
 guestsSelect.addEventListener("change", updateSummary);
 
 
@@ -64,3 +66,42 @@ form.addEventListener("submit", function(e) {
     alertTime.classList.add("d-none");
   }
 });
+
+// --- 5. DÉSACTIVER LES times PASSÉS ---
+function updateAvailableTimes() {
+  const now = new Date();
+  const isToday = dateInput.value === today;
+
+  timeBtns.forEach(btn => {
+    if (!isToday) {
+      btn.disabled = false;
+      btn.classList.remove("disabled-time");
+      return;
+    }
+
+    // Convertir → objet Date d'aujourd'hui
+    const [time, period] = btn.dataset.time.split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+    if (period === "PM" && hours !== 12) hours += 12;
+    if (period === "AM" && hours === 12) hours = 0;
+
+    const slotTime = new Date();
+    slotTime.setHours(hours, minutes, 0, 0);
+
+    if (slotTime <= now) {
+      btn.disabled = true;
+      btn.classList.add("disabled-time");
+      // Si ce bouton était sélectionné, on le désélectionne
+      if (btn.classList.contains("active")) {
+        btn.classList.remove("active");
+        selectedTimeInput.value = "";
+        updateSummary();
+      }
+    } else {
+      btn.disabled = false;
+      btn.classList.remove("disabled-time");
+    }
+  });
+}
+dateInput.addEventListener("change", updateAvailableTimes);
+updateAvailableTimes();

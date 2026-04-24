@@ -64,7 +64,7 @@
 
 <!-- TITLE -->
 <div class="container mt-5">
-<h1 class="fw-bold">Book a Table</h1>
+<h1 class="title fw-bold">Book a <span>Table</span></h1>
 <p class="text-muted">
 Experience modern dining with fresh, local ingredients.
 </p>
@@ -192,20 +192,29 @@ placeholder="Add any special requests (allergies, birthday, anniversary...)"
       <div class="summary-value" id="summaryTime">—</div>
     </div>
   </li>
-  <li class="d-flex align-items-start gap-3">
+  <li class="d-flex align-items-start gap-3 mb-3">
     <i class="fa-solid fa-users icon-green mt-1"></i>
     <div>
       <div class="summary-label">Guests</div>
       <div class="summary-value" id="summaryGuests">2 People</div>
     </div>
   </li>
+ <li class="d-flex align-items-start gap-3 mb-3">
+  <i class="fa-solid fa-table-cells icon-green mt-1"></i>
+  <div>
+    <div class="summary-label">Table</div>
+    <div class="summary-value" id="summaryTable">
+      <span class="badge-table">Table 6</span>
+      <span class="text-muted small ms-1 d-block">8 persons · auto-assigned</span>
+    </div>
+  </div>
+</li>
 </ul>
 <hr class="my-3">
 <div id="alertTime" class="alert alert-warning d-none py-2 small" role="alert">
   <i class="fa-solid fa-triangle-exclamation me-1"></i>
   Please select a time slot.
 </div>
-
 <button type="submit" class="btn btn-green w-100 mt-2 py-2 fw-semibold">
 <i class="fa-solid fa-check me-2"></i>Complete Reservation
 </button>

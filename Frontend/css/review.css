@@ -1,22 +1,3 @@
-:root {
-    --green: #16c451;
-    --green-dark: #12a543;
-    --green-light: #e9faf0;
-}
-body{
-background: linear-gradient(to right,#e9f1ec,#cde3d6);
-  font-family: "Open Sans", "Noto Sans", "sans-serif";
-}
-/*LOGO*/
-.logo{
-  text-align:center;
-  font-size:28px;
-  font-weight:bold;
-  color: #000;
-}
-.logo span{
-  color:var(--green);
-}
 /* CARD */
 .card-review{
   width: 100%;
@@ -27,59 +8,25 @@ border:none;
 background:white;
 padding:30px;
 }
-
 /* TITLE */
-
 .title{
 font-weight:700;
 text-align:center;
 margin-bottom:5px;
 }
-
 .title span{
 color:var(--green);
 }
-
-.subtitle{
-text-align:center;
-color:gray;
-margin-bottom:25px;
-font-size:14px;
-}
-
 /* INPUTS */
-
 .form-control{
 height:45px;
 border-radius:10px;
 }
 
 /* TEXTAREA */
-
 textarea.form-control{
 height:100px;
 resize:none;
-}
-
-/* BUTTON */
-.btn-green{
-background:var(--green) !important;
-border: 1px solid transparent;
-color:white !important;
-height:45px;
-border-radius:10px;
-font-weight:600;
-transition: all 0.25s ease;
-}
-
-.btn-green:hover{
-  background:white !important;
-color:var(--green) !important;
-border: 1px solid var(--green);
- box-shadow:0 4px 12px rgba(0,0,0,0.12); 
-}
-.btn-green:active{
-  transform: scale(0.98); /* petit effet clic */
 }
 /* STARS */
 .stars{
@@ -87,36 +34,26 @@ font-size:28px;
 cursor:pointer;
 margin-top:5px;
 }
-
 .star{
 color:#ddd;
 margin-right:5px;
+transition: 0.2s;
 }
 .star:hover{
 color:#ffc107;
 transform: scale(1.1);
-transition: 0.2s;
 }
 .star.active{
 color:#ffc107;
 }
-/* couleurs pr icons */
-.icon-green{
-  color:var(--green);
-}
-.icon-green:hover{
-  color:var(--green-dark);
-}
-
 /* MESSAGE */
 #message{
 text-align:center;
 margin-top:15px;
 font-weight:500;
 }
-@media(max-width: 480px){
-  .card-review{
-    width: 90%;
-    padding:20px;
-  }
+.signin-link {
+    color: var(--green);
+    font-size:13px;
+    text-decoration:none;
 }
