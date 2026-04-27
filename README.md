@@ -242,8 +242,8 @@ Pour faire marcher ce projet localement, il vous faut:
 3. **Mise en place de la base de donnes:**
    - Demarrer les composants Apache et MySQL depuis l'interface du serveur local.
    - Ouvrer phpMyAdmin (`http://localhost/phpmyadmin`).
-   - Creer une dase de donne nommez `SmartBite`.
-   - Improter le fichier SQL fournis dans `Backend/Database/SmartBite.sql` dans l'interface phpMyAdmin.
+   - Creer une dase de donne nommez `smartbite`.
+   - Improter le fichier SQL fournis dans `Backend/Database/smartbite.sql` dans l'interface phpMyAdmin.
 
 4. **Acceder a l'application:**
    Ouvrer le navigateur et naviger vers:
@@ -255,9 +255,5 @@ Pour faire marcher ce projet localement, il vous faut:
 ## Pour faire fonctionner le chatbot vous dever crée un fichier .env et y mettre dedans votre clés api gemini
 
 ```bash
-DB_HOST="localhost"
-DB_NAME="SmartBite"
-DB_USER="root"
-DB_PASS=""
 GEMINI_API_KEY="VOTRE_CLE_API"
 ```
