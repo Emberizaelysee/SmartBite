@@ -1,1 +1,3 @@
 Backend/config/secrets.php
+Backend/vendor/
+Backend/PHPMailer-master/
