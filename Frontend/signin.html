@@ -34,7 +34,7 @@
             <button type="button" class="tab-btn" onclick="location.href='signup.html'">Create Account</button>
         </div>
 
-        <form action="login.php" method="post">
+<form action="../Backend/api/auth/signin.php" id="signinForm" method="POST">
 
             <!-- EMAIL -->
             <div class="mb-3">
@@ -49,7 +49,7 @@
             <div class="mb-3">
                  <div class="d-flex justify-content-between align-items-center">
                  <label class="form-label mb-0">Password</label>
-                <a href="#" class="forgot">Forgot Password?</a>
+                <a href="forgot-password.html" class="forgot">Forgot Password?</a>
                  </div>
                 
         <div class="input-group mt-2">
@@ -69,6 +69,8 @@
                class="form-check-input" id="rememberMe">
         <label class="form-check-label" for="rememberMe">Remember me</label>
     </div>
+    <!-- ERROR MESSAGE -->
+<div id="errorMsg" class="alert alert-danger d-none mb-3" role="alert"></div>
             <!-- BUTTON -->
             <button type="submit" class="btn btn-green w-100">
                 Sign In <i class="fa fa-arrow-right ms-2"></i>
@@ -80,7 +82,6 @@
             <!-- GOOGLE -->
             <button type="button" class="social-btn w-100 d-flex justify-content-center align-items-center gap-2"
                  onclick="location.href='google-auth.php'">
-             <!--<img src="https://cdn-icons-png.flaticon.com/512/300/300221.png" width="20">-->
  <img src="img/google.png" width="20">
                         Google
             </button>

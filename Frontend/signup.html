@@ -38,7 +38,7 @@
 <button type="button" class="tab-btn active">Create Account</button>
     </div>
 
-<form action="signup.php" method="POST">
+<form action="../Backend/api/auth/signup.php" id="signupForm" method="POST">
 
 <!-- NAME -->
 <div class="mb-3">
@@ -46,7 +46,7 @@
 <div class="input-group">
 <span class="input-group-text"><i class="fa fa-user"></i></span>
 <input type="text" name="fullname" class="form-control" 
-id="fullname"  placeholder="Your name" required>
+id="fullname"  placeholder="Your name" maxlength="50" required>
 </div>
 </div>
 
@@ -56,7 +56,7 @@ id="fullname"  placeholder="Your name" required>
 <div class="input-group">
 <span class="input-group-text"><i class="fa fa-envelope"></i></span>
 <input type="email" name="email" class="form-control" 
-id="email" placeholder="name@example.com" required>
+id="email" placeholder="name@example.com" maxlength="100" required>
 </div>
 </div>
 
@@ -91,6 +91,9 @@ oninput="checkPasswordStrength()" required>
 <div id="matchMessage" class="password-msg"></div>
 </div>
 
+<!-- MESSAGE ERREUR -->
+<div id="errorMsg" class="alert alert-danger d-none" role="alert"></div>
+
 <!-- BUTTON -->
 <button type="submit" class="btn btn-green w-100">
 Create Account <i class="fa fa-arrow-right ms-2"></i>
@@ -103,8 +106,7 @@ OR CONTINUE WITH
 
 <button type="button" class="social-btn w-100 d-flex justify-content-center align-items-center gap-2"
      onclick="location.href='google-auth.php'">
- <!-- <img src="https://cdn-icons-png.flaticon.com/512/300/300221.png" width="20"> -->
- <img src="img/google.png" width="20">
+ <img src="img/google.png" width="20" alt="Google">
     Google
 </button>
 
