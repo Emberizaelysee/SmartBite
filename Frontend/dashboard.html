@@ -1,30 +1,28 @@
 <!DOCTYPE html>
-<!-- Admin dashboard page -->
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartBite | Admin Dashboard</title>
-
-    <!-- External dependencies -->
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Project stylesheet -->
+    <!-- CSS -->
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/dashboard.css">
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath fill='%2316c451' d='M127.9 78.4C127.1 70.2 120.2 64 112 64C103.8 64 96.9 70.2 96 78.3L81.9 213.7C80.6 219.7 80 225.8 80 231.9C80 277.8 115.1 315.5 160 319.6L160 544C160 561.7 174.3 576 192 576C209.7 576 224 561.7 224 544L224 319.6C268.9 315.5 304 277.8 304 231.9C304 225.8 303.4 219.7 302.1 213.7L287.9 78.3C287.1 70.2 280.2 64 272 64C263.8 64 256.9 70.2 256.1 78.4L242.5 213.9C241.9 219.6 237.1 224 231.4 224C225.6 224 220.8 219.6 220.2 213.8L207.9 78.6C207.2 70.3 200.3 64 192 64C183.7 64 176.8 70.3 176.1 78.6L163.8 213.8C163.3 219.6 158.4 224 152.6 224C146.8 224 142 219.6 141.5 213.9L127.9 78.4zM512 64C496 64 384 96 384 240L384 352C384 387.3 412.7 416 448 416L480 416L480 544C480 561.7 494.3 576 512 576C529.7 576 544 561.7 544 544L544 96C544 78.3 529.7 64 512 64z'/%3E%3C/svg%3E">
-
+</head>
 
 <body>
-
-    <!-- Header -->
     <header>
         <nav class="navbar navbar-expand-lg shadow-sm">
             <div class="container">
@@ -40,7 +38,7 @@
                 <div class="collapse navbar-collapse" id="navMenu">
                     <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
                         <li class="nav-item">
-                            <a class="nav-link" href="index.html#menu">Menu</a>
+                            <a class="nav-link" href="index.html#menu-section">Menu</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="reservation.html">Reservations</a>
@@ -50,15 +48,14 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="cart.html"><i class="fa-solid fa-cart-arrow-down"></i>
-                                <sup>2</sup></a>
+                                <sup></sup></a>
                         </li>
                         <li class="nav-item ms-lg-3 mt-2 mt-lg-0 dropdown">
                             <a href="#"
                                 class="link-body-emphasis text-decoration-none dropdown-toggle d-flex align-items-center fw-semibold"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="./img/profile.jpg" alt="Profile" class="nav-avatar me-2"
-                                    id="nav-dashboard-avatar">
-                                <span id="username">Admin</span>
+                                <img src="" alt="Profile" class="nav-avatar me-2" id="nav-dashboard-avatar">
+                                <span id="username"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end text-small bg">
                                 <li><a class="dropdown-item" href="./profile.html">
@@ -66,7 +63,7 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item text-danger" href="../Backend/api/logout.php">
+                                <li><a class="dropdown-item text-danger" href="../Backend/api/auth/logout.php">
                                         <i class="fa-solid fa-right-from-bracket me-2"></i>Sign out</a></li>
                             </ul>
                         </li>
@@ -75,11 +72,9 @@
             </div>
         </nav>
     </header>
-    <!-- Main content -->
     <main class="mt-5">
         <div class="container mt-5">
             <div class="row">
-
                 <!-- Sidebar tabs -->
                 <div class="col-lg-3 col-md-4 mb-4">
                     <div class="profile-inner-nav bg-white p-3 border rounded">
@@ -116,7 +111,6 @@
                             </li>
                         </ul>
                         <hr>
-                        <!-- Secondary links -->
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="./profile.html">
@@ -124,27 +118,25 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-danger" href="../Backend/api/logout.php">
+                                <a class="nav-link text-danger" href="../Backend/api/auth/logout.php">
                                     <i class="fas fa-sign-out-alt me-2 icon-green"></i>Logout
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <!-- Right panel -->
+                <!-- Panel -->
                 <div class="col-lg-9 col-md-8">
                     <div class="tab-content">
-
-                        <!-- Dashboard tab -->
+                        <!-- Dashboard panel -->
                         <div class="tab-pane container active" id="dashboard">
-
                             <div class="d-flex align-items-center mb-4">
                                 <div>
                                     <h3 class="mb-0"><i class="fas fa-tachometer-alt me-2 icon-green"></i>Dashboard</h3>
                                     <p class="text-muted mb-0 small">Welcome back! Here's what's happening.</p>
                                 </div>
                             </div>
-                            <!-- KPI cards -->
+                            <!-- key performance indicator cards -->
                             <div class="row g-3 mb-4">
                                 <div class="col-sm-6 col-xl-3">
                                     <div class="card bg-white border rounded p-3">
@@ -152,10 +144,10 @@
                                             <div class="stat-icon">
                                                 <i class="fas fa-calendar icon-green"></i>
                                             </div>
-                                            <span class="stat-badge" id="stat-badge-reservations">+0%</span>
+                                            <span class="stat-badge" id="stat-badge-reservations"></span>
                                         </div>
                                         <p class="mb-1 text-muted small">Pending Reservations</p>
-                                        <h4 class="fw-bold mb-0" id="stat-reservations">0</h4>
+                                        <h4 class="fw-bold mb-0" id="stat-reservations"></h4>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-xl-3">
@@ -164,10 +156,10 @@
                                             <div class="stat-icon">
                                                 <i class="fas fa-user icon-green"></i>
                                             </div>
-                                            <span class="stat-badge" id="stat-badge-users">+0%</span>
+                                            <span class="stat-badge" id="stat-badge-users"></span>
                                         </div>
                                         <p class="mb-1 text-muted small">Active Users</p>
-                                        <h4 class="fw-bold mb-0" id="stat-users">0</h4>
+                                        <h4 class="fw-bold mb-0" id="stat-users"></h4>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-xl-3">
@@ -176,10 +168,10 @@
                                             <div class="stat-icon">
                                                 <i class="fas fa-chart-line icon-green"></i>
                                             </div>
-                                            <span class="stat-badge" id="stat-badge-orders">+0%</span>
+                                            <span class="stat-badge" id="stat-badge-orders"></span>
                                         </div>
                                         <p class="mb-1 text-muted small">Order Growth</p>
-                                        <h4 class="fw-bold mb-0" id="stat-orders">0</h4>
+                                        <h4 class="fw-bold mb-0" id="stat-orders"></h4>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-xl-3">
@@ -188,14 +180,13 @@
                                             <div class="stat-icon">
                                                 <i class="fas fa-dollar-sign icon-green"></i>
                                             </div>
-                                            <span class="stat-badge" id="stat-badge-sales">+0%</span>
+                                            <span class="stat-badge" id="stat-badge-sales"></span>
                                         </div>
                                         <p class="mb-1 text-muted small">Total Sales</p>
-                                        <h4 class="fw-bold mb-0" id="stat-sales">$0</h4>
+                                        <h4 class="fw-bold mb-0" id="stat-sales"></h4>
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Weekly sales chart -->
                             <div class="bg-white border rounded p-3 mb-4">
                                 <div class="mb-3">
@@ -206,9 +197,8 @@
                                     <canvas id="salesChart"></canvas>
                                 </div>
                             </div>
-
                         </div>
-                        <!-- Menu tab -->
+                        <!-- Menu panel -->
                         <div class="tab-pane container fade" id="menu">
                             <div class="p-0">
                                 <div class="d-flex align-items-center mb-3">
@@ -223,7 +213,7 @@
                                         <i class="fas fa-plus me-1"></i>Add Item
                                     </button>
                                 </div>
-                                <!-- Search -->
+                                <!-- search -->
                                 <div class="my-3">
                                     <form class="d-flex gap-2">
                                         <input id="search-menu-input" type="text" class="form-control"
@@ -233,7 +223,7 @@
                                         </button>
                                     </form>
                                 </div>
-                                <!-- Menu table -->
+                                <!-- table -->
                                 <div class="bg-white border rounded p-3">
                                     <div class="table-responsive">
                                         <table class="table table-hover align-middle">
@@ -268,7 +258,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Orders tab -->
+                        <!-- Orders panel -->
                         <div class="tab-pane container fade" id="order">
                             <div class="p-0">
                                 <div class="d-flex align-items-center mb-3">
@@ -281,6 +271,7 @@
                                         <i class="fas fa-plus me-1"></i>Add Order
                                     </button>
                                 </div>
+                                <!-- search -->
                                 <div class="my-3">
                                     <form class="d-flex gap-2">
                                         <input id="search-order-input" type="text" class="form-control"
@@ -290,6 +281,7 @@
                                         </button>
                                     </form>
                                 </div>
+                                <!-- table -->
                                 <div class="bg-white border rounded p-3">
                                     <div class="table-responsive">
                                         <table class="table table-hover align-middle">
@@ -324,7 +316,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Reservations tab -->
+                        <!-- Reservations panel -->
                         <div class="tab-pane container fade" id="reservation">
                             <div class="p-0">
                                 <div class="d-flex align-items-center mb-3">
@@ -337,6 +329,7 @@
                                         <i class="fas fa-plus me-1"></i>Add Reservation
                                     </button>
                                 </div>
+                                <!-- search -->
                                 <div class="my-3">
                                     <form class="d-flex gap-2">
                                         <input id="search-reservation-input" type="text" class="form-control"
@@ -346,6 +339,7 @@
                                         </button>
                                     </form>
                                 </div>
+                                <!-- table -->
                                 <div class="bg-white border rounded p-3">
                                     <div class="table-responsive">
                                         <table class="table table-hover align-middle">
@@ -387,6 +381,7 @@
                                 </button>
                             </div>
                             <p class="text-muted small mb-3">See what people are saying about the food. </p>
+                            <!-- search -->
                             <div class="my-3">
                                 <form class="d-flex gap-2">
                                     <input id="search-review-input" type="text" class="form-control"
@@ -396,7 +391,7 @@
                                     </button>
                                 </form>
                             </div>
-
+                            <!-- cards -->
                             <div class="bg-white border rounded p-3 mb-3">
                                 <div class="row align-items-center">
                                     <p class="text-muted text-center py-3"><i class="fas fa-star mb-2 d-block"
@@ -414,6 +409,7 @@
                                 </button>
                             </div>
                             <p class="text-muted small mb-3">Manage user accounts and track activity.</p>
+                            <!-- search -->
                             <div class="my-3">
                                 <form class="d-flex gap-2">
                                     <input id="search-user-input" type="text" class="form-control"
@@ -423,6 +419,7 @@
                                     </button>
                                 </form>
                             </div>
+                            <!-- table -->
                             <div class="bg-white border rounded p-3">
                                 <div class="table-responsive">
                                     <table class="table table-hover align-middle">
@@ -457,7 +454,6 @@
         </div>
     </main>
     <!-- Modals -->
-
     <!-- Menu form modal -->
     <div class="modal fade" id="menuFormModal" tabindex="-1" aria-labelledby="menuFormModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -486,7 +482,9 @@
                         <div class="form-group-styled">
                             <label for="menu-form-category" class="form-label"><i class="fas fa-layer-group"></i>
                                 Category</label>
-                            <input id="menu-form-category" type="text" class="form-control" value="Mains" required>
+                            <select id="menu-form-category" class="form-select" required>
+                                <option value="" disabled selected>Loading categories...</option>
+                            </select>
                         </div>
                         <div class="form-group-styled" style="margin-bottom: 1.15rem;">
                             <label for="menu-price" class="form-label"><i class="fas fa-dollar-sign"></i>
@@ -503,7 +501,7 @@
                         <div class="form-group-styled">
                             <label for="menu-form-image" class="form-label"><i class="fas fa-image"></i> Image
                                 URL</label>
-                            <input id="menu-form-image" type="text" class="form-control" value="./img/placeholder.jpg">
+                            <input id="menu-form-image" type="text" class="form-control" value="">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -534,11 +532,13 @@
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="reservation-form-id">
-                        <div class="form-group-styled">
-                            <label for="reservation-form-user-id" class="form-label"><i class="fas fa-user"></i> User
-                                ID</label>
-                            <input id="reservation-form-user-id" type="number" min="1" class="form-control"
-                                placeholder="Enter user ID" required>
+                        <input type="hidden" id="reservation-form-user-id">
+                        <div class="form-group-styled position-relative">
+                            <label for="reservation-user-search" class="form-label"><i class="fas fa-user"></i>
+                                Custtomer </label>
+                            <input id="reservation-user-search" type="text" class="form-control"
+                                placeholder="Search name or email..." autocomplete="off" required>
+                            <div id="reservation-user-search-results" class="user-search-dropdown"></div>
                         </div>
                         <div class="form-group-styled">
                             <label for="reservation-form-date" class="form-label"><i class="fas fa-calendar"></i>
@@ -559,8 +559,12 @@
                         <div class="form-group-styled">
                             <label for="reservation-form-table-id" class="form-label"><i class="fas fa-chair"></i>
                                 Table Number</label>
-                            <input id="reservation-form-table-id" type="number" min="1" class="form-control"
-                                placeholder="Table number" required>
+                            <select name="reservation-form-table-id" id="reservation-form-table-id" class="form-select"
+                                required>
+                                <option value="" disabled selected>Loading tables ... </option>
+                            </select>
+                            <!-- <input id="reservation-form-table-id" type="number" min="1" class="form-control"
+                                placeholder="Table number" required> -->
                         </div>
                         <div class="form-group-styled">
                             <label for="reservation-form-notes" class="form-label"><i class="fas fa-sticky-note"></i>
@@ -596,21 +600,68 @@
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="order-form-id">
-                        <div class="form-group-styled">
-                            <label for="order-form-user-id" class="form-label"><i class="fas fa-user-tag"></i> User
-                                ID</label>
-                            <input id="order-form-user-id" type="number" min="1" class="form-control"
-                                placeholder="Enter user ID" required>
+                        <input type="hidden" id="order-form-user-id">
+                        <div class="order-panel">
+                            <div class="order-panel-header">
+                                <i class="fas fa-user"></i>Customer
+                            </div>
+                            <div class="positopn-relative">
+                                <input id="order-user-search" type="text" class="form-control"
+                                    placeholder="Seach name or email..." autocomplete="off">
+                                <div id="order-user-search-results" class="user-search-dropdown"></div>
+                            </div>
+                            <div id="order-selected-user-badge" class="selected-user-badge mt-2" style="display: none;">
+                            </div>
                         </div>
-                        <div class="form-group-styled">
-                            <label for="order-form-total" class="form-label"><i class="fas fa-dollar-sign"></i> Total
-                                Amount</label>
-                            <input id="order-form-total" type="number" step="0.01" min="0.01" class="form-control"
-                                placeholder="0.00" required>
+                        <div class="order-panel order-panel-items">
+                            <div class="order-panel-header">
+                                <i class="fas fa-utensils"></i>Order Items
+                            </div>
+                            <div class="d-flex gap-2 mb-3 align-items-end">
+                                <div class="flex-grow-1">
+                                    <label class="order-field-label">Item</label>
+                                    <select id="order-item-select" class="form-select">
+                                        <option value="" disabled selected>Select menu item ...</option>
+                                    </select>
+                                </div>
+                                <div style="width: 76px; flex-shrink: 0;">
+                                    <label class="order-field-label">Qty</label>
+                                    <input type="number" id="order-item-qty" class="form-control" min="1" value="1">
+                                </div>
+                                <button type="button" id="order-add-item-btn" class="btn btn-green"
+                                    style="height: 42px; white-space: nowrap; flex-shrink: 0; padding: 0 14px;">
+                                    <i class="fas fa-plus me-1"></i>Add
+                                </button>
+                            </div>
+                            <div id="order-cart-list" class="order-cart-list">
+                                <p class="text-muted small text-center mb-0 py-3 order-cart-empty">No items added yet
+                                </p>
+                            </div>
                         </div>
-                        <div class="form-group-styled">
-                            <label for="order-form-status" class="form-label"><i class="fas fa-tasks"></i>
-                                Status</label>
+                        <div class="order-panel">
+                            <div class="order-panel-header">
+                                <i class="fas fa-tag"></i>Discount
+                                <span class="fw-normal text-muted ms-1" style="font-size: 0.75rem;">(optional)</span>
+                            </div>
+                            <div class="d-flex gap-3 mb-2">
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" id="discount-type-percent"
+                                        name="discount-type" value="percent" checked>
+                                    <label for="discount-type-percent" class="form-check-label">% Percent</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" id="discount-type-fixed"
+                                        name="discount-type" value="fixed">
+                                    <label for="discount-type-fixed" class="form-check-label">$ Fixed</label>
+                                </div>
+                            </div>
+                            <input type="number" id="order-discount-value" class="form-control" placeholder="0.00"
+                                min="0.00" step="0.01">
+                        </div>
+                        <div class="order-panel">
+                            <div class="order-panel-header">
+                                <i class="fas fa-tasks"></i>Status
+                            </div>
                             <select id="order-form-status" class="form-select">
                                 <option value="Pending">Pending</option>
                                 <option value="Preparing">Preparing</option>
@@ -619,21 +670,30 @@
                                 <option value="Cancelled">Cancelled</option>
                             </select>
                         </div>
-                        <div class="form-group-styled">
-                            <label for="order-form-items" class="form-label"><i class="fas fa-utensils"></i> Order
-                                Items</label>
-                            <select id="order-form-items" class="form-select" multiple size="4">
-                                <!-- populated by js -->
-                            </select>
-                            <small class="text-muted" style="font-size: 0.75rem;">Hold Ctrl/Cmd to select
-                                multiple.</small>
-                        </div>
-
-                        <div class="form-group-styled">
-                            <label for="order-form-notes" class="form-label"><i class="fas fa-sticky-note"></i> Special
-                                Instructions</label>
-                            <textarea id="order-form-notes" class="form-control" rows="2"
+                        <div class="order-panel">
+                            <div class="order-panel-header">
+                                <i class="fas fa-sticky-note"></i>Instructions
+                            </div>
+                            <textarea id="order-form-notes" class="form-control" rows="3"
                                 placeholder="Any special requests..."></textarea>
+                        </div>
+                        <div class="order-panel">
+                            <div class="order-panel-header">
+                                <i class="fas fa-calculator"></i>Order Summary
+                            </div>
+                            <div class="order-summary-row">
+                                <span class="text-muted">Subtotal</span>
+                                <span id="order-discount-display" class="text-danger">$0.00</span>
+                            </div>
+                            <div class="order-summary-row">
+                                <span class="text-muted">Discount</span>
+                                <span id="order-discount-display" class="text-danger">- $0.00</span>
+                            </div>
+                            <div class="order-summary-divider"></div>
+                            <div class="order-summary-row order-summary-total">
+                                <span>Grand Total</span>
+                                <span id="order-total-display">$0.00</span>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -648,7 +708,6 @@
             </div>
         </div>
     </div>
-
     <!-- Review form modal -->
     <div class="modal fade" id="reviewFormModal" tabindex="-1" aria-labelledby="reviewFormModalLabel"
         aria-hidden="true">
@@ -695,7 +754,6 @@
             </div>
         </div>
     </div>
-
     <!-- User form modal -->
     <div class="modal fade" id="userFormModal" tabindex="-1" aria-labelledby="userFormModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -831,101 +889,15 @@
         © 2026 SmartBite Restaurants. All rights reserved.
     </footer>
 
-    <!-- Scripts -->
+    <!-- Script Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Script Chart -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js"
         integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"
         class="astro-vvvwv3sm"></script>
-    <script src="./js/dashboard.js?v=11" class="astro-vvvwv3sm"></script>
+    <!-- Script -->
+    <script src="./js/dashboard.js?v=12" class="astro-vvvwv3sm"></script>
 
-    <!-- Chart init -->
-    <script>
-        document.addEventListener('DOMContentLoaded', async function () {
-            const ctx = document.getElementById('salesChart');
-            if (!ctx) return;
-
-            const primaryColor = '#16c451';
-            const primaryColorFill = 'rgba(22, 196, 81, 0.15)';
-            const textColor = '#333';
-            const gridColor = 'rgba(22, 196, 81, 0.1)';
-
-            let labels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            let revenueData = [10, 100, 50, 100, 20, 100, 90];
-
-            try {
-                const result = await dashboardAction({ action: 'get_weekly_revenue' });
-                if (result.success && result.data.length > 0) {
-                    labels = result.data.map(r => r.day);
-                    revenueData = result.data.map(r => r.revenue);
-                }
-            } catch (e) {
-                console.warn('Could not load chart data from DB, using defaults.');
-            }
-
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: 'Weekly Revenue ($)',
-                        data: revenueData,
-                        lineTension: 0.4,
-                        backgroundColor: primaryColorFill,
-                        borderColor: primaryColor,
-                        borderWidth: 3,
-                        pointBackgroundColor: primaryColor,
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: primaryColor,
-                        pointRadius: 5,
-                        pointHoverRadius: 7,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: textColor,
-                                font: { size: 13, family: "'Poppins', sans-serif" }
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: '#fff',
-                            titleColor: textColor,
-                            bodyColor: textColor,
-                            borderColor: primaryColor,
-                            borderWidth: 1,
-                            padding: 12,
-                            displayColors: false,
-                            bodyFont: { family: "'Poppins', sans-serif" },
-                            titleFont: { family: "'Poppins', sans-serif", weight: '600' }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                color: textColor,
-                                font: { family: "'Poppins', sans-serif" },
-                                callback: (value) => '$' + value
-                            },
-                            grid: { color: gridColor, drawBorder: false }
-                        },
-                        x: {
-                            ticks: {
-                                color: textColor,
-                                font: { family: "'Poppins', sans-serif" }
-                            },
-                            grid: { color: gridColor, drawBorder: false }
-                        }
-                    }
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>
