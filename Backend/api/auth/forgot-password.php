@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         usleep(300000);
-        header("Location: /smartbite/SmartBite/Frontend/forgot-password.html?sent=1");
+        header("Location: /SmartBite/Frontend/forgot-password.html?sent=1");
         exit();
     }
 
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Bloquer les comptes Google
         if (is_null($user["UserPassword"])) {
             usleep(300000);
-            header("Location: /smartbite/SmartBite/Frontend/forgot-password.html?error=use_google");
+            header("Location: /SmartBite/Frontend/forgot-password.html?error=use_google");
             exit();
         }
 
@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $update->execute();
         $update->close();
 
-        $resetLink = "http://localhost/smartbite/SmartBite/Frontend/reset-password.php?token=" . $token;
+        $resetLink = "http://localhost/SmartBite/Frontend/reset-password.php?token=" . $token;
 
         try {
             $mail = new PHPMailer(true);
@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     usleep(300000);
-    header("Location: /smartbite/SmartBite/Frontend/forgot-password.html?sent=1");
+    header("Location: /SmartBite/Frontend/forgot-password.html?sent=1");
     exit();
 }
 ?>

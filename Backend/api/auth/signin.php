@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = $_POST["password"];
     $remember = isset($_POST["remember_me"]);
 
-    $stmt = $conn->prepare("SELECT IdUser, UserName, UserPassword, UserRole FROM Users WHERE UserEmail = ?");
+    $stmt = $conn->prepare("SELECT IdUser, UserName, UserPassword, UserRole FROM users WHERE UserEmail = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -28,14 +28,18 @@ if (is_null($user["UserPassword"])) {
 
             if ($remember) {
                 $token = bin2hex(random_bytes(32));
-                $update = $conn->prepare("UPDATE Users SET UserToken = ? WHERE IdUser = ?");
+                $update = $conn->prepare("UPDATE users SET UserToken = ? WHERE IdUser = ?");
                 $update->bind_param("si", $token, $user["IdUser"]);
                 $update->execute();
                 $update->close();
                 setcookie("remember_token", $token, time() + (30 * 24 * 3600), "/", "", false, true);
             }
 
-            header("Location: ../../../Frontend/index.html");
+            //header("Location: ../../../Frontend/index.html");
+            $redirect = isset($_POST['redirect']) ? $_POST['redirect'] : 'index.html';
+$allowed  = ['index.html', 'reservation.php', 'review.html', 'cart.html'];
+if (!in_array($redirect, $allowed)) $redirect = 'index.html';
+header("Location: ../../../Frontend/" . $redirect);
             exit();
 
         } else {

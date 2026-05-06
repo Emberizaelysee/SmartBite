@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Vérifier que l'email n'existe pas déjà
-    $stmt = $conn->prepare("SELECT IdUser FROM Users WHERE UserEmail = ?");
+    $stmt = $conn->prepare("SELECT IdUser FROM users WHERE UserEmail = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Hasher le mot de passe
     $hashed_password = password_hash($password1, PASSWORD_DEFAULT);
 
-    $insert = $conn->prepare("INSERT INTO Users (UserName, UserEmail, UserPassword, UserRole) VALUES (?, ?, ?, 'user')");
+    $insert = $conn->prepare("INSERT INTO users (UserName, UserEmail, UserPassword, UserRole) VALUES (?, ?, ?, 'user')");
     $insert->bind_param("sss", $fullname, $email, $hashed_password);
 
     if ($insert->execute()) {

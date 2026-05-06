@@ -97,3 +97,10 @@ if (error === 'use_google') {
         msg.classList.remove("d-none");
     }
 }
+
+// Gestion redirect après login
+const redirectParam = params.get('redirect');
+if (redirectParam) {
+    const redirectInput = document.getElementById('redirectInput');
+    if (redirectInput) redirectInput.value = redirectParam;
+}

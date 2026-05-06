@@ -12,10 +12,11 @@ function checkRememberMe($conn) {
     $token = $_COOKIE["remember_token"];
 
     // Chercher le token dans la DB
-    $stmt = $conn->prepare("SELECT IdUser, UserName, UserRole FROM Users WHERE UserToken = ?");
+    $stmt = $conn->prepare("SELECT IdUser, UserName, UserRole FROM users WHERE UserToken = ?");
     $stmt->bind_param("s", $token);
     $stmt->execute();
     $result = $stmt->get_result();
+    $stmt->close();
 
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
@@ -26,7 +27,7 @@ function checkRememberMe($conn) {
         $_SESSION["user_role"] = $user["UserRole"];
 
         // Renouveler le cookie pour 30 jours supplémentaires
-        $stmt2 = $conn->prepare("UPDATE Users SET UserToken = ? WHERE IdUser = ?");
+        $stmt2 = $conn->prepare("UPDATE users SET UserToken = ? WHERE IdUser = ?");
         $new_token = bin2hex(random_bytes(32));
         $stmt2->bind_param("si", $new_token, $user["IdUser"]);
         $stmt2->execute();
@@ -38,6 +39,5 @@ function checkRememberMe($conn) {
         setcookie("remember_token", "", time() - 3600, "/");
     }
 
-    $stmt->close();
 }
 ?>
