@@ -60,7 +60,7 @@ $email    = $googleUser['email'];
 $name     = $googleUser['name'];
 
 // 3. Vérifier si l'email existe déjà en base
-$stmt = $conn->prepare("SELECT IdUser, UserName, UserRole, IdGoogle FROM Users WHERE UserEmail = ?");
+$stmt = $conn->prepare("SELECT IdUser, UserName, UserRole, IdGoogle FROM users WHERE UserEmail = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -72,7 +72,7 @@ if ($result->num_rows === 1) {
 
     // Si IdGoogle pas encore enregistré, on le sauvegarde
     if (empty($user['IdGoogle'])) {
-        $upd = $conn->prepare("UPDATE Users SET IdGoogle = ? WHERE IdUser = ?");
+        $upd = $conn->prepare("UPDATE users SET IdGoogle = ? WHERE IdUser = ?");
         $upd->bind_param("si", $googleId, $user['IdUser']);
         $upd->execute();
         $upd->close();
@@ -87,7 +87,7 @@ if ($result->num_rows === 1) {
     $stmt->close();
 
     $insert = $conn->prepare(
-        "INSERT INTO Users (UserName, UserEmail, IdGoogle, UserRole) VALUES (?, ?, ?, 'user')"
+        "INSERT INTO users (UserName, UserEmail, IdGoogle, UserRole) VALUES (?, ?, ?, 'user')"
     );
     $insert->bind_param("sss", $name, $email, $googleId);
     $insert->execute();
@@ -100,6 +100,6 @@ if ($result->num_rows === 1) {
 }
 
 $conn->close();
-header("Location: index.html");
+header("Location: index.php");
 exit();
 ?>

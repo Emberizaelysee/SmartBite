@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION["user_role"] = "user";
 
         $insert->close();
-        header("Location: ../../../Frontend/index.html");
+        header("Location: ../../../Frontend/index.php");
         exit();
     } else {
         $insert->close();

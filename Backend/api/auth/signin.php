@@ -35,10 +35,9 @@ if (is_null($user["UserPassword"])) {
                 setcookie("remember_token", $token, time() + (30 * 24 * 3600), "/", "", false, true);
             }
 
-            //header("Location: ../../../Frontend/index.html");
-            $redirect = isset($_POST['redirect']) ? $_POST['redirect'] : 'index.html';
-$allowed  = ['index.html', 'reservation.php', 'review.html', 'cart.html'];
-if (!in_array($redirect, $allowed)) $redirect = 'index.html';
+            $redirect = isset($_POST['redirect']) ? $_POST['redirect'] : 'index.php';
+$allowed  = ['index.php', 'reservation.php', 'review.html', 'cart.php'];
+if (!in_array($redirect, $allowed)) $redirect = 'index.php';
 header("Location: ../../../Frontend/" . $redirect);
             exit();
 
