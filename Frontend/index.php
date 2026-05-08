@@ -1,4 +1,38 @@
 
+<?php
+// Start session for cart
+session_start();
+
+// connect file
+require_once __DIR__ . '/../Backend/config/connection.php';
+
+// php function files
+require_once __DIR__ . '/../Backend/api/menu/index-function.php';
+require_once __DIR__ . '/../Backend/api/cart/cart-function.php';
+
+
+// remember me function
+require_once __DIR__ . '/../Backend/config/check_remember.php';
+checkRememberMe($conn);
+
+
+
+// Handle cart form submissions (direct approach)
+if (isset($_POST['add_to_cart'])) {
+    addToCart($_POST['item_id'], isset($_POST['quantity']) ? $_POST['quantity'] : 1);
+}
+if (isset($_POST['remove_item'])) {
+    removeFromCart($_POST['item_id']);
+}
+if (isset($_POST['update_qty'])) {
+    updateCartQuantity($_POST['item_id'],$_POST['quantity']);
+}
+if (isset($_POST['clear_cart'])) {
+    clearCart();
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,9 +45,9 @@
     <!--font awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!--css file-->
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/chatbot.css">
+<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/chatbot.css">
 </head>
 <body>
 <!--bootstrap js-->
@@ -45,18 +79,17 @@
         <a class="nav-link" href="#menu-section">Menu</a>
       </li>
 <li class="nav-item">
-<a class="nav-link " href="reservation.html">Reservations</a>
+<a class="nav-link " href="/SmartBite/Frontend/reservation.html">Reservations</a>
 </li>
 <li class="nav-item">
-<a class="nav-link" href="review.html">Reviews</a>
+<a class="nav-link" href="/SmartBite/Frontend/review.html">Reviews</a>
 </li>
 <li class="nav-item">
-<a class="nav-link" href="cart.html"><i class="fa-solid fa-cart-arrow-down"></i> <sup>2</sup></a></a>
+<a class="nav-link" href="cart.php"><i class="fa-solid fa-cart-arrow-down"></i> <sup><?php echo getCartItemCount(); ?></sup></a>
 </li>
 <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-<a href="signin.html"><button class="btn btn-green px-4">Log In</button></a>
+<a href="/SmartBite/Frontend/signin.html"><button class="btn btn-green px-4">Log In</button></a>
 </li>
-
 </ul>
 
 </div>
@@ -67,7 +100,16 @@
 <!-- SECOND BAR -->
 <nav class="navbar navbar-dark bar">
 <div class="container">
-<a class="btn nav-link text-white">Welcome Guest</a>
+
+ <?php if(!isset($_SESSION["user_name"])){
+      echo'<a class="btn nav-link text-white">Welcome Guest</a>';
+ }
+ else{
+ echo '<a class="btn nav-link text-white">Welcome ' . $_SESSION["user_name"] . '</a>';
+ }
+?>
+
+
 </div>
 </nav>
 <!--Third child-->
@@ -77,11 +119,15 @@
     <div class="hero-content">
         <h1>SmartBite</h1>
         <p>Fresh • Organic • Local</p>
+        
+       <form class="d-flex justify-content-center" action="search-menu.php#menu-section" method="get">
+        <div class="search-box">
+            <input type="text" placeholder="Search for food" name="search_data"  class="text-search">
+           <!-- <button>Search</button>-->
+            <button type="submit" class="search-button" name="search_btn" value="Search"> Search</button>
 
-       <div class="search-box">
-            <input type="text" placeholder="Search for food">
-            <button>Search</button>
         </div>
+</form>
     </div>
 </section>
 
@@ -89,7 +135,7 @@
 
 <!--fourth section-->
 
-<div class="row "  id="menu-section">
+<div class="row"id="menu-section" >
   <!-- Section Title -->
         <div class="section-header ">
             
@@ -101,48 +147,18 @@
    <div class="col-md-10  ">
     <!--Products-->
      <div class="row">
-        <div class="col-md-4 mb-2">
-             <div class="card">
-               <div class="card-body">
-                <img src="https://images.immediate.co.uk/production/volatile/sites/2/2015/04/2015-02-24-olive-test-d5b505c.jpg?crop=7px%2C1865px%2C3278px%2C1410px&resize=1200%2C630" class="card-img-top" >
-                <h5 class="card-title"> Classic beaf burger</h5>
-                <p class="card-text">4$</p>
-                <a href="#" class="btn btn-green px-4">Add to cart</a>
-               </div>
-             </div>
-         </div>
-        <div class="col-md-4 mb-2">
-          <div class="card">
-               <img src="https://i0.wp.com/flaevor.com/wp-content/uploads/2022/04/SambalFriedChickenBurger1.jpg?resize=1024%2C830&ssl=1" class="card-img-top" alt="...">
-               <div class="card-body">
-                <h5 class="card-title">Chiken burger</h5>
-                <p class="card-text">5$</p>
-                <a href="#" class="btn btn-green px-4">Add to cart</a>
-               </div>
-             </div>
-        </div>
-        <div class="col-md-4 mb-2">
-          <div class="card">
-               <img src="https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_1:1/tk%2Fphoto%2F2025%2F06-2025%2F2025-06-veggie-burger%2Fveggie-burger-340" class="card-img-top" alt="...">
-               <div class="card-body">
-                <h5 class="card-title">Veggie burger</h5>
-                <p class="card-text">4$</p>
-                <a href="#"class="btn btn-green px-4">Add to cart</a>
-               </div>
-             </div>
-        </div>
-        <div class="col-md-4 mb-2">
-          <div class="card">
-               <img src="https://somebodyfeedseb.com/wp-content/uploads/2022/04/2021.03.06-Fish-Burger-2044.jpg" class="card-img-top" alt="...">
-               <div class="card-body">
-                <h5 class="card-title">Fish burger</h5>
-                <p class="card-text"> 5$</p>
-                <a href="#" class="btn btn-green px-4">Add to cart</a>
-               </div>
-             </div>
-        </div>
+       <!---------------------------------------fetching the  menu------------------------------------>
+
+      <?php
+        getMenu();
+        getMenuByCat();
+      ?>
+
+        <!--row end-->
      </div>
+     <!--col end-->
    </div>
+
 
    
     <!-- Side nav-->
@@ -155,14 +171,11 @@
             <h3>CATERORIES</h3>
             <div class="divider"></div>
       
-
-      <li class="nav-item"><a href='#menu-section' class="cat-sidebar">STARTERS</a></li>
-      <li class="nav-item"><a href='#menu-section' class="cat-sidebar">PIZZAS</a></li>
-      <li class="nav-item"><a href='#menu-section' class="cat-sidebar">BURGERS</a></li>
-      <li class="nav-item"><a href='#menu-section' class="cat-sidebar">PASTAS</a></li>
-      <li class="nav-item"><a href='#menu-section' class="cat-sidebar">SALADS</a></li>
-      <li class="nav-item"><a href='#menu-section' class="cat-sidebar">DRINKS</a></li>
-
+<!-----------------------fetching the  categories--------------------------------------->
+      <?php 
+         getCat();
+    ?>
+      
      </ul>
    </div>
 

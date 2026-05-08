@@ -1,16 +1,18 @@
-
 <?php
 // Start session for cart
 session_start();
 
 //connect file
-require_once __DIR__ . '/../../config/connection.php';
+require_once __DIR__ . '/../Backend/config/connection.php';
+
 
 
 // function files
 
-require_once __DIR__ . '/menu-functions/index-function.php';
-require_once __DIR__ . '/menu-functions/cart-function.php';
+require_once __DIR__ . '/../Backend/api/menu/index-function.php';
+require_once __DIR__ . '/../Backend/api/cart/cart-function.php';
+
+
 // Handle cart form submissions (direct approach)
 if (isset($_POST['add_to_cart'])) {
     addToCart($_POST['item_id'], isset($_POST['quantity']) ? $_POST['quantity'] : 1);
@@ -48,8 +50,8 @@ if (isset($_POST['clear_cart'])) {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 
 <!-- CSS -->
-<link rel="stylesheet" href="../../../Frontend/css/cart.css">
-<link rel="stylesheet" href="../../../Frontend/css/main.css">
+<link rel="stylesheet" href="css/cart.css">
+<link rel="stylesheet" href="css/main.css">
 
 </head>
 

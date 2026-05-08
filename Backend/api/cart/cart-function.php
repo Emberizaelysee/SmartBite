@@ -1,10 +1,10 @@
-
 <?php
 
 //ADD TO CART FONCTION
 function addToCart($itemId,$quantity=1){
 
     //initialize cart session if it doesn't exist
+
      if(!isset($_SESSION['cart'])){
         $_SESSION['cart']=[];
      }

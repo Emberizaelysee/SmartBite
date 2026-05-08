@@ -1,18 +1,19 @@
-
 <?php
 // Start session for cart
 session_start();
 
-//connect file
-require_once __DIR__ . '/../../config/connection.php';
+// connect file
+require_once __DIR__ . '/../Backend/config/connection.php';
 
 // php function files
-require_once __DIR__ . '/menu-functions/index-function.php';
-require_once __DIR__ . '/menu-functions/cart-function.php';
+require_once __DIR__ . '/../Backend/api/menu/index-function.php';
+require_once __DIR__ . '/../Backend/api/cart/cart-function.php';
 
-//remember me fuction
-require_once __DIR__ . '/../../config/check_remember.php';
+
+// remember me function
+require_once __DIR__ . '/../Backend/config/check_remember.php';
 checkRememberMe($conn);
+
 
 
 // Handle cart form submissions (direct approach)
@@ -30,7 +31,6 @@ if (isset($_POST['clear_cart'])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,9 +43,9 @@ if (isset($_POST['clear_cart'])) {
     <!--font awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!--css file-->
-<link rel="stylesheet" href="../../../Frontend/css/index.css">
-<link rel="stylesheet" href="../../../Frontend/css/main.css">
-<link rel="stylesheet" href="../../../Frontend/css/chatbot.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/chatbot.css">
 </head>
 <body>
 <!--bootstrap js-->
@@ -58,7 +58,7 @@ if (isset($_POST['clear_cart'])) {
 <nav class="navbar navbar-expand-lg shadow-sm">
 <div class="container">
 
-<a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="index.html">
+<a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="index.php">
   <div class="logo">
     <i class="fa-solid fa-utensils me-2 icon-green"></i>
   <span>Smart</span>Bite
@@ -88,6 +88,7 @@ if (isset($_POST['clear_cart'])) {
 <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
 <a href="/SmartBite/Frontend/signin.html"><button class="btn btn-green px-4">Log In</button></a>
 </li>
+
 </ul>
 
 </div>
@@ -99,14 +100,13 @@ if (isset($_POST['clear_cart'])) {
 <nav class="navbar navbar-dark bar">
 <div class="container">
 
- <?php if(!isset($_SESSION["user_name"])){
+<?php if(!isset($_SESSION["user_name"])){
       echo'<a class="btn nav-link text-white">Welcome Guest</a>';
  }
  else{
  echo '<a class="btn nav-link text-white">Welcome ' . $_SESSION["user_name"] . '</a>';
  }
 ?>
-
 
 </div>
 </nav>
@@ -118,9 +118,9 @@ if (isset($_POST['clear_cart'])) {
         <h1>SmartBite</h1>
         <p>Fresh • Organic • Local</p>
         
-       <form class="d-flex justify-content-center" action="search-menu.php#menu-section" method="get">
+       <form class="d-flex justify-content-center"action="search-menu.php#menu-section" method="get">
         <div class="search-box">
-            <input type="text" placeholder="Search for food" name="search_data"  class="text-search">
+            <input type="text" placeholder="Search for food" name="search_data" class="text-search">
            <!-- <button>Search</button>-->
             <button type="submit" class="search-button" name="search_btn" value="Search"> Search</button>
 
@@ -148,7 +148,7 @@ if (isset($_POST['clear_cart'])) {
        <!---------------------------------------fetching the  menu------------------------------------>
 
       <?php
-        getMenu();
+        search_menu();
         getMenuByCat();
       ?>
 
