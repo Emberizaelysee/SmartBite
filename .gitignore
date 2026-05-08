@@ -4,22 +4,12 @@ Backend/PHPMailer-master/
 
 # Sensitive data
 .env
-
 # Backend files
 .htaccess
 
-# Database/Design files
-*.lo1
-*.loo
-
 *.jpg
 
-chatbot.md
-
 chatbot.css
-
-MCD_SmartBite.png
-
 chatbot.js
-
+MCD_SmartBite.png
 Database

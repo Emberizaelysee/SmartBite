@@ -17,7 +17,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // recup info user via profile model
 $user_id = (int) $_SESSION['user_id'];
-$profileModel = new ProfileModel($mysqli);
+$profileModel = new ProfileModel($conn);
 $profile = $profileModel->getProfileById($user_id);
 
 // envoie reponse json avec data
@@ -32,7 +32,7 @@ if ($profile) {
 }
 
 // close connection bdd
-$mysqli->close();
+$conn->close();
 // reponse format JSON
 echo json_encode($response);
 ?>

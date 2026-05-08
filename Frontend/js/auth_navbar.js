@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (sessionData.logged_in) {
 
             // chercher "signin.html" pour trouver bouton Log In
-            const loginLink = document.querySelector('a[href="signin.html"]');
+            const loginLink = document.querySelector('a[href$="signin.html"]');
             if (!loginLink) return;
 
             // remonter au parent <li>
@@ -46,8 +46,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             navItem.innerHTML = `
                 <a href="#" class="link-body-emphasis text-decoration-none dropdown-toggle d-flex align-items-center fw-semibold" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="${avatarUrl}" alt="Profile" class="me-2" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;" onerror="this.src='./img/profile.jpg'">
-                    <span>${sessionData.username || 'User'}</span>
+                    <span class="me-2">${sessionData.username || 'User'}</span>
+                    <img src="${avatarUrl}" alt="Profile" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;" onerror="this.src='./img/profile.jpg'">
+                    
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end text-small bg">
                     <li><a class="dropdown-item" href="./profile.html">

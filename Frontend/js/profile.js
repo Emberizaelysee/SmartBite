@@ -544,7 +544,7 @@ async function performAccountDeletion() {
 
         if (data.success) {
             alert('Account deleted.');
-            window.location.href = 'index.html';
+            window.location.href = 'index.php';
             return;
         }
         alert(`Error: ${data.message}`);
