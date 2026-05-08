@@ -8,6 +8,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const sessionRes = await fetch('../Backend/api/auth/session_check.php', { credentials: 'include' });
         if (!sessionRes.ok) return;
 
+        // verifier que la reponse est bien du JSON avant de parser
+        const contentType = sessionRes.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) return;
+
         const sessionData = await sessionRes.json();
 
         // si connecte remplacer login par dropdown
@@ -28,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (profileRes.ok) {
                 const profileData = await profileRes.json();
                 if (profileData.success && profileData.avatar) {
-                    avatarUrl = buildGlobalAvatarUrl(profileData.avatar);
+                    avatarUrl = buildDashboardAvatarUrl(profileData.avatar);
                 }
             }
 
@@ -62,11 +66,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-/
+
 function buildDashboardAvatarUrl(path) {
-    if (!path) return dashboardDefaultAvatarPath;
+    const defaultAvatar = './img/profile.jpg';
+    if (!path) return defaultAvatar;
     const normalized = String(path).trim();
-    if (!normalized) return dashboardDefaultAvatarPath;
+    if (!normalized) return defaultAvatar;
     // Si c'est un lien web complet (http/https) ou un chemin absolu, on ne touche à rien
     if (/^https?:\/\//i.test(normalized) || normalized.startsWith('/')) return normalized;
     // Si le chemin commence par ./ ou ../, on le laisse tel quel
