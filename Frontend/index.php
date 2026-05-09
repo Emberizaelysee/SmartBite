@@ -285,7 +285,7 @@ if (isset($_POST['clear_cart'])) {
   
   <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
   <script src="js/chatbot.js"></script>
-
+<script src="js/auth_navbar.js"></script>
 
 
    <!--last child-->

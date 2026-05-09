@@ -7,7 +7,10 @@ Backend/PHPMailer-master/
 # Backend files
 .htaccess
 
-*.jpg
+
+# *.jpg images are part of the frontend menu, so do not ignore them
+# *.jpg
+
 
 chatbot.css
 chatbot.js
