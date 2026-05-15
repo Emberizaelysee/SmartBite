@@ -11,7 +11,7 @@ require_once __DIR__ . '/../Backend/config/connection.php';
 
 require_once __DIR__ . '/../Backend/api/menu/index-function.php';
 require_once __DIR__ . '/../Backend/api/cart/cart-function.php';
-
+require_once __DIR__ . '/../Backend/api/purchase/purchase-function.php';
 
 // Handle cart form submissions (direct approach)
 if (isset($_POST['add_to_cart'])) {
@@ -27,8 +27,50 @@ if (isset($_POST['clear_cart'])) {
     clearCart();
 }
 
+if(isset($_POST['checkout'])){
+    if(!isset($_SESSION['user_name'])){
+        header("Location:signin.html");
+        exit;
+    }
+
+   if(isset($_POST['special_request'])&& $_POST['special_request']!==''){
+    $_SESSION['special_request']=$_POST['special_request'];
+   }else{
+    $_SESSION['special_request']='';
+   }
+
+// Create a pending order
+    $cartItems = getCartItems();
+
+///check if is logged in or not
+    if(isset($_SESSION['user_id'])){
+     $userId =(int)$_SESSION['user_id'];}
+    else{
+     $userId =0;
+     }
+
+/// check textarea box is empty or not
+    if ($_SESSION['special_request'] === '') {
+        $specialInstructions = null;
+    } else {
+        $specialInstructions = trim($_SESSION['special_request']);
+    }
+
+///check if if cart is empty or userId invalid before creating an order
+    if (empty($cartItems) || $userId <= 0) {
+        header('Location: cart.php');
+        exit;
+    }
+
+    $purchaseResult = createPendingOrderFromCart($conn, $cartItems, $userId, $specialInstructions);
 
 
+    // Store order id for confirm step.
+    $_SESSION['pending_order_id'] = $purchaseResult['nextOrderId'];
+
+    header("Location:purchase.php");
+    exit;
+}
 
 ?>
 
@@ -87,7 +129,7 @@ if (isset($_POST['clear_cart'])) {
 </li>
 
 <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-<a href="/SmartBite/Frontend/signin.html"><button class="btn btn-green px-4">Log In</button></a>
+<a href="signin.html"><button class="btn btn-green px-4">Log In</button></a>
 </li>
 
 </ul>
@@ -148,11 +190,18 @@ if (isset($_POST['clear_cart'])) {
 </div>
 
 
-<!--special request box-->
-<div class="order-notes mt-4">
-    <h5 class="mb-3"><i class="fa-solid fa-note-sticky me-2"></i> Special Requests </h5>
-    <textarea name="special_request" class="form-control note-input" placeholder="Any special requests on order..."></textarea>
+
+<?php if (getCartItemCount() > 0): ?>
+    <form method="post">
+        <div class="order-notes mt-4">
+            <h5 class="mb-3"><i class="fa-solid fa-note-sticky me-2"></i> Special Requests </h5>
+            <textarea name="special_request" class="form-control note-input" placeholder="Any special requests on order..."><?php echo isset($_SESSION['special_request']) ? $_SESSION['special_request'] : ''; ?></textarea>
+    
+        <button type="submit" name="checkout" class="btn btn-green px-4">Checkout</button>
 </div>
+    </form>
+<?php endif; ?>
+
 
 
 <!-- SUBTOTAL -->
@@ -161,12 +210,6 @@ if (isset($_POST['clear_cart'])) {
 
 <div class="cart-actions">
 <a href="index.php" class="btn-outline-green">Continue Shopping</a>
-
-
-<!--if there is no item the "checkout" button should not show-->
-<?php if (getCartItemCount() > 0): ?>
-<a href="purchase.html" class="btn btn-green">Checkout</a>
-<?php endif; ?>
 
 
 </div>
@@ -183,7 +226,7 @@ if (isset($_POST['clear_cart'])) {
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="js/auth_navbar.js"></script>
   
 
 

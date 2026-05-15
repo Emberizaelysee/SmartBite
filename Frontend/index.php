@@ -60,7 +60,7 @@ if (isset($_POST['clear_cart'])) {
 <nav class="navbar navbar-expand-lg shadow-sm">
 <div class="container">
 
-<a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="index.html">
+<a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="index.php">
   <div class="logo">
     <i class="fa-solid fa-utensils me-2 icon-green"></i>
   <span>Smart</span>Bite
@@ -118,7 +118,7 @@ if (isset($_POST['clear_cart'])) {
 
     <div class="hero-content">
         <h1>SmartBite</h1>
-        <p>Fresh • Organic • Local</p>
+        <p>Fresh . Organic . Local</p>
         
        <form class="d-flex justify-content-center" action="search-menu.php#menu-section" method="get">
         <div class="search-box">

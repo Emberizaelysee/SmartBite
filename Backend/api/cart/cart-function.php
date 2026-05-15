@@ -157,7 +157,13 @@ function clearCart(){
         unset($_SESSION['cart']);
     }
 
-        }
+    
+    if (isset($_SESSION['special_request'])) {
+        unset($_SESSION['special_request']);
+    }
+}
+
 
 ?>
+
 
