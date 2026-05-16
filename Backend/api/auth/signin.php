@@ -16,10 +16,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
-if (is_null($user["UserPassword"])) {
-    header("Location: ../../../Frontend/signin.html?error=use_google");
-    exit();
-}
+        if (is_null($user["UserPassword"])) {
+            header("Location: ../../../Frontend/signin.html?error=use_google");
+            exit();
+        }
         if (password_verify($password, $user["UserPassword"])) {
             // CONNEXION RÉUSSIE
             $_SESSION["user_id"]   = $user["IdUser"];
@@ -36,9 +36,9 @@ if (is_null($user["UserPassword"])) {
             }
 
             $redirect = isset($_POST['redirect']) ? $_POST['redirect'] : 'index.php';
-$allowed  = ['index.php', 'reservation.php', 'review.html', 'cart.php'];
-if (!in_array($redirect, $allowed)) $redirect = 'index.php';
-header("Location: ../../../Frontend/" . $redirect);
+            $allowed  = ['index.php', 'reservation.php', 'review.html', 'cart.php'];
+            if (!in_array($redirect, $allowed)) $redirect = 'index.php';
+            header("Location: ../../../Frontend/" . $redirect);
             exit();
 
         } else {
