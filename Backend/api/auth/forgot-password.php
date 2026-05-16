@@ -75,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $mail->send();
 
         } catch (Exception $e) {
+            error_log("PHPMailer Error: " . $e->getMessage());
             // on ne révèle pas l'erreur à l'utilisateur
         }
     }
