@@ -1,8 +1,7 @@
-
 <?php
 //CREATING AN ORDER BY DEFAULT SHOULD BE "PENDING"
 
-function createPendingOrderFromCart(mysqli $conn, array $cart, int $userId, string $specialInstructions)
+function createPendingOrderFromCart(mysqli $conn, array $cart, int $userId, ?string $specialInstructions)
 {
 
    //initilize total at o
