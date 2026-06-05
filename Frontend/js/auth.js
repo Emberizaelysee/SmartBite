@@ -12,30 +12,63 @@ function togglePassword(inputId, iconId){
     }
 }
 
-// Vérifie si le mot de passe est fort
-function isStrongPassword(){
-    const pass = document.getElementById("password1").value;
-    if (pass.length < 8) return false;
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=<>?{}[\]~]).+$/;
-    return regex.test(pass);
-}
-
-// Affiche le message de force
 function checkPasswordStrength() {
-    const pass = document.getElementById("password1").value;
-    const messageDiv = document.getElementById("passwordMessage");
+  const pass = document.getElementById("password1").value;
+  const list = document.getElementById("passwordChecklist");
 
-    if (pass === "") { messageDiv.textContent = ""; return; }
+  if (pass === "") { list.style.display = "none"; return; }
+  list.style.display = "block";
 
-    if (isStrongPassword()) {
-        messageDiv.style.color   = "var(--green)";
-        messageDiv.textContent   = "Strong password ✅";
-    } else {
-        messageDiv.style.color   = "red";
-        messageDiv.textContent   = "Password must have: min 8 chars, uppercase, lowercase, number, special char ❌";
+  const checks = {
+    "chk-len":   pass.length >= 8,
+    "chk-lower": /[a-z]/.test(pass),
+    "chk-upper": /[A-Z]/.test(pass),
+    "chk-num":   /[0-9]/.test(pass),
+    "chk-spec":  /[^a-zA-Z0-9]/.test(pass),  // tout ce qui n'est pas lettre/chiffre
+  };
+
+  const labels = {
+    "chk-len":   "Min. 8 characters",
+    "chk-lower": "Lowercase letter (a-z)",
+    "chk-upper": "Uppercase letter (A-Z)",
+    "chk-num":   "Number (0-9)",
+    "chk-spec":  "Special character (!@#$...)",
+  };
+
+  const allOk = Object.values(checks).every(Boolean);
+
+  if (allOk) {
+    list.style.display = "none";
+    // afficher "Strong password ✅" dans un div séparé
+    let strong = document.getElementById("strongMsg");
+    if (!strong) {
+      strong = document.createElement("div");
+      strong.id = "strongMsg";
+      strong.className = "password-msg";
+      list.parentNode.insertBefore(strong, list.nextSibling);
     }
+    strong.style.color = "#16c451";
+    strong.textContent = "Strong password ✅";
+    return;
+  }
+
+  // Cacher le message "Strong" si on revient en arrière
+  const strong = document.getElementById("strongMsg");
+  if (strong) strong.textContent = "";
+
+  for (const [id, ok] of Object.entries(checks)) {
+    const el = document.getElementById(id);
+    el.textContent = (ok ? "✅ " : "⬜ ") + labels[id];
+    el.style.color = ok ? "#16c451" : "#888";
+  }
 }
 
+function isStrongPassword() {
+  const pass = document.getElementById("password1").value;
+  return pass.length >= 8 &&
+    /[a-z]/.test(pass) && /[A-Z]/.test(pass) &&
+    /\d/.test(pass)    && /[!@#$%^&*()_\-+=<>?{}[\]~]/.test(pass);
+}
 function checkPasswordMatch() {
     const pass1    = document.getElementById("password1").value;
     const pass2    = document.getElementById("password2").value;

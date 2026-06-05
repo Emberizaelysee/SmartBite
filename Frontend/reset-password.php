@@ -31,18 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password  = $_POST['password']  ?? '';
     $password2 = $_POST['password2'] ?? '';
 
-    if (strlen($password) < 8) {
-        $error = 'Le mot de passe doit contenir au moins 8 caractères.';
-    } elseif ($password !== $password2) {
+    if ($password !== $password2) {
         $error = 'Les mots de passe ne correspondent pas.';
     } else {
         $hashed = password_hash($password, PASSWORD_DEFAULT);
-
         $upd = $conn->prepare("UPDATE users SET UserPassword = ?, reset_token = NULL, reset_expires = NULL WHERE IdUser = ?");
         $upd->bind_param("si", $hashed, $userId);
         $upd->execute();
         $upd->close();
-
         $success = true;
     }
 }
@@ -60,19 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="css/auth.css">
 
   <style>
-    .strength-bar {
-      height: 4px;
-      border-radius: 2px;
-      background: #ddd;
-      margin-top: 6px;
-      overflow: hidden;
-    }
-    .strength-fill {
-      height: 100%;
-      width: 0%;
-      border-radius: 2px;
-      transition: width 0.3s, background 0.3s;
-    }
     .strength-text {
       font-size: 12px;
       margin-top: 4px;
@@ -154,11 +137,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     onclick="togglePwd('password', this)">
               <i class="fa fa-eye text-muted"></i>
             </button>
-          </div>
-          <!-- Strength bar -->
-          <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
-          <div class="strength-text text-muted" id="strengthText"></div>
         </div>
+      <div id="passwordChecklist" class="small mt-1" style="display:none; line-height:1.9;">
+         <div id="chk-len">⬜ Min. 8 characters</div>
+         <div id="chk-lower">⬜ Lowercase letter (a-z)</div>
+         <div id="chk-upper">⬜ Uppercase letter (A-Z)</div>
+         <div id="chk-num">⬜ Number (0-9)</div>
+         <div id="chk-spec">⬜ Special character (!@#$...)</div>
+      </div>
+      </div>
 
         <!-- Confirm password -->
         <div class="mb-4">
@@ -184,9 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   </div>
 </div>
-
 <script>
-// Toggle password visibility
 function togglePwd(id, btn) {
   const input = document.getElementById(id);
   const icon  = btn.querySelector('i');
@@ -199,62 +184,97 @@ function togglePwd(id, btn) {
   }
 }
 
-// Password strength
-const pwdInput    = document.getElementById('password');
-const strengthFill = document.getElementById('strengthFill');
-const strengthText = document.getElementById('strengthText');
-
-if (pwdInput) {
-  pwdInput.addEventListener('input', () => {
-    const v = pwdInput.value;
-    let score = 0;
-    if (v.length >= 8)            score++;
-    if (/[A-Z]/.test(v))          score++;
-    if (/[0-9]/.test(v))          score++;
-    if (/[^A-Za-z0-9]/.test(v))   score++;
-
-    const levels = [
-      { w: '25%', color: '#e74c3c', label: 'Weak' },
-      { w: '50%', color: '#e67e22', label: 'Fair' },
-      { w: '75%', color: '#f1c40f', label: 'Good' },
-      { w: '100%',color: '#16c451', label: 'Strong' },
-    ];
-    if (v.length === 0) {
-      strengthFill.style.width = '0';
-      strengthText.textContent = '';
-    } else {
-      const lvl = levels[score - 1] || levels[0];
-      strengthFill.style.width      = lvl.w;
-      strengthFill.style.background = lvl.color;
-      strengthText.textContent      = lvl.label;
-      strengthText.style.color      = lvl.color;
-    }
-  });
+function isStrongPassword() {
+  const pass = document.getElementById('password').value;
+  return pass.length >= 8 &&
+    /[a-z]/.test(pass) && /[A-Z]/.test(pass) &&
+    /[0-9]/.test(pass) && /[^a-zA-Z0-9]/.test(pass);
 }
 
-// Match indicator
-const pwd2Input = document.getElementById('password2');
-const matchMsg  = document.getElementById('matchMsg');
+function checkPasswordStrength() {
+  const pass = document.getElementById('password').value;
+  const list = document.getElementById('passwordChecklist');
 
-if (pwd2Input) {
-  pwd2Input.addEventListener('input', () => {
-    if (pwd2Input.value === '') {
-      matchMsg.textContent = '';
-    } else if (pwd2Input.value === pwdInput.value) {
-      matchMsg.textContent = '✓ Passwords match';
-      matchMsg.style.color = '#16c451';
-    } else {
-      matchMsg.textContent = '✗ Passwords do not match';
-      matchMsg.style.color = '#e74c3c';
+  if (pass === '') { list.style.display = 'none'; return; }
+  list.style.display = 'block';
+
+  const checks = {
+    'chk-len':   pass.length >= 8,
+    'chk-lower': /[a-z]/.test(pass),
+    'chk-upper': /[A-Z]/.test(pass),
+    'chk-num':   /[0-9]/.test(pass),
+    'chk-spec':  /[^a-zA-Z0-9]/.test(pass),
+  };
+
+  const labels = {
+    'chk-len':   'Min. 8 characters',
+    'chk-lower': 'Lowercase letter (a-z)',
+    'chk-upper': 'Uppercase letter (A-Z)',
+    'chk-num':   'Number (0-9)',
+    'chk-spec':  'Special character (!@#$...)',
+  };
+
+  const allOk = Object.values(checks).every(Boolean);
+
+  if (allOk) {
+    list.style.display = 'none';
+    let strong = document.getElementById('strongMsg');
+    if (!strong) {
+      strong = document.createElement('div');
+      strong.id = 'strongMsg';
+      strong.className = 'small mt-1';
+      list.parentNode.insertBefore(strong, list.nextSibling);
     }
-  });
+    strong.style.color = '#16c451';
+    strong.textContent = 'Strong password ✅';
+    return;
+  }
+
+  const strong = document.getElementById('strongMsg');
+  if (strong) strong.textContent = '';
+
+  for (const [id, ok] of Object.entries(checks)) {
+    const el = document.getElementById(id);
+    el.textContent = (ok ? '✅ ' : '⬜ ') + labels[id];
+    el.style.color = ok ? '#16c451' : '#888';
+  }
 }
 
-// Loading state on submit
-document.getElementById('resetForm')?.addEventListener('submit', () => {
+document.getElementById('password')?.addEventListener('input', checkPasswordStrength);
+
+function checkPasswordMatch() {
+  const pass1    = document.getElementById('password').value;
+  const pass2    = document.getElementById('password2').value;
+  const matchDiv = document.getElementById('matchMsg');
+
+  if (pass2 === '') { matchDiv.textContent = ''; return; }
+
+  if (pass1 === pass2) {
+    matchDiv.style.color = '#16c451';
+    matchDiv.textContent = 'Passwords match ✅';
+  } else {
+    matchDiv.style.color = 'red';
+    matchDiv.textContent = 'Passwords do not match ❌';
+  }
+}
+
+document.getElementById('password2')?.addEventListener('input', checkPasswordMatch);
+
+document.getElementById('resetForm')?.addEventListener('submit', (e) => {
+  if (!isStrongPassword()) {
+    e.preventDefault();
+    checkPasswordStrength();
+    return;
+  }
+  const pass1 = document.getElementById('password').value;
+  const pass2 = document.getElementById('password2').value;
+  if (pass1 !== pass2) {
+    e.preventDefault();
+    checkPasswordMatch();
+    return;
+  }
   document.getElementById('btn').innerHTML = 'Updating... <i class="fa fa-spinner fa-spin ms-1"></i>';
 });
 </script>
-
 </body>
 </html>

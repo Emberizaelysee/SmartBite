@@ -73,7 +73,14 @@ oninput="checkPasswordStrength()" required>
 </span>
 </div>
 <!-- Message strength -->
-    <div id="passwordMessage" class="password-msg"></div>
+ <div id="passwordChecklist" class="password-msg mt-1" style="display:none; line-height:1.9;">
+  <div id="chk-len">  ⬜ Min. 8 characters</div>
+  <div id="chk-lower">⬜ Lowercase letter (a-z)</div>
+  <div id="chk-upper">⬜ Uppercase letter (A-Z)</div>
+  <div id="chk-num">  ⬜ Number (0-9)</div>
+  <div id="chk-spec"> ⬜ Special character (!@#$...)</div>
+</div>
+    
         </div>
 
 <!-- CONFIRM -->
@@ -126,6 +133,6 @@ Already have an account?
 <footer class="text-center py-4 text-muted border-top small">
 © 2026 SmartBite Restaurants. All rights reserved.
 </footer>
-<script src="js/script.js"></script>
+<script src="js/auth.js"></script>
 </body>
 </html>
