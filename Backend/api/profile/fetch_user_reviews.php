@@ -1,8 +1,9 @@
 <?php
 session_start();
 // effacement du tampon regle Cannot modify header information - headers already sent
-if (ob_get_level())
+if (ob_get_level()) {
     ob_clean();
+}
 
 header('Content-Type: application/json');
 
@@ -18,15 +19,14 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// check si on a pu acceder au profile model et fait appel a la fonction getUserReservations et envoie les donnees sous format json
+// try to fetch user reviews
 try {
-    $user_id = (int) $_SESSION['user_id'];
+    $userId = (int) $_SESSION['user_id'];
     $profileModel = new ProfileModel($conn);
     $response['success'] = true;
-    $response['data'] = $profileModel->getUserReservations($user_id);
-
+    $response['data'] = $profileModel->getUserReviews($userId);
 } catch (Exception $e) {
-    $response['message'] = 'Failed to fetch reservations: ' . $e->getMessage();
+    $response['message'] = 'Failed to fetch reviews: ' . $e->getMessage();
 }
 
 echo json_encode($response);

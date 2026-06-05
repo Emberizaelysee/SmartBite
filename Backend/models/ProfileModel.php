@@ -351,11 +351,19 @@ class ProfileModel
             return ['success' => false, 'message' => 'Failed to update reservation.'];
         }
 
-        // retourner un message de succes
         return [
             'success' => true,
             'message' => 'Reservation updated successfully.',
             'table_number' => $table['number'],
+            'previous' => $existing,
+            'reservation' => [
+                'id' => $reservationId,
+                'date' => $date,
+                'time' => $time,
+                'guests' => $guests,
+                'table_number' => $table['number'],
+                'special_notes' => $specialNotes ?? '',
+            ],
         ];
     }
 
@@ -383,6 +391,10 @@ class ProfileModel
             return ['success' => false, 'message' => 'Failed to cancel reservation.'];
         }
 
-        return ['success' => true, 'message' => 'Reservation cancelled successfully.'];
+        return [
+            'success' => true,
+            'message' => 'Reservation cancelled successfully.',
+            'cancelled_reservation' => $existing,
+        ];
     }
 }

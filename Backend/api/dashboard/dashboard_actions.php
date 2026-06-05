@@ -1,5 +1,6 @@
 <?php
 session_start();
+// effacement du tampon regle Cannot modify header information - headers already sent
 if (ob_get_level())
     ob_clean();
 header('Content-Type: application/json');
@@ -13,7 +14,7 @@ $dashboardModel = new DashboardModel($conn);
 if (!isset($_SESSION['user_id']) || strtolower($_SESSION['user_role'] ?? '') !== 'admin') {
     $response['message'] = 'Unauthorized.';
     echo json_encode($response);
-    exit();
+    exit();  
 }
 
 $data = json_decode(file_get_contents('php://input'), true);
@@ -22,7 +23,7 @@ if ($data === null)
 
 $action = $data['action'] ?? '';
 
-// resolve order total get DB prices + apply discount returns [items, subtotal, total]
+// resoudre le total de la commande get DB prices + appliquer le discount retourne [items, subtotal, total]
 $resolveOrderTotal = function (array $rawItems, string $discountType, float $discountValue) use ($conn): array {
     $subtotal = 0;
     $resolved = [];
@@ -251,7 +252,7 @@ switch ($action) {
         break;
 
     case 'add_review':
-        // Use admin IdUser, a menu item, rating and description
+        // Utiliser l'IdUser admin, un item de menu, une note et une description
         $userId = (int) $_SESSION['user_id'];
         $menuId = (int) ($data['menu_id'] ?? 0);
         $rating = (int) ($data['rating'] ?? 0);
@@ -373,13 +374,13 @@ switch ($action) {
         $response['data'] = $dashboardModel->getWeeklyRevenue();
         break;
 
-    // Categories (for menu form dropdown)
+    // Categories (pour le dropdown du formulaire de menu)
     case 'get_categories':
         $response['success'] = true;
         $response['data'] = $dashboardModel->getCategories();
         break;
 
-    // User search (for order / reservation modals)
+    // Recherche d'utilisateur (pour les modaux de commande / reservation)
     case 'search_users':
         $term = trim($data['term'] ?? '');
         if (strlen($term) < 2) {
@@ -390,13 +391,13 @@ switch ($action) {
         $response['data'] = $dashboardModel->searchUsers($term);
         break;
 
-    // Active tables (for reservation modal dropdown)
+    // Tables actives (pour le dropdown du modal de reservation)
     case 'get_tables':
         $response['success'] = true;
         $response['data'] = $dashboardModel->getTables();
         break;
 
-    // Order items for a specific order
+    // Items de commande pour une commande specifique
     case 'get_order_items':
         $orderId = (int) ($data['order_id'] ?? 0);
         if ($orderId <= 0) {

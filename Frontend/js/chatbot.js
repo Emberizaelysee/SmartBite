@@ -7,7 +7,7 @@ const closeChatbotButton = document.querySelector('#close-chatbot');
 // communication securise avec Gemini API
 const API_URL = '../Backend/api/chatbot/chatbot_proxy.php';
 
-const userData = {
+const userData = {  
     message: null
 };
 
@@ -43,40 +43,55 @@ const chatHistory = [
 // menu data bdd -> inject into system prompt
 const fetchRestaurantContext = async () => {
     try {
+        // fetch les items du menu
         const response = await fetch('../Backend/api/dashboard/fetch_Menu_Items.php');
         if (!response.ok) throw new Error('Failed to fetch menu items');
-
+        // convertir la reponse en json
         const menuItems = await response.json();
         if (!Array.isArray(menuItems) || menuItems.length === 0) return;
 
+        // grouper les items du menu par categorie
         const grouped = {};
+        // parcourir les items du menu
         menuItems.forEach((item) => {
             const cat = item.category || 'Other';
+            // si la categorie n'existe pas, creer un tableau vide
             if (!grouped[cat]) grouped[cat] = [];
+            // ajouter l'item a la categorie
             grouped[cat].push(item);
         });
 
+        // creer le contexte du menu
         let menuContext = '\n\n## Live Menu Data\n';
+        // parcourir les categories
         Object.keys(grouped).forEach((category) => {
+            // ajouter la categorie au contexte
             menuContext += `\n### ${category}\n`;
+            // parcourir les items de la categorie
             grouped[category].forEach((item) => {
+                // ajouter l'item au contexte
                 menuContext += `* **${item.name}** — $${Number(item.price).toFixed(2)}\n`;
+                // si la description existe, ajouter la description au contexte
                 if (item.description) menuContext += `  - Description: ${item.description}\n`;
                 if (item.ingredients) menuContext += `  - Ingredients: ${item.ingredients}\n`;
             });
         });
 
+        // injecter le contexte du menu dans le system prompt
         chatHistory[0].parts[0].text = SYSTEM_PROMPT_BASE.replace(
             '__MENU_PLACEHOLDER__',
             menuContext
         );
     } catch (error) {
+        // afficher l'erreur dans la console
         console.error('Error loading restaurant context:', error);
     }
 };
 
+// get la hauteur initiale du champ de texte
 const initialHeight = messageInput.scrollHeight;
 
+// ajouter un element de message avec des classes dynamiques
 const createMessageElement = (content, ...classes) => {
     const div = document.createElement('div');
     div.classList.add('message', ...classes);
@@ -84,6 +99,7 @@ const createMessageElement = (content, ...classes) => {
     return div;
 };
 
+// modifier le texte brut en markdown
 const renderBotMarkdown = (rawText) => {
     return rawText
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -94,17 +110,20 @@ const renderBotMarkdown = (rawText) => {
         .replace(/\n/g, '<br>');
 };
 
+// appeler l'API pour generer la reponse du chatbot
 const generateBotResponse = async (incomingMessageDiv) => {
     const messageElement = incomingMessageDiv.querySelector('.message-text');
 
-    // refresh menu in system prompt before every API call
+    // refresh menu a chaque fois que l'API est appellee
     await fetchRestaurantContext();
 
+    // ajouter le message de l'utilisateur au chat history
     chatHistory.push({
         role: 'user',
         parts: [{ text: userData.message }],
     });
 
+    // options de la requette
     const requestOptions = {
         method: 'POST',
         headers: {
@@ -114,15 +133,20 @@ const generateBotResponse = async (incomingMessageDiv) => {
             contents: chatHistory,
         }),
     };
-
+    // try catch pour gerer les erreurs
     try {
+        // fetch la reponse du chatbot
         const response = await fetch(API_URL, requestOptions);
+        // convertir la reponse en json
         const data = await response.json();
         if (!response.ok) throw new Error(data.error?.message || 'Request failed');
 
+        // convertir la reponse en markdown
         const rawText = data.candidates[0].content.parts[0].text.trim();
+        // modifier le texte brut en markdown
         messageElement.innerHTML = renderBotMarkdown(rawText);
 
+        // ajouter la reponse du chatbot au chat history
         chatHistory.push({
             role: 'model',
             parts: [{ text: rawText }],
@@ -137,12 +161,13 @@ const generateBotResponse = async (incomingMessageDiv) => {
     }
 };
 
+// gerer le message de l'utilisateur
 const handleOutgoingMessage = (e) => {
+    // eviter le rechargement de la page
     e.preventDefault();
     userData.message = messageInput.value.trim();
     messageInput.value = '';
     messageInput.dispatchEvent(new Event('input'));
-
     const messageContent = `<div class="message-text"></div>`;
     const outgoingMessageDiv = createMessageElement(messageContent, 'user-message');
     outgoingMessageDiv.querySelector('.message-text').innerText = userData.message;
@@ -159,6 +184,7 @@ const handleOutgoingMessage = (e) => {
                             </div>
                         </div>`;
 
+        // creer l'element de message de la reponse du chatbot
         const incomingMessageDiv = createMessageElement(messageContent, 'bot-message', 'thinking');
         chatBody.appendChild(incomingMessageDiv);
         chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: 'smooth' });
@@ -166,13 +192,14 @@ const handleOutgoingMessage = (e) => {
     }, 600);
 };
 
+// gerer la touche Enter pour envoyer le message
 messageInput.addEventListener('keydown', (e) => {
     const userMessage = e.target.value.trim();
     if (e.key === 'Enter' && !e.shiftKey && userMessage !== '' && window.innerWidth > 400) {
         handleOutgoingMessage(e);
     }
 });
-
+// gerer l'evenement input pour ajuster la hauteur du champ de texte
 messageInput.addEventListener('input', () => {
     messageInput.style.height = `${initialHeight}px`;
     messageInput.style.height = `${messageInput.scrollHeight}px`;
@@ -187,6 +214,7 @@ messageInput.addEventListener('input', () => {
     }
 });
 
+// creer le picker d'emoji
 const picker = new EmojiMart.Picker({
     theme: 'auto',
     skinTonePosition: 'none',
@@ -197,17 +225,19 @@ const picker = new EmojiMart.Picker({
         messageInput.focus();
     },
 });
-
 const chatForm = document.querySelector('.chat-form');
 chatForm.appendChild(picker);
 
+// get le bouton d'emoji
 const emojiButton = document.getElementById('emoji-picker');
+// gerer l'evenement click du bouton d'emoji
 emojiButton.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
     document.body.classList.toggle('show-emoji-picker');
 });
 
+// gerer l'evenement click en dehors du formulaire de chat
 document.addEventListener('click', (e) => {
     if (!chatForm.contains(e.target) && !picker.contains(e.target)) {
         document.body.classList.remove('show-emoji-picker');
@@ -215,6 +245,5 @@ document.addEventListener('click', (e) => {
 });
 
 sendMessageButton.addEventListener('click', (e) => handleOutgoingMessage(e));
-
 chatbotToggler.addEventListener('click', () => document.body.classList.toggle('show-chatbot'));
 closeChatbotButton.addEventListener('click', () => document.body.classList.remove('show-chatbot'));
