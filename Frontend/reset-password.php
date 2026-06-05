@@ -177,10 +177,10 @@ function togglePwd(id, btn) {
   const icon  = btn.querySelector('i');
   if (input.type === 'password') {
     input.type = 'text';
-    icon.classList.replace('fa-eye', 'fa-eye-slash');
+    icon.classList.replace('fa-eye-slash', 'fa-eye');
   } else {
     input.type = 'password';
-    icon.classList.replace('fa-eye-slash', 'fa-eye');
+    icon.classList.replace('fa-eye', 'fa-eye-slash');
   }
 }
 

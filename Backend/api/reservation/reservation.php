@@ -1,6 +1,12 @@
 <?php
 session_start();
 require_once __DIR__ . '/../../config/connection.php';
+require_once __DIR__ . '/../../config/secrets.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require __DIR__ . '/../../vendor/autoload.php';
 
 // --- 1. verifier que le user est connecte ---
 if (!isset($_SESSION['user_id'])) {
@@ -95,6 +101,81 @@ $stmtInsert->bind_param("isssii", $guests, $requests, $date, $timeMySQL, $idTabl
 
 if ($stmtInsert->execute()) {
     $stmtInsert->close();
+
+    // --- 6. EMAIL DE CONFIRMATION ---
+    $stmtUser = $conn->prepare("SELECT UserName, UserEmail FROM users WHERE IdUser = ?");
+    $stmtUser->bind_param("i", $idUser);
+    $stmtUser->execute();
+    $resultUser = $stmtUser->get_result();
+    $stmtUser->close();
+
+    if ($resultUser->num_rows === 1) {
+        $user          = $resultUser->fetch_assoc();
+        $userName      = $user['UserName'];
+        $userEmail     = $user['UserEmail'];
+        $dateFormatted = (new DateTime($date))->format('l, F j, Y');
+        $specialNotes  = !empty($requests) ? $requests : 'None';
+
+        try {
+            $mail = new PHPMailer(true);
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = MAIL_USER;
+            $mail->Password   = MAIL_PASS;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port       = 587;
+
+            $mail->setFrom('smartbite169@gmail.com', 'SmartBite');
+            $mail->addAddress($userEmail, $userName);
+            $mail->isHTML(true);
+            $mail->Subject = 'SmartBite - Reservation Confirmed!';
+            $mail->Body    = "
+            <html>
+            <body style='font-family: Arial, sans-serif; background:#f4f4f4; padding: 20px;'>
+                <div style='max-width:500px; margin:auto; background:white; border-radius:12px; padding:30px; box-shadow:0 4px 12px rgba(0,0,0,0.08);'>
+                    <h2 style='color:#16c451; margin-top:0;'>🍽️ SmartBite</h2>
+                    <h3 style='color:#333;'>Your reservation is confirmed!</h3>
+                    <p style='color:#555;'>Hi <strong>{$userName}</strong>, here's a summary of your booking:</p>
+                    <div style='background:#e9faf0; border-radius:8px; padding:16px; margin:20px 0;'>
+                        <table style='width:100%; border-collapse:collapse; font-size:15px;'>
+                            <tr>
+                                <td style='padding:8px 0; color:#888;'>📅 Date</td>
+                                <td style='padding:8px 0; color:#333; font-weight:600;'>{$dateFormatted}</td>
+                            </tr>
+                            <tr>
+                                <td style='padding:8px 0; color:#888;'>🕐 Time</td>
+                                <td style='padding:8px 0; color:#333; font-weight:600;'>{$time}</td>
+                            </tr>
+                            <tr>
+                                <td style='padding:8px 0; color:#888;'>👥 Guests</td>
+                                <td style='padding:8px 0; color:#333; font-weight:600;'>{$guests}</td>
+                            </tr>
+                            <tr>
+                                <td style='padding:8px 0; color:#888;'>🪑 Table</td>
+                                <td style='padding:8px 0; color:#333; font-weight:600;'>Table {$table['TableNumber']}</td>
+                            </tr>
+                            <tr>
+                                <td style='padding:8px 0; color:#888;'>📝 Special Requests</td>
+                                <td style='padding:8px 0; color:#333; font-weight:600;'>{$specialNotes}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <p style='color:#555;'>We look forward to welcoming you!</p>
+                    <p style='color:#16c451; font-weight:bold;'>— The SmartBite Team</p>
+                    <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'>
+                    <p style='font-size:12px; color:#aaa; text-align:center;'>© 2026 SmartBite Restaurants. All rights reserved.</p>
+                </div>
+            </body>
+            </html>";
+
+            $mail->send();
+        } catch (Exception $e) {
+            error_log("PHPMailer Error: " . $e->getMessage());
+            // Email failed silently — reservation still confirmed
+        }
+    }
+
     $conn->close();
     header("Location: /SmartBite/Frontend/reservation.html?success=1&table=" . $table['TableNumber'] . "&date=" . urlencode($date) . "&time=" . urlencode($time) . "&guests=" . $guests);
     exit();
