@@ -80,7 +80,7 @@ if (isset($_POST['clear_cart'])) {
 <a class="nav-link " href="/SmartBite/Frontend/reservation.html">Reservations</a>
 </li>
 <li class="nav-item">
-<a class="nav-link" href="/SmartBite/Frontend/review.html">Reviews</a>
+<a class="nav-link" href="/SmartBite/Frontend/review.php">Reviews</a>
 </li>
 <li class="nav-item">
 <a class="nav-link" href="cart.php"><i class="fa-solid fa-cart-arrow-down"></i> <sup><?php echo getCartItemCount(); ?></sup></a>
@@ -166,7 +166,7 @@ if (isset($_POST['clear_cart'])) {
  <!---displaying categorie name from database-->
      <ul class="navbar-nav me-auto ">
       <div class="section-header">
-            <h3>CATERORIES</h3>
+            <h3>CATEGORIES</h3>
             <div class="divider"></div>
       
 <!-----------------------fetching the  categories--------------------------------------->

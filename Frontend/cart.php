@@ -121,7 +121,7 @@ if(isset($_POST['checkout'])){
 
 <li class="nav-item"><a class="nav-link" href="index.php#menu-section">Menu</a></li>
 <li class="nav-item"><a class="nav-link " href="/SmartBite/Frontend/reservation.html">Reservations</a></li>
-<li class="nav-item"><a class="nav-link" href="/SmartBite/Frontend/review.html">Reviews</a></li>
+<li class="nav-item"><a class="nav-link" href="/SmartBite/Frontend/review.php">Reviews</a></li>
 <li class="nav-item">
 <a class="nav-link active-page" href="cart.php">
 <i class="fa-solid fa-cart-arrow-down"></i> <sup><?php echo getCartItemCount(); ?></sup>

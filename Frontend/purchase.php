@@ -5,8 +5,10 @@ session_start();
 require_once __DIR__ . '/../Backend/config/connection.php';
 require_once __DIR__ . '/../Backend/api/cart/cart-function.php';
 require_once __DIR__ . '/../Backend/api/purchase/purchase-function.php';
+require_once __DIR__ . '/../Backend/api/purchase/send-order.php';
 
 $userId = (int)$_SESSION['user_id'];
+
 
 
 if(isset($_SESSION['pending_order_id'])){
@@ -32,15 +34,31 @@ if(isset($_POST['confirm_order'])) {
   $orderId = $_SESSION['pending_order_id'];
   if ($orderId > 0) {
    confirmOrder($conn, $userId, $orderId);
+   
+   // Send email of the order details
+   try {
+     sendOrderEmailForUser($conn, $userId, $orderId);
+   } catch (Throwable $e) {
+     // ignore email errors
+   }
 }
+
 
   clearCart();
   unset($_SESSION['pending_order_id']);
 
-echo "<script>alert('You confirmed the order.');window.location='index.php';</script>";
-    exit;
+  // Send email with order details (best-effort)
+  try {
+    sendOrderEmailForUser($conn, $userId, $orderId);
+  } catch (Throwable $e) {
+    // ignore email errors
+  }
+
+  echo "<script>alert('An email has been sent to confirm the order.');window.location='index.php';</script>";
+  exit;
 
 }
+
 
 ?>
 
