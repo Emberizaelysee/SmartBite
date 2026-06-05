@@ -1,3 +1,19 @@
+// eviter le retour en arriere du user apres logout
+window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+        fetch('../Backend/api/auth/session_check.php', { credentials: 'include' })
+            .then(res => res.json())
+            .then(data => {
+                if (!data.logged_in) {
+                    window.location.replace('signin.html');
+                }
+            })
+            .catch(() => {
+                window.location.replace('signin.html');
+            });
+    }
+});
+
 // initialisation de la page dashboard
 document.addEventListener('DOMContentLoaded', async () => {
     const canLoadDashboard = await checkAdminSession();
@@ -6,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     fetchMenuItems();
     fetchOrders();
     fetchReservations();
+    fetchRestaurantTables();
     fetchReviews();
     fetchUsers();
 });
@@ -176,11 +193,32 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 });
 // memoire centrale pour eviter les appels API inutiles
+const RESERVATION_DURATION_MINUTES = 90;
+
+function reservationTimeToMinutes(timeStr) {
+    const key = (timeStr || '').substring(0, 8);
+    const parts = key.split(':');
+    return (parseInt(parts[0], 10) || 0) * 60 + (parseInt(parts[1], 10) || 0);
+}
+
+function reservationTimesOverlap(timeA, timeB) {
+    const a = reservationTimeToMinutes(timeA);
+    const b = reservationTimeToMinutes(timeB);
+    return a < (b + RESERVATION_DURATION_MINUTES) && b < (a + RESERVATION_DURATION_MINUTES);
+}
+
+function normalizeDashboardTimeValue(time) {
+    const t = (time || '').trim();
+    if (/^\d{2}:\d{2}$/.test(t)) return `${t}:00`;
+    return t;
+}
+
 const dashboardState = {
     // donne de la database
     menuItems: [],
     orders: [],
     reservations: [],
+    restaurantTables: [],
     reviews: [],
     users: [],
     orderCart: [],
@@ -203,6 +241,7 @@ const dashboardState = {
     editingMenuId: null,
     editingOrderId: null,
     editingReservationId: null,
+    editingTableId: null,
     // memoire des modals
     modals: {}
 };
@@ -221,7 +260,7 @@ async function dashboardAction(payload) {
 // recuperation du menu si pas d'erreur alors memoire centrale sinon array vide
 async function fetchMenuItems() {
     try {
-        const items = await requestJSON('../Backend/api/menu/fetch_Menu_Items.php');
+        const items = await requestJSON('../Backend/api/dashboard/fetch_Menu_Items.php');
         dashboardState.menuItems = Array.isArray(items) ? items : [];
     } catch (e) {
         console.error('Error fetching menu items:', e);
@@ -289,7 +328,7 @@ function renderMenuItems() {
                 <div style="display: flex; flex-directon: row; flex-wrap: nowrap;">
                     <button class="btn btn-sm btn-outline-primary me-1" onclick="editMenu(${item.id})"><i class="fas fa-edit"></i></button>
                     <button class="btn btn-sm btn-outline-secondary me-1" onclick="viewMenuRow(${item.id})"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-sm btn-outline-danger" onclick="deleteMenu(${item.id})"><i class="fas fa-trash"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-delete-action="menu" data-id="${item.id}"><i class="fas fa-trash"></i></button>
                 </div>
             </td>
         </tr>
@@ -387,6 +426,7 @@ function renderOrders() {
             <td>
                 <select class="form-select form-select-sm status-select" onchange="updateOrderStatus(${o.id}, this.value)">
                     <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                    <option value="Confirmed" ${o.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
                     <option value="Preparing" ${o.status === 'Preparing' ? 'selected' : ''}>Preparing</option>
                     <option value="Completed" ${o.status === 'Completed' ? 'selected' : ''}>Completed</option>
                     <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
@@ -398,7 +438,7 @@ function renderOrders() {
                 <div class="d-inline-flex align-items-center flex-nowrap">
                     <button class="btn btn-sm btn-outline-primary me-1" onclick="editOrder(${o.id})"><i class="fas fa-edit"></i></button>
                     <button class="btn btn-sm btn-outline-secondary me-1" onclick="viewOrderRow(${o.id})"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-sm btn-outline-danger" onclick="deleteOrder(${o.id})"><i class="fas fa-trash"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-delete-action="order" data-id="${o.id}"><i class="fas fa-trash"></i></button>
                 </div>
             </td>
         </tr>
@@ -476,7 +516,7 @@ async function fetchReservations() {
 }
 
 function renderReservations() {
-    const tbody = document.querySelector('#reservation tbody');
+    const tbody = document.querySelector('#reservations-table tbody');
     if (!tbody) return;
 
     // recuperation valeur de search bar
@@ -514,10 +554,122 @@ function renderReservations() {
             <td>
                 <button class="btn btn-sm btn-outline-primary me-1" onclick="editReservation(${r.id})"><i class="fas fa-edit"></i></button>
                 <button class="btn btn-sm btn-outline-secondary me-1" onclick="viewReservationRow(${r.id})"><i class="fas fa-eye"></i></button>
-                <button class="btn btn-sm btn-outline-danger" onclick="deleteReservation(${r.id})"><i class="fas fa-trash"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger" data-delete-action="reservation" data-id="${r.id}"><i class="fas fa-trash"></i></button>
             </td>
         </tr>
     `).join('');
+}
+
+async function fetchRestaurantTables() {
+    try {
+        const res = await requestJSON('../Backend/api/dashboard/fetch_all_tables.php');
+        dashboardState.restaurantTables = res.success ? (res.data || []) : [];
+    } catch (e) {
+        console.error('fetchRestaurantTables failed:', e);
+        dashboardState.restaurantTables = [];
+    }
+    renderRestaurantTables();
+}
+
+function renderRestaurantTables() {
+    const tbody = document.querySelector('#restaurant-tables-table tbody');
+    if (!tbody) return;
+
+    const rows = dashboardState.restaurantTables;
+    if (rows.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="text-center py-4 text-muted">
+                    <i class="fas fa-chair mb-2 d-block" style="font-size:2rem; color:#ddd;"></i>
+                    No tables found.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = rows.map((t) => `
+        <tr>
+            <td>${t.id}</td>
+            <td>${t.number}</td>
+            <td>${t.capacity}</td>
+            <td>${t.is_active ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-secondary">Inactive</span>'}</td>
+            <td class="text-nowrap">
+                <div class="d-inline-flex align-items-center flex-nowrap gap-1">
+                    <button class="btn btn-sm btn-outline-primary" onclick="editRestaurantTable(${t.id})" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-delete-action="table" data-id="${t.id}" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function addRestaurantTable() {
+    dashboardState.editingTableId = null;
+    document.getElementById('tableFormModalLabel').innerHTML =
+        '<span class="modal-title-icon"><i class="fas fa-chair"></i></span> Add Table';
+    document.getElementById('table-form')?.reset();
+    document.getElementById('table-form-id').value = '';
+    document.getElementById('table-form-active').value = '1';
+    dashboardState.modals.table?.show();
+}
+
+function editRestaurantTable(id) {
+    const table = dashboardState.restaurantTables.find((t) => t.id === id);
+    if (!table) return;
+
+    dashboardState.editingTableId = table.id;
+    document.getElementById('tableFormModalLabel').innerHTML =
+        '<span class="modal-title-icon"><i class="fas fa-chair"></i></span> Edit Table';
+    document.getElementById('table-form-id').value = String(table.id);
+    document.getElementById('table-form-number').value = String(table.number);
+    document.getElementById('table-form-capacity').value = String(table.capacity);
+    document.getElementById('table-form-active').value = table.is_active ? '1' : '0';
+    dashboardState.modals.table?.show();
+}
+
+function deleteRestaurantTable(id) {
+    showDeleteConfirm('Are you sure you want to <strong>delete this table</strong>?', () => {
+        dashboardAction({ action: 'delete_table', id }).then((res) => {
+            if (res.success) {
+                fetchRestaurantTables();
+                fetchAndPopulateTableSelect(null);
+            } else {
+                alert(res.message || 'Failed to delete table.');
+            }
+        });
+    });
+}
+
+async function submitTableForm(e) {
+    e.preventDefault();
+    const id = dashboardState.editingTableId;
+    const number = Number(document.getElementById('table-form-number')?.value || 0);
+    const capacity = Number(document.getElementById('table-form-capacity')?.value || 0);
+    const is_active = Number(document.getElementById('table-form-active')?.value ?? 1);
+
+    if (number < 1 || capacity < 1) {
+        alert('Table number and capacity must be at least 1.');
+        return;
+    }
+
+    const payload = {
+        action: id ? 'edit_table' : 'add_table',
+        table_number: number,
+        table_capacity: capacity,
+        is_active,
+    };
+    if (id) payload.id = id;
+
+    const res = await dashboardAction(payload);
+    if (!res.success) {
+        alert(res.message || 'Failed to save table.');
+        return;
+    }
+
+    dashboardState.modals.table?.hide();
+    fetchRestaurantTables();
+    fetchAndPopulateTableSelect(null);
 }
 
 function deleteReservation(id) {
@@ -544,15 +696,19 @@ function editReservation(id) {
     document.getElementById('reservation-form-submit-btn').innerHTML = '<i class="fas fa-check me-1"></i>Save';
     document.getElementById('reservation-form-id').value = String(reservation.id);
     document.getElementById('reservation-form-date').value = reservation.date || '';
-    document.getElementById('reservation-form-time').value = (reservation.time || '').substring(0, 5);
+    document.getElementById('reservation-form-time').value = normalizeDashboardTimeValue(reservation.time || '');
     document.getElementById('reservation-form-guests').value = String(reservation.guests ?? 1);
     document.getElementById('reservation-form-notes').value = reservation.special_notes || '';
 
     // afficher user selectionner
     selectReservationUser(reservation.user_id, reservation.customer_name, false);
 
-    //remplir dropdown des tables puis selectionner la table actuelle
-    fetchAndPopulateTableSelect(reservation.table_id);
+    fetchAndPopulateTableSelect(reservation.table_id, {
+        guests: reservation.guests,
+        date: reservation.date,
+        time: normalizeDashboardTimeValue(reservation.time || ''),
+        excludeReservationId: reservation.id,
+    });
 
     dashboardState.modals.reservation?.show();
 }
@@ -680,12 +836,12 @@ function renderUsers() {
     // affichage des donnees
     tbody.innerHTML = sortedRows.map((u) => {
         let actionBtns = '';
-        if (u.role !== 'Admin') {
-            actionBtns += `<button class="btn btn-sm btn-outline-primary me-1" onclick="makeAdmin(${u.id})"><i class="fas fa-user-shield"></i> Make Admin</button>`;
+        if (u.role !== 'Admin' && u.role !== 'admin') {
+            actionBtns += `<button class="btn btn-sm btn-outline-primary" onclick="makeAdmin(${u.id})" title="Make Admin"><i class="fas fa-user-shield"></i></button>`;
         } else {
-            actionBtns += `<button class="btn btn-sm btn-outline-secondary me-1" onclick="makeUser(${u.id})"><i class="fas fa-user"></i> Make User &nbsp;&nbsp;&nbsp;</button>`;
+            actionBtns += `<button class="btn btn-sm btn-outline-secondary" onclick="makeUser(${u.id})" title="Make User"><i class="fas fa-user"></i></button>`;
         }
-        actionBtns += `<button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${u.id})"><i class="fas fa-trash"></i></button>`;
+        actionBtns += `<button type="button" class="btn btn-sm btn-outline-danger" data-delete-action="user" data-id="${u.id}" title="Delete"><i class="fas fa-trash"></i></button>`;
 
         return `
             <tr>
@@ -694,9 +850,11 @@ function renderUsers() {
 
                 <td>${u.created_at || 'N/A'}</td>
                 <td>${u.role}</td>
-                <td>
-                    <button class="btn btn-sm btn-outline-secondary me-1" onclick="viewUserRow(${u.id})"><i class="fas fa-eye"></i></button>
-                    ${actionBtns}
+                <td class="text-nowrap">
+                    <div class="d-inline-flex align-items-center flex-nowrap gap-1">
+                        <button class="btn btn-sm btn-outline-secondary" onclick="viewUserRow(${u.id})" title="View"><i class="fas fa-eye"></i></button>
+                        ${actionBtns}
+                    </div>
                 </td>
             </tr>
         `;
@@ -762,6 +920,12 @@ function setupDashboardInteractions() {
 
     const addUserBtn = document.getElementById('add-user-btn');
     if (addUserBtn) addUserBtn.addEventListener('click', addUser);
+
+    const addTableBtn = document.getElementById('add-table-btn');
+    if (addTableBtn) addTableBtn.addEventListener('click', addRestaurantTable);
+
+    const tableForm = document.getElementById('table-form');
+    if (tableForm) tableForm.addEventListener('submit', submitTableForm);
     /*
         const quantityInput = document.getElementById('menu-form-quantity');
         if (quantityInput) quantityInput.addEventListener('input', updateMenuStockPreview);
@@ -800,6 +964,27 @@ function setupDashboardInteractions() {
 
     const reservationForm = document.getElementById('reservation-form');
     if (reservationForm) reservationForm.addEventListener('submit', submitReservationForm);
+
+    const resGuestsInput = document.getElementById('reservation-form-guests');
+    const resDateInput = document.getElementById('reservation-form-date');
+    const resTimeInput = document.getElementById('reservation-form-time');
+    const refreshReservationTables = () => {
+        const guests = Number(resGuestsInput?.value || 0);
+        const date = resDateInput?.value || '';
+        const time = resTimeInput?.value || '';
+        const selected = Number(document.getElementById('reservation-form-table-id')?.value || 0) || null;
+        fetchAndPopulateTableSelect(selected, {
+            guests,
+            date,
+            time,
+            excludeReservationId: dashboardState.editingReservationId,
+        });
+    };
+    if (resGuestsInput) resGuestsInput.addEventListener('input', refreshReservationTables);
+    if (resDateInput) resDateInput.addEventListener('change', refreshReservationTables);
+    if (resTimeInput) resTimeInput.addEventListener('change', refreshReservationTables);
+
+    setupDashboardDeleteDelegation();
 
     const orderForm = document.getElementById('order-form');
     if (orderForm) orderForm.addEventListener('submit', submitOrderForm);
@@ -946,8 +1131,7 @@ async function addReservation() {
     if (badge) { badge.style.display = 'none'; badge.innerHTML = ''; }
     _hideDropdown('reservation-user-search-results');
 
-    // remplir dropdown
-    fetchAndPopulateTableSelect(null);
+    fetchAndPopulateTableSelect(null, { guests: 2 });
 
     dashboardState.modals.reservation?.show();
 }
@@ -1006,14 +1190,16 @@ async function addReview() {
 async function addUser() {
     // vide formulaire
     document.getElementById('user-form')?.reset();
-    document.getElementById('user-form-role').value = 'Customer';
+    document.getElementById('user-form-role').value = 'user';
+    document.getElementById('userFormPasswordMessage').textContent = '';
+    document.getElementById('userFormMatchMessage').textContent = '';
     dashboardState.modals.user?.show();
 }
 
 // maj stat dashboard
 function updateDashboardStats() {
-    // nombre pending reservations
-    const pendingReservations = dashboardState.reservations.filter((r) => r.status === 'Pending').length;
+    // nombre pending orders
+    const pendingOrders = dashboardState.orders.filter((o) => o.status === 'Pending').length;
     // nombre total users
     const activeUsers = dashboardState.users.length;
     // nombre total commandes
@@ -1033,19 +1219,22 @@ function updateDashboardStats() {
     const salesBadgeEl = document.getElementById('stat-badge-sales');
 
     // affiche valeur
-    if (reservationsEl) reservationsEl.textContent = String(pendingReservations);
+    if (reservationsEl) reservationsEl.textContent = String(pendingOrders);
     if (usersEl) usersEl.textContent = String(activeUsers);
     if (ordersEl) ordersEl.textContent = String(totalOrders);
     if (salesEl) salesEl.textContent = `$${totalSales.toFixed(2)}`;
 
     // evolution (+X% ou -X%) / semaine 
-    const reservationGrowth = computeGrowthRateFromDateField(dashboardState.reservations, 'date');
+    const pendingOrderGrowth = computeGrowthRateFromDateField(
+        dashboardState.orders.filter((o) => o.status === 'Pending'),
+        'order_date'
+    );
     const userGrowth = computeGrowthRateFromDateField(dashboardState.users, 'created_at');
     const orderGrowth = computeGrowthRateFromDateField(dashboardState.orders, 'order_date');
     const salesGrowth = computeSalesGrowthRate(dashboardState.orders, 'order_date', 'total_amount');
 
     // maj affichage badges
-    updateStatBadge(reservationsBadgeEl, reservationGrowth);
+    updateStatBadge(reservationsBadgeEl, pendingOrderGrowth);
     updateStatBadge(usersBadgeEl, userGrowth);
     updateStatBadge(ordersBadgeEl, orderGrowth);
     updateStatBadge(salesBadgeEl, salesGrowth);
@@ -1150,32 +1339,44 @@ function initDashboardModals() {
     dashboardState.modals.rowView = createModal('rowViewModal');
     dashboardState.modals.deleteConfirm = createModal('deleteConfirmModal');
     dashboardState.modals.priviledgeConfirm = createModal('priviledgeConfirmModal');
+    dashboardState.modals.table = createModal('tableFormModal');
+}
+
+function getDeleteConfirmModal() {
+    const modalEl = document.getElementById('deleteConfirmModal');
+    if (!modalEl || typeof bootstrap === 'undefined') {
+        return null;
+    }
+    if (!dashboardState.modals.deleteConfirm) {
+        dashboardState.modals.deleteConfirm = bootstrap.Modal.getOrCreateInstance(modalEl);
+    }
+    return dashboardState.modals.deleteConfirm;
 }
 
 function showDeleteConfirm(message, onConfirm) {
     const msgEl = document.getElementById('deleteConfirmMessage');
     const btnEl = document.getElementById('deleteConfirmBtn');
-    // si introuvable fallback -> confirm()
-    if (!msgEl || !btnEl) {
+    const modal = getDeleteConfirmModal();
+
+    if (!msgEl || !btnEl || !modal) {
         if (confirm(message.replace(/<[^>]*>/g, ''))) onConfirm();
         return;
     }
 
     msgEl.innerHTML = message;
 
-    // clone bouton reset event listeners
     const newBtn = btnEl.cloneNode(true);
     btnEl.parentNode.replaceChild(newBtn, btnEl);
     newBtn.id = 'deleteConfirmBtn';
 
     // click -> hide modal & execute onConfirm
     newBtn.addEventListener('click', () => {
-        dashboardState.modals.deleteConfirm?.hide();
+        modal.hide();
         onConfirm();
         // applique une fois
     }, { once: true });
 
-    dashboardState.modals.deleteConfirm?.show();
+    modal.show();
 }
 
 function showPriviledgeConfirm(message, onConfirm) {
@@ -1209,8 +1410,7 @@ function showPriviledgeConfirm(message, onConfirm) {
 function createModal(id) {
     const el = document.getElementById(id);
     if (!el || typeof bootstrap === 'undefined') return null;
-    // sinon cree le modal
-    return new bootstrap.Modal(el);
+    return bootstrap.Modal.getOrCreateInstance(el);
 }
 
 function openMenuModal(mode, item = null) {
@@ -1247,7 +1447,6 @@ function openMenuModal(mode, item = null) {
         if (imageInput) imageInput.value = '';
     }
 
-    updateMenuStockPreview();
     dashboardState.modals.menu?.show();
 }
 
@@ -1300,6 +1499,33 @@ function updateMenuStockPreview() {
     previewEl.innerHTML = renderStockStatus(quantity);
 }
 */
+function validateReservationClient(tableId, date, time, guests, excludeReservationId = null) {
+    const table = dashboardState.restaurantTables.find((t) => t.id === tableId);
+    if (!table) {
+        return 'Please select a valid table.';
+    }
+    if (!table.is_active) {
+        return 'This table is not active.';
+    }
+    if (table.capacity < guests) {
+        return `Table capacity (${table.capacity}) is less than the number of guests (${guests}).`;
+    }
+
+    const timeKey = normalizeDashboardTimeValue(time);
+    const conflict = dashboardState.reservations.find((r) => {
+        if (excludeReservationId && r.id === excludeReservationId) return false;
+        return r.table_id === tableId
+            && r.date === date
+            && reservationTimesOverlap(timeKey, normalizeDashboardTimeValue(r.time || ''));
+    });
+
+    if (conflict) {
+        return 'This table is already reserved for that date and time slot.';
+    }
+
+    return null;
+}
+
 async function submitReservationForm(e) {
     // empeche rechargement de page
     e.preventDefault();
@@ -1322,13 +1548,18 @@ async function submitReservationForm(e) {
 
     // check mode edition
     const reservationId = dashboardState.editingReservationId;
+    const clientError = validateReservationClient(tableId, date, time, guests, reservationId);
+    if (clientError) {
+        alert(clientError);
+        return;
+    }
     // objet a envoyer
     const payload = {
         action: reservationId ? 'edit_reservation' : 'add_reservation',
         user_id: userId,
         table_id: tableId,
         date,
-        time: `${time}:00`,
+        time: normalizeDashboardTimeValue(time),
         guests,
         special_notes: notes,
     };
@@ -1340,7 +1571,8 @@ async function submitReservationForm(e) {
     if (!res.success) { alert(res.message || 'Failed to save reservation.'); return; }
 
     dashboardState.modals.reservation?.hide();
-    fetchReservations();
+    await fetchReservations();
+    fetchRestaurantTables();
 }
 
 async function submitOrderForm(e) {
@@ -1408,10 +1640,23 @@ async function submitUserForm(e) {
     const username = document.getElementById('user-form-username')?.value.trim() || '';
     const email = document.getElementById('user-form-email')?.value.trim() || '';
     const password = document.getElementById('user-form-password')?.value || '';
-    const role = document.getElementById('user-form-role')?.value || 'Customer';
+    const passwordConfirm = document.getElementById('user-form-password-confirm')?.value || '';
+    const role = document.getElementById('user-form-role')?.value || 'user';
 
     if (!username || !email || !password) {
         alert('Please fill username, email and password.');
+        return;
+    }
+
+    if (!isDashboardStrongPassword(password)) {
+        checkDashboardUserPasswordStrength();
+        alert('Password must have: min 8 chars, uppercase, lowercase, number, and special character.');
+        return;
+    }
+
+    if (password !== passwordConfirm) {
+        checkDashboardUserPasswordMatch();
+        alert('Passwords do not match.');
         return;
     }
 
@@ -1623,12 +1868,17 @@ function onOrderUserSearchInput(e) {
     if (term.length < 2) { _hideDropdown('order-user-search-results'); return; }
     // debounce requete api (on check le temp entre deux touche si trop grand (> 300) on envoie la requette)
     _orderUserSearchTimer = setTimeout(async () => {
-        const res = await dashboardAction({ action: 'search_users', term });
-        _renderUserDropdown(
-            'order-user-search-results',
-            res.success ? (res.data || []) : [],
-            (id, name) => selectOrderUser(id, name, true)
-        );
+        try {
+            const res = await dashboardAction({ action: 'search_users', term });
+            _renderUserDropdown(
+                'order-user-search-results',
+                res.success ? (res.data || []) : [],
+                (id, name) => selectOrderUser(id, name, true)
+            );
+        } catch (err) {
+            console.error('Order user search failed:', err);
+            _renderUserDropdown('order-user-search-results', [], () => {});
+        }
     }, 300);
 }
 
@@ -1712,7 +1962,10 @@ function _renderUserDropdown(dropdownId, users, onSelect) {
     el.querySelectorAll('.user-search-item').forEach(item => {
         item.addEventListener('click', () => {
             const uid = parseInt(item.dataset.uid, 10);
-            const uname = item.dataset.uname;
+            const uname = (item.dataset.uname || '')
+                .replace(/&amp;/g, '&')
+                .replace(/&quot;/g, '"')
+                .replace(/&lt;/g, '<');
             if (typeof onSelect === 'function') onSelect(uid, uname);
         });
     });
@@ -1723,33 +1976,167 @@ function _hideDropdown(id) {
     if (el) { el.style.display = 'none'; el.innerHTML = ''; }
 }
 
-async function fetchAndPopulateTableSelect(selectedTableId = null) {
-    const sel = document.getElementById('reservation-form-table-id');
-    if (!sel) return;
-    sel.innerHTML = '<option value="" disabled selected>Loading tables...</option>';
+function isDashboardStrongPassword(password) {
+    if (password.length < 8) return false;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=<>?{}[\]~]).+$/;
+    return regex.test(password);
+}
 
-    try {
-        // appel de la bdd backend
-        const res = await dashboardAction({ action: 'get_tables' });
-        const tables = res.success ? (res.data || []) : [];
-
-        if (tables.length === 0) {
-            sel.innerHTML = '<option value="" disabled>No tables available</option>';
-            return;
-        }
-
-        sel.innerHTML = '<option value="" disabled>Select a table...</option>' +
-            tables.map(t =>
-                `<option value="${t.id}" ${t.id === selectedTableId ? 'selected' : ''}>
-                    Table #${t.number} (capacity: ${t.capacity})
-                 </option>`
-            ).join('');
-
-        // select la premiere place default
-        if (!selectedTableId && tables.length > 0) sel.selectedIndex = 1;
-    } catch (err) {
-        console.error('fetchAndPopulateTableSelect failed:', err);
-        sel.innerHTML = '<option value="" disabled>Failed to load tables</option>';
+function toggleDashboardPassword(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    if (!input || !icon) return;
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
     }
 }
+
+function checkDashboardUserPasswordStrength() {
+    const pass = document.getElementById('user-form-password')?.value || '';
+    const messageDiv = document.getElementById('userFormPasswordMessage');
+    if (!messageDiv) return;
+    if (pass === '') { messageDiv.textContent = ''; return; }
+    if (isDashboardStrongPassword(pass)) {
+        messageDiv.style.color = 'var(--green)';
+        messageDiv.textContent = 'Strong password ✅';
+    } else {
+        messageDiv.style.color = 'red';
+        messageDiv.textContent = 'Password must have: min 8 chars, uppercase, lowercase, number, special char ❌';
+    }
+}
+
+function checkDashboardUserPasswordMatch() {
+    const pass1 = document.getElementById('user-form-password')?.value || '';
+    const pass2 = document.getElementById('user-form-password-confirm')?.value || '';
+    const matchDiv = document.getElementById('userFormMatchMessage');
+    if (!matchDiv) return;
+    if (pass2 === '') { matchDiv.textContent = ''; return; }
+    if (pass1 === pass2) {
+        matchDiv.style.color = 'var(--green)';
+        matchDiv.textContent = 'Passwords match ✅';
+    } else {
+        matchDiv.style.color = 'red';
+        matchDiv.textContent = 'Passwords do not match ❌';
+    }
+}
+
+window.checkDashboardUserPasswordStrength = checkDashboardUserPasswordStrength;
+window.checkDashboardUserPasswordMatch = checkDashboardUserPasswordMatch;
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('toggle-user-form-password')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleDashboardPassword('user-form-password', 'userFormEye');
+    });
+    document.getElementById('toggle-user-form-password-confirm')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleDashboardPassword('user-form-password-confirm', 'userFormEyeConfirm');
+    });
+});
+
+function filterTablesForReservation(tables, { guests = 0, date = '', time = '', excludeReservationId = null } = {}) {
+    const timeKey = normalizeDashboardTimeValue(time);
+    return tables.filter((t) => {
+        if (!t.is_active) return false;
+        if (guests > 0 && t.capacity < guests) return false;
+        if (date && timeKey) {
+            const booked = dashboardState.reservations.some((r) => {
+                if (excludeReservationId && r.id === excludeReservationId) return false;
+                return r.table_id === t.id
+                    && r.date === date
+                    && reservationTimesOverlap(timeKey, normalizeDashboardTimeValue(r.time || ''));
+            });
+            if (booked) return false;
+        }
+        return true;
+    });
+}
+
+async function fetchAndPopulateTableSelect(selectedTableId = null, filters = {}) {
+    const sel = document.getElementById('reservation-form-table-id');
+    if (!sel) return;
+
+    const guests = Number(filters.guests ?? document.getElementById('reservation-form-guests')?.value ?? 0);
+    const date = filters.date ?? document.getElementById('reservation-form-date')?.value ?? '';
+    const time = filters.time ?? document.getElementById('reservation-form-time')?.value ?? '';
+    const excludeReservationId = filters.excludeReservationId ?? dashboardState.editingReservationId ?? null;
+
+    let tables = dashboardState.restaurantTables.length
+        ? [...dashboardState.restaurantTables]
+        : [];
+
+    if (tables.length === 0) {
+        sel.innerHTML = '<option value="" disabled selected>Loading tables...</option>';
+        try {
+            const res = await dashboardAction({ action: 'get_tables' });
+            tables = (res.success ? (res.data || []) : []).map((t) => ({
+                id: t.id,
+                number: t.number,
+                capacity: t.capacity,
+                is_active: true,
+            }));
+        } catch (err) {
+            console.error('fetchAndPopulateTableSelect failed:', err);
+            sel.innerHTML = '<option value="" disabled>Failed to load tables</option>';
+            return;
+        }
+    }
+
+    const available = filterTablesForReservation(tables, { guests, date, time, excludeReservationId });
+
+    if (available.length === 0) {
+        sel.innerHTML = '<option value="" disabled selected>No table available for this date, time and guests</option>';
+        return;
+    }
+
+    const keepSelected = selectedTableId && available.some((t) => t.id === selectedTableId);
+
+    sel.innerHTML = '<option value="" disabled' + (keepSelected ? '' : ' selected') + '>Select a table...</option>' +
+        available.map((t) =>
+            `<option value="${t.id}" ${t.id === selectedTableId ? 'selected' : ''}>
+                Table #${t.number} (capacity: ${t.capacity})
+             </option>`
+        ).join('');
+
+    if (!keepSelected && available.length > 0) {
+        sel.selectedIndex = 1;
+    }
+}
+
+function setupDashboardDeleteDelegation() {
+    if (document.body.dataset.deleteDelegationBound === '1') return;
+    document.body.dataset.deleteDelegationBound = '1';
+
+    document.body.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-delete-action]');
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        const action = btn.getAttribute('data-delete-action');
+        const id = Number(btn.getAttribute('data-id'));
+        if (!action || !id) return;
+
+        switch (action) {
+            case 'menu': deleteMenu(id); break;
+            case 'order': deleteOrder(id); break;
+            case 'reservation': deleteReservation(id); break;
+            case 'table': deleteRestaurantTable(id); break;
+            case 'user': deleteUser(id); break;
+            default: break;
+        }
+    });
+}
+
+window.deleteMenu = deleteMenu;
+window.deleteOrder = deleteOrder;
+window.deleteReservation = deleteReservation;
+window.deleteRestaurantTable = deleteRestaurantTable;
+window.deleteUser = deleteUser;
 

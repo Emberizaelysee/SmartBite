@@ -587,13 +587,23 @@ footer {
     gap: 1rem;
 }
 
-/* ── Panel card ──────────────────────────────────────────────────────────── */
+/* Panel card */
 .order-panel {
     background: #fff;
     border: 1px solid rgba(22, 196, 81, 0.14);
     border-radius: 14px;
     padding: 1.2rem 1.25rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: visible;
+}
+
+.order-user-search-wrap {
+    position: relative;
+    overflow: visible;
+}
+
+.modal-body {
+    overflow: visible;
 }
 
 .order-panel-header {

@@ -264,7 +264,7 @@ if (isset($_POST['clear_cart'])) {
         <div class="message bot-message">
           <i class="fa-solid fa-robot bot-avatar"></i>
           <div class="message-text">
-            Salut, je suis l'assistant SmartBite. Je peux vous aider pour le menu et les recommandations.
+            Hello, I am the SmartBite AI assistant. I can help you with the menu and recommendations.
           </div>
         </div>
       </div>

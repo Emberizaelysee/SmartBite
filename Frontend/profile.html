@@ -16,6 +16,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- CSS -->
     <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/auth.css">
     <link rel="stylesheet" href="./css/profile.css">
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml"
@@ -52,7 +53,7 @@
                             <a class="nav-link" href="reservation.html">Reservations</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="review.html">Reviews</a>
+                            <a class="nav-link" href="review.php">Reviews</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="cart.php"><i class="fa-solid fa-cart-arrow-down"></i>
@@ -62,7 +63,7 @@
                             <a href="#"
                                 class="link-body-emphasis text-decoration-none dropdown-toggle d-flex align-items-center fw-semibold"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <span id="username" class="me-2">My Account</span>
+                                <span id="username" class="me-2"></span>
                                 <img src="./img/profile.jpg" alt="Profile" class="nav-avatar" id="nav-profile-avatar">
 
                             </a>
@@ -124,6 +125,11 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#review">
+                                        <i class="fas fa-star me-2 icon-green"></i>My Reviews
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" data-bs-toggle="tab" href="#setting">
                                         <i class="fas fa-cog me-2 icon-green"></i>Settings
                                     </a>
@@ -168,6 +174,14 @@
                             </div>
 
                         </div>
+                        <!-- Reviews panel -->
+                        <div class="tab-pane container fade" id="review">
+                            <h3 class="mb-3"><i class="fas fa-star me-2 icon-green"></i>My Reviews</h3>
+                            <div class="bg-white border rounded p-4 text-center text-muted mb-3">
+                                <i class="fas fa-star-half-alt mb-2" style="font-size:2rem; color:#ddd;"></i>
+                                <p class="mb-0">You have no reviews yet.</p>
+                            </div>
+                        </div>
                         <!-- Settings panel -->
                         <div class="tab-pane container fade" id="setting">
                             <h3 class="mb-3"><i class="fas fa-cog me-2 icon-green"></i>Settings</h3>
@@ -187,12 +201,12 @@
                                             </div>
                                             <div id="setting-feedback" class="mt-2" style="display:none;"></div>
                                             <div class="d-flex gap-2 mt-auto" style="gap:.6rem !important;">
-                                                <button type="submit" id="edit-profile-btn" class="btn btn-green">
+                                                <button type="button" id="edit-profile-btn" class="btn btn-green">
                                                     <i class="fas fa-edit me-1"></i>Edit Profile
                                                 </button>
                                                 <button type="button" id="cancel-edit-btn" class="btn btn-outline-green"
                                                     style="display:none;">Cancel</button>
-                                                <button type="button" id="save-profile-btn" class="btn btn-green"
+                                                <button type="submit" id="save-profile-btn" class="btn btn-green"
                                                     style="display:none;">
                                                     <i class="fas fa-save me-1"></i>Save
                                                 </button>
@@ -213,13 +227,26 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="new-password" class="form-label">New Password</label>
-                                                <input type="password" class="form-control" id="new-password" required>
+                                                <div class="input-group">
+                                                    <input type="password" class="form-control" id="new-password"
+                                                        placeholder="Create password" oninput="checkProfilePasswordStrength()" required>
+                                                    <button type="button" class="input-group-text" id="toggle-new-password" aria-label="Show password">
+                                                        <i class="fa fa-eye-slash" id="profileEyeNew"></i>
+                                                    </button>
+                                                </div>
+                                                <div id="newPasswordMessage" class="password-msg"></div>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="confirm-password" class="form-label">Confirm New
                                                     Password</label>
-                                                <input type="password" class="form-control" id="confirm-password"
-                                                    required>
+                                                <div class="input-group">
+                                                    <input type="password" class="form-control" id="confirm-password"
+                                                        placeholder="Repeat password" oninput="checkProfilePasswordMatch()" required>
+                                                    <button type="button" class="input-group-text" id="toggle-confirm-password" aria-label="Show password">
+                                                        <i class="fa fa-eye-slash" id="profileEyeConfirm"></i>
+                                                    </button>
+                                                </div>
+                                                <div id="confirmPasswordMessage" class="password-msg"></div>
                                             </div>
                                             <button type="submit" class="btn btn-green">
                                                 <i class="fas fa-key me-1"></i>Change Password
@@ -346,6 +373,81 @@
         </div>
     </div>
 
+    <!-- Edit reservation modal -->
+    <div class="modal fade" id="editReservationModal" tabindex="-1" aria-labelledby="editReservationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="edit-reservation-form">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-semibold" id="editReservationModalLabel">
+                            <span class="modal-title-icon"><i class="fas fa-calendar-alt"></i></span>
+                            Edit Reservation
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="edit-reservation-id">
+                        <div class="mb-3">
+                            <label for="edit-reservation-guests" class="form-label">Number of Guests</label>
+                            <select id="edit-reservation-guests" class="form-select" required>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-reservation-date" class="form-label">Date</label>
+                            <input type="date" id="edit-reservation-date" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-reservation-time" class="form-label">Time slot</label>
+                            <select id="edit-reservation-time" class="form-select" required>
+                                <option value="" disabled>Select a time...</option>
+                                <optgroup label="Lunch">
+                                    <option value="11:30:00">11:30 AM</option>
+                                    <option value="12:00:00">12:00 PM</option>
+                                    <option value="12:30:00">12:30 PM</option>
+                                    <option value="13:00:00">1:00 PM</option>
+                                    <option value="13:30:00">1:30 PM</option>
+                                    <option value="14:00:00">2:00 PM</option>
+                                </optgroup>
+                                <optgroup label="Dinner">
+                                    <option value="17:30:00">5:30 PM</option>
+                                    <option value="18:00:00">6:00 PM</option>
+                                    <option value="18:30:00">6:30 PM</option>
+                                    <option value="19:00:00">7:00 PM</option>
+                                    <option value="19:30:00">7:30 PM</option>
+                                    <option value="20:00:00">8:00 PM</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="mb-0">
+                            <label for="edit-reservation-notes" class="form-label">Special notes (optional)</label>
+                            <textarea id="edit-reservation-notes" class="form-control" rows="2"></textarea>
+                        </div>
+                        <p class="text-muted small mt-2 mb-0">
+                            Table will be assigned automatically (best match). Changes must be made at least 3 days before your visit.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-green">
+                            <i class="fas fa-save me-1"></i>Save changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Delete confirmation modal -->
     <div class="modal fade modal-delete-confirm" id="deleteConfirmModal" tabindex="-1"
         aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
@@ -383,7 +485,7 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./js/profile.js?v=6"></script>
+    <script src="./js/profile.js?v=9"></script>
 </body>
 
 </html>

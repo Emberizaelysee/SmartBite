@@ -9,46 +9,72 @@ const API_URL = '../Backend/api/chatbot/chatbot_proxy.php';
 
 const userData = {
     message: null
-}
+};
 
-// chat history -> context
+const SYSTEM_PROMPT_BASE = `## Role
+You are the Menu Assistant for SmartBite, a fine-dining restaurant. Your goal is to help users find the perfect meal, check for allergens, and provide detailed descriptions based on our official menu. Users can also book a table, browse the menu, and leave reviews on this website.
+
+## Guidelines
+1. Recommendation: If a user is unsure what to order, ask whether they prefer light or heavy meals.
+2. Recommendation: When a user asks for dietary-specific options (vegetarian, gluten-free, vegan, etc.), only recommend items that explicitly match those preferences in the menu data below.
+3. Request: If a user asks for something not on the menu, politely inform them and suggest the closest available alternative.
+4. Safety: If a user mentions an allergy, carefully cross-reference all listed ingredients before making a recommendation.
+5. Safety: If a user asks about an allergen not explicitly listed in the menu data, do not guess. Say: "I am not certain about that ingredient — let me get a human server to double-check for your safety."
+6. Safety: Do not provide nutritional or medical advice. Stick strictly to the provided menu descriptions.
+7. Ratings: Only mention ratings if the user specifically asks for "popular" or "highly rated" items.
+8. Tone: Always maintain a friendly, professional, and helpful tone. Encourage users to ask for more details about any menu item.
+9. Format: Keep your responses concise and easy to read. Use bullet points or short paragraphs when listing multiple items.
+
+## Menu Data
+__MENU_PLACEHOLDER__`;
+
+// chat history -> context (system prompt + model acknowledgment)
 const chatHistory = [
     {
-        role: "assistant",
-        parts: [{ text: `We are SmartBite, a restauration company users can book a table, look at our menu, and give us a rating throught this website.` }],
+        role: 'user',
+        parts: [{ text: SYSTEM_PROMPT_BASE }],
+    },
+    {
+        role: 'model',
+        parts: [{ text: "Understood! I'm ready to assist SmartBite guests with menu recommendations, allergen checks, and more. How can I help you today?" }],
     },
 ];
 
-// menu data bdd -> context chatbot
+// menu data bdd -> inject into system prompt
 const fetchRestaurantContext = async () => {
     try {
-        const response = await fetch('../Backend/api/menu/fetch_Menu_Items.php');
-        if (!response.ok) throw new Error('Failed to fetch menu');
+        const response = await fetch('../Backend/api/dashboard/fetch_Menu_Items.php');
+        if (!response.ok) throw new Error('Failed to fetch menu items');
 
         const menuItems = await response.json();
+        if (!Array.isArray(menuItems) || menuItems.length === 0) return;
 
-        // menu items readable string for the AI
-        let menuContext = "Here is our current menu:\n";
+        const grouped = {};
+        menuItems.forEach((item) => {
+            const cat = item.category || 'Other';
+            if (!grouped[cat]) grouped[cat] = [];
+            grouped[cat].push(item);
+        });
 
-        // group by category to make it structured
-        const categories = [...new Set(menuItems.map(item => item.category))];
-        categories.forEach(category => {
-            menuContext += `- **${category}**:\n`;
-            const itemsInCategory = menuItems.filter(item => item.category === category);
-            itemsInCategory.forEach(item => {
-                menuContext += `  - ${item.name}: ${item.description} ($${item.price})\n`;
+        let menuContext = '\n\n## Live Menu Data\n';
+        Object.keys(grouped).forEach((category) => {
+            menuContext += `\n### ${category}\n`;
+            grouped[category].forEach((item) => {
+                menuContext += `* **${item.name}** — $${Number(item.price).toFixed(2)}\n`;
+                if (item.description) menuContext += `  - Description: ${item.description}\n`;
+                if (item.ingredients) menuContext += `  - Ingredients: ${item.ingredients}\n`;
             });
         });
 
-        // + context to the prompt
-        chatHistory[0].parts[0].text += `\n\n${menuContext}`;
+        chatHistory[0].parts[0].text = SYSTEM_PROMPT_BASE.replace(
+            '__MENU_PLACEHOLDER__',
+            menuContext
+        );
     } catch (error) {
-        console.error("Error loading restaurant context:", error);
+        console.error('Error loading restaurant context:', error);
     }
 };
 
-// init context on load
-fetchRestaurantContext();
 const initialHeight = messageInput.scrollHeight;
 
 const createMessageElement = (content, ...classes) => {
@@ -56,75 +82,73 @@ const createMessageElement = (content, ...classes) => {
     div.classList.add('message', ...classes);
     div.innerHTML = content;
     return div;
-}
+};
+
+const renderBotMarkdown = (rawText) => {
+    return rawText
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/^\* (.+)$/gm, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+        .replace(/\n/g, '<br>');
+};
 
 const generateBotResponse = async (incomingMessageDiv) => {
     const messageElement = incomingMessageDiv.querySelector('.message-text');
 
-    // + user message to chat history for context
+    // refresh menu in system prompt before every API call
+    await fetchRestaurantContext();
+
     chatHistory.push({
         role: 'user',
-        parts: [{ text: `Using the details provided above, please address this query: ${userData.message}` }]
+        parts: [{ text: userData.message }],
     });
 
-    // API request options
     const requestOptions = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            contents: chatHistory
-
-        })
-    }
+            contents: chatHistory,
+        }),
+    };
 
     try {
-        // bot response from the API
         const response = await fetch(API_URL, requestOptions);
         const data = await response.json();
-        if (!response.ok) throw new Error(data.error.message);
+        if (!response.ok) throw new Error(data.error?.message || 'Request failed');
 
-        // bot response text from the API response
-        const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, '$1').trim();
-        messageElement.innerText = apiResponseText;
+        const rawText = data.candidates[0].content.parts[0].text.trim();
+        messageElement.innerHTML = renderBotMarkdown(rawText);
 
-        // + bot response to chat history for context
         chatHistory.push({
-            role: 'assistant',
-            parts: [{ text: apiResponseText }]
+            role: 'model',
+            parts: [{ text: rawText }],
         });
     } catch (error) {
         console.log(error);
-        /*
-        console.error('Error fetching bot response:', error);
-        console.error('Error generating bot response:', error);*/
         messageElement.innerText = error.message;
-        messageElement.style.color = "rgb(220,53,69)";
+        messageElement.style.color = 'rgb(220,53,69)';
     } finally {
-        // stop animation + scroll to bottom
         incomingMessageDiv.classList.remove('thinking');
         chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: 'smooth' });
     }
-}
+};
 
 const handleOutgoingMessage = (e) => {
-    // empeche rechargement de page
     e.preventDefault();
     userData.message = messageInput.value.trim();
     messageInput.value = '';
-    messageInput.dispatchEvent(new Event('input')); // Trigger input event to adjust height and border radius
+    messageInput.dispatchEvent(new Event('input'));
 
-    // display user message
     const messageContent = `<div class="message-text"></div>`;
-
     const outgoingMessageDiv = createMessageElement(messageContent, 'user-message');
-    // make sure the text is a text and not html to prevent xss
     outgoingMessageDiv.querySelector('.message-text').innerText = userData.message;
     chatBody.appendChild(outgoingMessageDiv);
     chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: 'smooth' });
 
-    // show thinking indicator au moins 600ms
     setTimeout(() => {
         const messageContent = `<i class="fa-solid fa-robot bot-avatar"></i>
                         <div class="message-text">
@@ -140,10 +164,8 @@ const handleOutgoingMessage = (e) => {
         chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: 'smooth' });
         generateBotResponse(incomingMessageDiv);
     }, 600);
-}
+};
 
-
-// sending message avec enter
 messageInput.addEventListener('keydown', (e) => {
     const userMessage = e.target.value.trim();
     if (e.key === 'Enter' && !e.shiftKey && userMessage !== '' && window.innerWidth > 400) {
@@ -151,13 +173,11 @@ messageInput.addEventListener('keydown', (e) => {
     }
 });
 
-//input hauteur dynamique
 messageInput.addEventListener('input', () => {
-    messageInput.style.height = `${initialHeight}px`; // reset to initial height
-    messageInput.style.height = `${messageInput.scrollHeight}px`; // adjust height to fit content
+    messageInput.style.height = `${initialHeight}px`;
+    messageInput.style.height = `${messageInput.scrollHeight}px`;
     const chatBodyEl = document.querySelector('.chat-body');
-    chatBodyEl.style.borderRadius = messageInput.scrollHeight > initialHeight ? '15px' : '32px'; // adjust border radius when input expands
-    // margin class si textarea > 80px
+    chatBodyEl.style.borderRadius = messageInput.scrollHeight > initialHeight ? '15px' : '32px';
     if (messageInput.scrollHeight > 80) {
         messageInput.classList.add('tall-textarea');
         chatBodyEl.classList.add('input-overlap-padding');
@@ -167,8 +187,6 @@ messageInput.addEventListener('input', () => {
     }
 });
 
-
-// Initialize emoji picker (create first, then append once)
 const picker = new EmojiMart.Picker({
     theme: 'auto',
     skinTonePosition: 'none',
@@ -177,7 +195,7 @@ const picker = new EmojiMart.Picker({
         const { selectionStart: start, selectionEnd: end } = messageInput;
         messageInput.setRangeText(emoji.native, start, end, 'end');
         messageInput.focus();
-    }
+    },
 });
 
 const chatForm = document.querySelector('.chat-form');
@@ -185,20 +203,16 @@ chatForm.appendChild(picker);
 
 const emojiButton = document.getElementById('emoji-picker');
 emojiButton.addEventListener('click', (e) => {
-    // empeche rechargement de page
     e.preventDefault();
-    e.stopPropagation(); // Prevent event from bubbling to document
+    e.stopPropagation();
     document.body.classList.toggle('show-emoji-picker');
 });
 
-// hide emoji picker when clicking outside
 document.addEventListener('click', (e) => {
     if (!chatForm.contains(e.target) && !picker.contains(e.target)) {
         document.body.classList.remove('show-emoji-picker');
     }
 });
-
-
 
 sendMessageButton.addEventListener('click', (e) => handleOutgoingMessage(e));
 

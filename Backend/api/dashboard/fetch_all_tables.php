@@ -14,13 +14,9 @@ if (!isset($_SESSION['user_id']) || strtolower($_SESSION['user_role'] ?? '') !==
     exit();
 }
 
-// fait appel a la fonction getAllOrders et envoie les donnees sous format json
+// fait appel a la fonction getAllRestaurantTables et envoie les donnees sous format json
 $dashboardModel = new DashboardModel($conn);
-$response = [
-    'success' => true,
-    'data' => $dashboardModel->getAllOrders(),
-];
+$response = ['success' => true, 'data' => $dashboardModel->getAllRestaurantTables()];
 
 $conn->close();
 echo json_encode($response);
-?>

@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <img src="${avatarUrl}" alt="Profile" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;" onerror="this.src='./img/profile.jpg'">
                     
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end text-small bg">
+                <ul class="dropdown-menu dropdown-menu-end text-small" style="background: var(--background-color);">
                     <li><a class="dropdown-item" href="./profile.html">
                             <i class="fa-solid fa-user me-2 icon-green"></i>Profile</a></li>
                     ${adminLink}

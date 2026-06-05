@@ -1,3 +1,85 @@
+// Password rules — aligned with signup (script.js)
+function isProfileStrongPassword(password) {
+    if (password.length < 8) return false;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=<>?{}[\]~]).+$/;
+    return regex.test(password);
+}
+
+function toggleProfilePassword(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    if (!input || !icon) return;
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    }
+}
+
+function checkProfilePasswordStrength() {
+    const pass = document.getElementById('new-password')?.value || '';
+    const messageDiv = document.getElementById('newPasswordMessage');
+    if (!messageDiv) return;
+
+    if (pass === '') {
+        messageDiv.textContent = '';
+        return;
+    }
+
+    if (isProfileStrongPassword(pass)) {
+        messageDiv.style.color = 'var(--green)';
+        messageDiv.textContent = 'Strong password ✅';
+    } else {
+        messageDiv.style.color = 'red';
+        messageDiv.textContent = 'Password must have: min 8 chars, uppercase, lowercase, number, special char ❌';
+    }
+}
+
+function checkProfilePasswordMatch() {
+    const pass1 = document.getElementById('new-password')?.value || '';
+    const pass2 = document.getElementById('confirm-password')?.value || '';
+    const matchDiv = document.getElementById('confirmPasswordMessage');
+    if (!matchDiv) return;
+
+    if (pass2 === '') {
+        matchDiv.textContent = '';
+        return;
+    }
+
+    if (pass1 === pass2) {
+        matchDiv.style.color = 'var(--green)';
+        matchDiv.textContent = 'Passwords match ✅';
+    } else {
+        matchDiv.style.color = 'red';
+        matchDiv.textContent = 'Passwords do not match ❌';
+    }
+}
+
+window.toggleProfilePassword = toggleProfilePassword;
+window.checkProfilePasswordStrength = checkProfilePasswordStrength;
+window.checkProfilePasswordMatch = checkProfilePasswordMatch;
+
+// eviter le retour en arriere du user apres logout
+window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+        fetch('../Backend/api/auth/session_check.php', { credentials: 'include' })
+            .then(res => res.json())
+            .then(data => {
+                if (!data.logged_in) {
+                    window.location.replace('signin.html');
+                }
+            })
+            .catch(() => {
+                window.location.replace('signin.html');
+            });
+    }
+});
+
+
 // initialisation de la page profil
 document.addEventListener('DOMContentLoaded', async function () {
     await initializeProfile();
@@ -7,10 +89,39 @@ document.addEventListener('DOMContentLoaded', async function () {
 // memoire centrale profile
 const profileState = {
     orders: [],
+    reservations: [],
+    reviews: [],
     reorderSourceOrderId: null,
     reorderModal: null,
+    editReservationModal: null,
+    pendingDeleteReviewId: null,
     defaultAvatarPath: './img/profile.jpg'
 };
+
+function normalizeProfileTimeValue(time) {
+    const t = String(time || '').trim();
+    if (/^\d{2}:\d{2}$/.test(t)) return `${t}:00`;
+    if (/^\d{2}:\d{2}:\d{2}$/.test(t)) return t.substring(0, 8);
+    return t;
+}
+
+function formatTimeLabel(time) {
+    const normalized = normalizeProfileTimeValue(time);
+    const [h, m] = normalized.split(':').map(Number);
+    if (Number.isNaN(h) || Number.isNaN(m)) return time || '—';
+    const period = h >= 12 ? 'PM' : 'AM';
+    const hour12 = h % 12 || 12;
+    return `${hour12}:${String(m).padStart(2, '0')} ${period}`;
+}
+
+function renderStarRating(rating) {
+    const n = Math.max(0, Math.min(5, Number(rating) || 0));
+    let html = '';
+    for (let i = 1; i <= 5; i++) {
+        html += `<i class="fas fa-star ${i <= n ? 'icon-green' : 'text-muted'}" style="opacity:${i <= n ? 1 : 0.35}"></i>`;
+    }
+    return html;
+}
 // affichage donnees du profile
 async function initializeProfile() {
     try {
@@ -25,10 +136,15 @@ async function initializeProfile() {
         populateProfileInfo(profileData);
         fetchOrders();
         fetchReservations();
+        fetchReviews();
 
         if (!profileState.reorderModal && typeof bootstrap !== 'undefined') {
             const reorderEl = document.getElementById('reorderModal');
             if (reorderEl) profileState.reorderModal = new bootstrap.Modal(reorderEl);
+        }
+        if (!profileState.editReservationModal && typeof bootstrap !== 'undefined') {
+            const editResEl = document.getElementById('editReservationModal');
+            if (editResEl) profileState.editReservationModal = new bootstrap.Modal(editResEl);
         }
     } catch (err) {
         console.error('Error initializing profile:', err);
@@ -45,8 +161,22 @@ async function initializeProfile() {
  */
 async function requestJson(url, options = {}) {
     const res = await fetch(url, { credentials: 'include', ...options });
-    if (!res.ok) throw new Error(`HTTP ${res.status} on ${url}`);
-    return res.json();
+    const contentType = res.headers.get('content-type') || '';
+    let data = null;
+
+    if (contentType.includes('application/json')) {
+        data = await res.json();
+    } else {
+        const text = await res.text();
+        if (!res.ok) throw new Error(text || `HTTP ${res.status} on ${url}`);
+        throw new Error(`Unexpected response from ${url}`);
+    }
+
+    if (!res.ok) {
+        throw new Error(data?.message || `HTTP ${res.status} on ${url}`);
+    }
+
+    return data;
 }
 
 // remplissage user info dans UI
@@ -93,6 +223,17 @@ function populateProfileInfo(data) {
     }
 }
 
+function buildMenuImageUrl(path) {
+    if (!path) return './img/profile.jpg';
+    const normalized = String(path).trim();
+    if (!normalized) return './img/profile.jpg';
+    if (/^https?:\/\//i.test(normalized) || normalized.startsWith('/')) return normalized;
+    if (normalized.startsWith('./') || normalized.startsWith('../')) return normalized;
+    if (normalized.startsWith('Frontend/')) return `./${normalized.slice('Frontend/'.length)}`;
+    if (normalized.startsWith('img/')) return `./${normalized}`;
+    return `./${normalized.replace(/^\/+/, '')}`;
+}
+
 function buildAvatarUrl(path) {
     if (!path) return profileState.defaultAvatarPath;
     const normalized = String(path).trim();
@@ -129,7 +270,9 @@ async function fetchOrders() {
             data.data.forEach((order) => {
                 const itemsHtml = (order.items || []).map((item) => `
                     <li class="d-flex align-items-center mb-1">
-                        <img src="${item.img}" alt="${item.name}"> ${item.name} &times;${item.qty}
+                        <img src="${buildMenuImageUrl(item.image)}" alt="${item.name}"
+                            style="width:40px;height:40px;object-fit:cover;border-radius:8px;margin-right:10px;"
+                            onerror="this.src='./img/profile.jpg'"> ${item.name} &times;${item.qty}
                         <span class="text-muted ms-1 small">($${Number(item.price || 0).toFixed(2)} per item)</span>
                     </li>
                 `).join('');
@@ -137,6 +280,7 @@ async function fetchOrders() {
                 const statusColors = {
                     'Completed': 'bg-success',
                     'Delivered': 'bg-success',
+                    'Confirmed': 'bg-success',
                     'Pending': 'bg-warning text-dark',
                     'Preparing': 'bg-info text-dark',
                     'Cancelled': 'bg-danger',
@@ -253,11 +397,23 @@ async function fetchReservations() {
         const data = await requestJson('../Backend/api/profile/fetch_user_reservations.php');
 
         if (data.success && data.data && data.data.length > 0) {
+            profileState.reservations = data.data;
             let html = `<h3 class="mb-3"><i class="fas fa-calendar me-2 icon-green"></i>My Reservations</h3>`;
 
             data.data.forEach((r) => {
-                const dateStr = r.date ? new Date(r.date).toLocaleDateString() : '—';
-                const timeStr = r.time ? r.time.substring(0, 5) : '—';
+                const dateStr = r.date ? new Date(r.date + 'T12:00:00').toLocaleDateString() : '—';
+                const timeStr = formatTimeLabel(r.time);
+                const canModify = Boolean(r.can_modify);
+                const actionsHtml = canModify
+                    ? `<div class="d-flex gap-2 mt-3 justify-content-end">
+                            <button type="button" class="btn btn-sm btn-green" onclick="openEditReservationModal(${r.id})">
+                                <i class="fas fa-edit me-1"></i>Edit
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="cancelReservation(${r.id})">
+                                <i class="fas fa-times me-1"></i>Cancel
+                            </button>
+                       </div>`
+                    : `<p class="text-muted small mt-2 mb-0"><i class="fas fa-info-circle me-1"></i>Changes are only allowed at least 3 days before your visit.</p>`;
 
                 html += `
                     <div class="bg-white border rounded p-3 mb-3">
@@ -272,8 +428,9 @@ async function fetchReservations() {
                             <li class="mb-1"><i class="fas fa-chair me-2 icon-green"></i>Table Number: ${r.table_number ?? 'N/A'}</li>
                             <li class="mb-1"><i class="fas fa-users me-2 icon-green"></i>Number of Guests: ${r.guests}</li>
                             <li class="mb-1"><i class="fas fa-calendar me-2 icon-green"></i>Date &amp; Time: ${dateStr} at ${timeStr}</li>
-                            ${r.special_notes ? `<li class="mb-1"><i class="fas fa-sticky-note me-2 icon-green"></i>Notes: ${r.special_notes}</li>` : ''}
+                            ${r.special_notes ? `<li class="mb-1"><i class="fas fa-sticky-note me-2 icon-green"></i>Notes: ${escapeHtml(r.special_notes)}</li>` : ''}
                         </ul>
+                        ${actionsHtml}
                     </div>
                 `;
             });
@@ -281,6 +438,8 @@ async function fetchReservations() {
             resContainer.innerHTML = html;
             return;
         }
+
+        profileState.reservations = [];
 
         resContainer.innerHTML = `
             <h3 class="mb-3"><i class="fas fa-calendar me-2 icon-green"></i>My Reservations</h3>
@@ -293,6 +452,250 @@ async function fetchReservations() {
         console.error('Error fetching reservations:', err);
     }
 }
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+async function fetchReviews() {
+    const reviewContainer = document.querySelector('#review');
+    if (!reviewContainer) return;
+
+    try {
+        const data = await requestJson('../Backend/api/profile/fetch_user_reviews.php');
+
+        if (data.success && data.data && data.data.length > 0) {
+            profileState.reviews = data.data;
+            let html = `<h3 class="mb-3"><i class="fas fa-star me-2 icon-green"></i>My Reviews</h3>`;
+
+            data.data.forEach((rev) => {
+                const dateStr = rev.created_at ? new Date(rev.created_at).toLocaleDateString() : '—';
+                html += `
+                    <div class="bg-white border rounded p-3 mb-3">
+                        <div class="d-flex justify-content-between align-items-start gap-3">
+                            <div class="d-flex gap-3 flex-grow-1">
+                                <img src="${buildMenuImageUrl(rev.item_image)}" alt="${escapeHtml(rev.item_name)}"
+                                    style="width:56px;height:56px;object-fit:cover;border-radius:8px;"
+                                    onerror="this.src='./img/profile.jpg'">
+                                <div>
+                                    <h6 class="mb-1">${escapeHtml(rev.item_name)}</h6>
+                                    <div class="mb-1">${renderStarRating(rev.rating)}</div>
+                                    <p class="mb-0 small text-muted">${dateStr}</p>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-danger" title="Delete review"
+                                onclick="confirmDeleteReview(${rev.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        ${rev.description ? `<p class="mb-0 mt-2 small">${escapeHtml(rev.description)}</p>` : ''}
+                    </div>
+                `;
+            });
+
+            reviewContainer.innerHTML = html;
+            return;
+        }
+
+        profileState.reviews = [];
+        reviewContainer.innerHTML = `
+            <h3 class="mb-3"><i class="fas fa-star me-2 icon-green"></i>My Reviews</h3>
+            <div class="bg-white border rounded p-4 text-center text-muted mb-3">
+                <i class="fas fa-star-half-alt mb-2" style="font-size:2rem; color:#ddd;"></i>
+                <p class="mb-0">You have no reviews yet.</p>
+            </div>
+        `;
+    } catch (err) {
+        console.error('Error fetching reviews:', err);
+    }
+}
+
+function openEditReservationModal(reservationId) {
+    const reservation = profileState.reservations.find((r) => Number(r.id) === Number(reservationId));
+    if (!reservation) {
+        alert('Reservation not found.');
+        return;
+    }
+    if (!reservation.can_modify) {
+        alert('This reservation can only be edited at least 3 days before the visit date.');
+        return;
+    }
+
+    document.getElementById('edit-reservation-id').value = String(reservation.id);
+    document.getElementById('edit-reservation-guests').value = String(reservation.guests);
+    document.getElementById('edit-reservation-date').value = reservation.date || '';
+    document.getElementById('edit-reservation-time').value = normalizeProfileTimeValue(reservation.time);
+    document.getElementById('edit-reservation-notes').value = reservation.special_notes || '';
+
+    const dateInput = document.getElementById('edit-reservation-date');
+    if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+        const maxDate = new Date();
+        maxDate.setMonth(maxDate.getMonth() + 2);
+        dateInput.setAttribute('max', maxDate.toISOString().split('T')[0]);
+    }
+
+    profileState.editReservationModal?.show();
+}
+
+async function submitEditReservation(e) {
+    e.preventDefault();
+
+    const reservationId = Number(document.getElementById('edit-reservation-id')?.value || 0);
+    const guests = Number(document.getElementById('edit-reservation-guests')?.value || 0);
+    const date = document.getElementById('edit-reservation-date')?.value || '';
+    const time = document.getElementById('edit-reservation-time')?.value || '';
+    const special_notes = document.getElementById('edit-reservation-notes')?.value.trim() || '';
+
+    if (!reservationId || !date || !time || guests < 1) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+
+    try {
+        const result = await requestJson('../Backend/api/profile/reservation_actions.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'edit',
+                reservation_id: reservationId,
+                date,
+                time,
+                guests,
+                special_notes,
+            }),
+        });
+
+        if (!result.success) {
+            alert(result.message || 'No availability for the selected date and time.');
+            return;
+        }
+
+        profileState.editReservationModal?.hide();
+        const tableMsg = result.table_number ? ` Table #${result.table_number} assigned.` : '';
+        alert((result.message || 'Reservation updated.') + tableMsg);
+        fetchReservations();
+    } catch (err) {
+        console.error(err);
+        alert(err.message || 'Failed to update reservation.');
+    }
+}
+
+function cancelReservation(reservationId) {
+    const reservation = profileState.reservations.find((r) => Number(r.id) === Number(reservationId));
+    if (!reservation) {
+        alert('Reservation not found.');
+        return;
+    }
+    if (!reservation.can_modify) {
+        alert('This reservation can only be cancelled at least 3 days before the visit date.');
+        return;
+    }
+
+    const deleteModal = document.getElementById('deleteConfirmModal');
+    const deleteMsg = document.getElementById('deleteConfirmMessage');
+    const deleteBtn = document.getElementById('deleteConfirmBtn');
+
+    if (!deleteModal || !deleteMsg || !deleteBtn || typeof bootstrap === 'undefined') {
+        if (!confirm('Cancel this reservation?')) return;
+        performCancelReservation(reservationId);
+        return;
+    }
+
+    deleteMsg.innerHTML = 'Are you sure you want to <strong>cancel this reservation</strong>? The table will become available again.';
+
+    const bsModal = new bootstrap.Modal(deleteModal);
+    const newBtn = deleteBtn.cloneNode(true);
+    deleteBtn.parentNode.replaceChild(newBtn, deleteBtn);
+    newBtn.id = 'deleteConfirmBtn';
+
+    newBtn.addEventListener('click', async () => {
+        bsModal.hide();
+        await performCancelReservation(reservationId);
+    }, { once: true });
+
+    bsModal.show();
+}
+
+async function performCancelReservation(reservationId) {
+    try {
+        const result = await requestJson('../Backend/api/profile/reservation_actions.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'cancel', reservation_id: reservationId }),
+        });
+
+        if (!result.success) {
+            alert(result.message || 'Failed to cancel reservation.');
+            return;
+        }
+
+        alert(result.message || 'Reservation cancelled.');
+        fetchReservations();
+    } catch (err) {
+        console.error(err);
+        alert(err.message || 'Failed to cancel reservation.');
+    }
+}
+
+function confirmDeleteReview(reviewId) {
+    profileState.pendingDeleteReviewId = Number(reviewId);
+
+    const deleteModal = document.getElementById('deleteConfirmModal');
+    const deleteMsg = document.getElementById('deleteConfirmMessage');
+    const deleteBtn = document.getElementById('deleteConfirmBtn');
+
+    if (!deleteModal || !deleteMsg || !deleteBtn || typeof bootstrap === 'undefined') {
+        if (confirm('Delete this review permanently?')) {
+            performDeleteReview(reviewId);
+        }
+        return;
+    }
+
+    deleteMsg.innerHTML = 'Are you sure you want to <strong>delete this review</strong>? This cannot be undone.';
+
+    const bsModal = new bootstrap.Modal(deleteModal);
+    const newBtn = deleteBtn.cloneNode(true);
+    deleteBtn.parentNode.replaceChild(newBtn, deleteBtn);
+    newBtn.id = 'deleteConfirmBtn';
+
+    newBtn.addEventListener('click', async () => {
+        bsModal.hide();
+        await performDeleteReview(profileState.pendingDeleteReviewId);
+        profileState.pendingDeleteReviewId = null;
+    }, { once: true });
+
+    bsModal.show();
+}
+
+async function performDeleteReview(reviewId) {
+    if (!reviewId) return;
+
+    try {
+        const result = await requestJson('../Backend/api/profile/delete_user_review.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ review_id: reviewId }),
+        });
+
+        if (!result.success) {
+            alert(result.message || 'Failed to delete review.');
+            return;
+        }
+
+        fetchReviews();
+    } catch (err) {
+        console.error(err);
+        alert(err.message || 'Failed to delete review.');
+    }
+}
+
+window.openEditReservationModal = openEditReservationModal;
+window.cancelReservation = cancelReservation;
+window.confirmDeleteReview = confirmDeleteReview;
 
 //  message feedback upload avatar
 function showAvatarFeedback(message, ok) {
@@ -352,7 +755,7 @@ function setupEventListeners() {
                 showAvatarFeedback('Profile picture updated successfully.', true);
             } catch (err) {
                 console.error(err);
-                showAvatarFeedback('Failed to upload image. Please try again.', false);
+                showAvatarFeedback(err.message || 'Failed to upload image. Please try again.', false);
             } finally {
                 avatarInput.value = '';
             }
@@ -422,6 +825,20 @@ function setupEventListeners() {
         });
     }
 
+    // password visibility toggles (same UX as signup)
+    const passwordToggles = [
+        { btnId: 'toggle-new-password', inputId: 'new-password', iconId: 'profileEyeNew' },
+        { btnId: 'toggle-confirm-password', inputId: 'confirm-password', iconId: 'profileEyeConfirm' },
+    ];
+    passwordToggles.forEach(({ btnId, inputId, iconId }) => {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleProfilePassword(inputId, iconId);
+        });
+    });
+
     // profile update
     const profileForm = document.getElementById('update-profile-form');
     if (profileForm) {
@@ -466,6 +883,13 @@ function setupEventListeners() {
                 setTimeout(() => { feedback.style.display = 'none'; }, 3000);
             } catch (err) {
                 console.error(err);
+                const feedback = document.getElementById('setting-feedback');
+                if (feedback) {
+                    feedback.style.display = 'block';
+                    feedback.className = 'mt-2 text-danger small';
+                    feedback.textContent = err.message || 'Update failed. Please try again.';
+                    setTimeout(() => { feedback.style.display = 'none'; }, 3000);
+                }
             }
         };
 
@@ -480,6 +904,18 @@ function setupEventListeners() {
             const currPw = document.getElementById('current-password')?.value || '';
             const newPw = document.getElementById('new-password')?.value || '';
             const confPw = document.getElementById('confirm-password')?.value || '';
+
+            if (!isProfileStrongPassword(newPw)) {
+                checkProfilePasswordStrength();
+                alert('Password must have: min 8 chars, uppercase, lowercase, number, and special character.');
+                return;
+            }
+
+            if (newPw !== confPw) {
+                checkProfilePasswordMatch();
+                alert('New passwords do not match.');
+                return;
+            }
 
             try {
                 const data = await requestJson('../Backend/api/profile/update_profile.php', {
@@ -500,6 +936,11 @@ function setupEventListeners() {
                 alert('Request failed. Please try again.');
             }
         });
+    }
+
+    const editResForm = document.getElementById('edit-reservation-form');
+    if (editResForm) {
+        editResForm.addEventListener('submit', submitEditReservation);
     }
 
     // delete account

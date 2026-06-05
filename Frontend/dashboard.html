@@ -16,6 +16,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- CSS -->
     <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/auth.css">
     <link rel="stylesheet" href="./css/dashboard.css">
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml"
@@ -44,18 +45,19 @@
                             <a class="nav-link" href="reservation.html">Reservations</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="review.html">Reviews</a>
+                            <a class="nav-link" href="review.php">Reviews</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="cart.html"><i class="fa-solid fa-cart-arrow-down"></i>
+                            <a class="nav-link" href="cart.php"><i class="fa-solid fa-cart-arrow-down"></i>
                                 <sup></sup></a>
                         </li>
                         <li class="nav-item ms-lg-3 mt-2 mt-lg-0 dropdown">
                             <a href="#"
                                 class="link-body-emphasis text-decoration-none dropdown-toggle d-flex align-items-center fw-semibold"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="" alt="Profile" class="nav-avatar me-2" id="nav-dashboard-avatar">
-                                <span id="username"></span>
+                                <span id="username" class="me-2"></span>
+                                <img src="" alt="Profile" class="nav-avatar" id="nav-dashboard-avatar">
+
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end text-small bg">
                                 <li><a class="dropdown-item" href="./profile.html">
@@ -142,11 +144,11 @@
                                     <div class="card bg-white border rounded p-3">
                                         <div class="d-flex justify-content-between align-items-start mb-2">
                                             <div class="stat-icon">
-                                                <i class="fas fa-calendar icon-green"></i>
+                                                <i class="fas fa-receipt icon-green"></i>
                                             </div>
                                             <span class="stat-badge" id="stat-badge-reservations"></span>
                                         </div>
-                                        <p class="mb-1 text-muted small">Pending Reservations</p>
+                                        <p class="mb-1 text-muted small">Pending Orders</p>
                                         <h4 class="fw-bold mb-0" id="stat-reservations"></h4>
                                     </div>
                                 </div>
@@ -342,7 +344,7 @@
                                 <!-- table -->
                                 <div class="bg-white border rounded p-3">
                                     <div class="table-responsive">
-                                        <table class="table table-hover align-middle">
+                                        <table id="reservations-table" class="table table-hover align-middle">
                                             <thead>
                                                 <tr>
                                                     <th data-sort-table="reservation" data-sort-key="date"
@@ -364,6 +366,41 @@
                                                         <i class="fas fa-calendar mb-2 d-block"
                                                             style="font-size:2rem; color:#ddd;"></i>
                                                         No reservations found.
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <hr class="my-4">
+
+                                <div class="d-flex align-items-center mb-3">
+                                    <div>
+                                        <h3 class="mb-0"><i class="fas fa-chair me-2 icon-green"></i>Tables Management</h3>
+                                        <p class="text-muted small mb-0">Add, edit or deactivate restaurant tables used for reservations.</p>
+                                    </div>
+                                    <button type="button" id="add-table-btn" class="btn btn-green ms-auto px-3">
+                                        <i class="fas fa-plus me-1"></i>Add Table
+                                    </button>
+                                </div>
+                                <div class="bg-white border rounded p-3">
+                                    <div class="table-responsive">
+                                        <table id="restaurant-tables-table" class="table table-hover align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th>IdTable</th>
+                                                    <th>TableNumber</th>
+                                                    <th>TableCapacity</th>
+                                                    <th>IsActive</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="5" class="text-center py-4 text-muted">
+                                                        <i class="fas fa-chair mb-2 d-block" style="font-size:2rem; color:#ddd;"></i>
+                                                        No tables found.
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -547,8 +584,27 @@
                         </div>
                         <div class="form-group-styled">
                             <label for="reservation-form-time" class="form-label"><i class="fas fa-clock"></i>
-                                Time</label>
-                            <input id="reservation-form-time" type="time" class="form-control" required>
+                                Time slot</label>
+                            <select id="reservation-form-time" class="form-select" required>
+                                <option value="" disabled selected>Select a time slot...</option>
+                                <optgroup label="Lunch">
+                                    <option value="11:30:00">11:30 AM</option>
+                                    <option value="12:00:00">12:00 PM</option>
+                                    <option value="12:30:00">12:30 PM</option>
+                                    <option value="13:00:00">1:00 PM</option>
+                                    <option value="13:30:00">1:30 PM</option>
+                                    <option value="14:00:00">2:00 PM</option>
+                                </optgroup>
+                                <optgroup label="Dinner">
+                                    <option value="17:30:00">5:30 PM</option>
+                                    <option value="18:00:00">6:00 PM</option>
+                                    <option value="18:30:00">6:30 PM</option>
+                                    <option value="19:00:00">7:00 PM</option>
+                                    <option value="19:30:00">7:30 PM</option>
+                                    <option value="20:00:00">8:00 PM</option>
+                                </optgroup>
+                            </select>
+                            <small class="text-muted">Each booking blocks the table for 90 minutes.</small>
                         </div>
                         <div class="form-group-styled">
                             <label for="reservation-form-guests" class="form-label"><i class="fas fa-users"></i>
@@ -586,6 +642,49 @@
         </div>
     </div>
 
+    <!-- Restaurant table form modal -->
+    <div class="modal fade" id="tableFormModal" tabindex="-1" aria-labelledby="tableFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="table-form">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tableFormModalLabel">
+                            <span class="modal-title-icon"><i class="fas fa-chair"></i></span>
+                            Add Table
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="table-form-id">
+                        <div class="form-group-styled">
+                            <label for="table-form-number" class="form-label"><i class="fas fa-hashtag"></i> Table Number</label>
+                            <input id="table-form-number" type="number" min="1" class="form-control" required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="table-form-capacity" class="form-label"><i class="fas fa-users"></i> Capacity</label>
+                            <input id="table-form-capacity" type="number" min="1" max="20" class="form-control" required>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="table-form-active" class="form-label"><i class="fas fa-toggle-on"></i> Active</label>
+                            <select id="table-form-active" class="form-select">
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-green">
+                            <i class="fas fa-check me-1"></i>Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Order form modal -->
     <div class="modal fade" id="orderFormModal" tabindex="-1" aria-labelledby="orderFormModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -605,9 +704,9 @@
                             <div class="order-panel-header">
                                 <i class="fas fa-user"></i>Customer
                             </div>
-                            <div class="positopn-relative">
+                            <div class="position-relative order-user-search-wrap">
                                 <input id="order-user-search" type="text" class="form-control"
-                                    placeholder="Seach name or email..." autocomplete="off">
+                                    placeholder="Search name or email..." autocomplete="off">
                                 <div id="order-user-search-results" class="user-search-dropdown"></div>
                             </div>
                             <div id="order-selected-user-badge" class="selected-user-badge mt-2" style="display: none;">
@@ -664,6 +763,7 @@
                             </div>
                             <select id="order-form-status" class="form-select">
                                 <option value="Pending">Pending</option>
+                                <option value="Confirmed">Confirmed</option>
                                 <option value="Preparing">Preparing</option>
                                 <option value="Completed">Completed</option>
                                 <option value="Delivered">Delivered</option>
@@ -782,15 +882,33 @@
                         <div class="form-group-styled">
                             <label for="user-form-password" class="form-label"><i class="fas fa-lock"></i>
                                 Password</label>
-                            <input id="user-form-password" type="password" class="form-control" placeholder="••••••••"
-                                required>
+                            <div class="input-group">
+                                <input id="user-form-password" type="password" class="form-control" placeholder="Create password"
+                                    oninput="checkDashboardUserPasswordStrength()" required>
+                                <button type="button" class="input-group-text" id="toggle-user-form-password" aria-label="Show password">
+                                    <i class="fa fa-eye-slash" id="userFormEye"></i>
+                                </button>
+                            </div>
+                            <div id="userFormPasswordMessage" class="password-msg"></div>
+                        </div>
+                        <div class="form-group-styled">
+                            <label for="user-form-password-confirm" class="form-label"><i class="fas fa-lock"></i>
+                                Confirm Password</label>
+                            <div class="input-group">
+                                <input id="user-form-password-confirm" type="password" class="form-control" placeholder="Repeat password"
+                                    oninput="checkDashboardUserPasswordMatch()" required>
+                                <button type="button" class="input-group-text" id="toggle-user-form-password-confirm" aria-label="Show password">
+                                    <i class="fa fa-eye-slash" id="userFormEyeConfirm"></i>
+                                </button>
+                            </div>
+                            <div id="userFormMatchMessage" class="password-msg"></div>
                         </div>
                         <div class="form-group-styled">
                             <label for="user-form-role" class="form-label"><i class="fas fa-shield-alt"></i>
                                 Role</label>
                             <select id="user-form-role" class="form-select">
-                                <option value="Customer">Customer</option>
-                                <option value="Admin">Admin</option>
+                                <option value="user">Customer</option>
+                                <option value="admin">Admin</option>
                             </select>
                         </div>
                     </div>
@@ -896,7 +1014,7 @@
         integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"
         class="astro-vvvwv3sm"></script>
     <!-- Script -->
-    <script src="./js/dashboard.js?v=12" class="astro-vvvwv3sm"></script>
+    <script src="./js/dashboard.js?v=17" class="astro-vvvwv3sm"></script>
 
 </body>
 
