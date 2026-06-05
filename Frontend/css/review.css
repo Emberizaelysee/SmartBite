@@ -1,7 +1,5 @@
 /* CARD */
 .card-review{
-  width: 100%;
-max-width:420px;
 border-radius:20px;
 box-shadow:0 15px 40px rgba(0,0,0,0.1);
 border:none;
@@ -22,7 +20,6 @@ color:var(--green);
 height:45px;
 border-radius:10px;
 }
-
 /* TEXTAREA */
 textarea.form-control{
 height:100px;
@@ -46,14 +43,22 @@ transform: scale(1.1);
 .star.active{
 color:#ffc107;
 }
-/* MESSAGE */
-#message{
-text-align:center;
-margin-top:15px;
-font-weight:500;
-}
 .signin-link {
     color: var(--green);
     font-size:13px;
     text-decoration:none;
+}
+.text-green {
+  color: var(--green);
+}
+/* REVIEW CARDS (colonne gauche) */
+.review-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.review-stars {
+  color: #ffc107;
 }

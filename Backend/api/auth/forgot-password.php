@@ -35,7 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         $token   = hash('sha256', random_bytes(64));
-        $expires = date("Y-m-d H:i:s", strtotime("+5 minutes"));
+        $tz = $conn->query("SELECT NOW() as now")->fetch_assoc()['now'];
+        $expires = date("Y-m-d H:i:s", strtotime($tz . " +5 minutes"));
 
         $update = $conn->prepare("UPDATE users SET reset_token = ?, reset_expires = ? WHERE UserEmail = ?");
         $update->bind_param("sss", $token, $expires, $email);

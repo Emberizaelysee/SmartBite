@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
 
             $redirect = isset($_POST['redirect']) ? $_POST['redirect'] : 'index.php';
-            $allowed  = ['index.php', 'reservation.php', 'review.html', 'cart.php'];
+            $allowed  = ['index.php', 'reservation.php', 'review.php', 'cart.php'];
             if (!in_array($redirect, $allowed)) $redirect = 'index.php';
             header("Location: ../../../Frontend/" . $redirect);
             exit();
