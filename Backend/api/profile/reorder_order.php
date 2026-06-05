@@ -94,7 +94,7 @@ try {
     }
     $priceStmt->close();
 
-    $status = 'Pending';
+    $status = 'Confirmed';
     $specialInstructions = 'Reordered from order #' . $sourceOrderId;
 
     // Insert into orders
