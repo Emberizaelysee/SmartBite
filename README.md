@@ -1,58 +1,92 @@
 # SmartBite — Application Web pour Restaurant
 
-Préparé par : Nadine Jdid, Marianne Dagher, Elichaa Saleh Mhanna
+**Préparé par :** Nadine Jdid, Marianne Dagher, Elichaa Saleh Mhanna
 
 ---
 
 ## Présentation du projet
 
-SmartBite est née d'un constat simple : beaucoup de restaurants offrent une excellente expérience en salle, mais peinent à exister en ligne. Pas de menu accessible facilement, des réservations qui se font encore par téléphone, des commandes perdues dans les échanges WhatsApp... SmartBite est là pour régler tout ça.
+SmartBite est née d'un constat simple : beaucoup de restaurants offrent une excellente expérience en salle, mais peinent à exister en ligne. Pas de menu accessible facilement, des réservations qui se font encore par téléphone, des commandes perdues dans les échanges WhatsApp… SmartBite est là pour régler tout ça.
 
-L'idée est de donner au restaurant une présence digitale complète — un endroit où les clients peuvent consulter le menu, réserver une table et passer commande, sans friction.
+L'application donne au restaurant une présence digitale complète — un endroit où les clients peuvent consulter le menu, réserver une table, passer commande et interagir avec un assistant IA, le tout sans friction.
+
 ---
 
-## Ce qu'on cherche à résoudre
-
-Avant SmartBite, le restaurant faisait face à plusieurs problèmes concrets :
+## Ce que le projet résout
 
 - Aucune vitrine en ligne pour présenter les plats
-- Les clients avaient du mal à passer commande
-- Des clients potentiels perdus faute de visibilité
-- Une communication désorganisée avec la clientèle
-- Sans gestion des commandes en temps réel
-- Un suivi des réservations à la main
-- Sans tableau de bord administrateur pour piloter l'ensemble
+- Difficulté pour les clients de commander en ligne
+- Perte de visibilité et de clients potentiels
+- Communication désorganisée avec la clientèle
+- Absence de gestion des commandes en temps réel
+- Suivi manuel des réservations
+- Pas de tableau de bord administrateur centralisé
 
 ---
 
-## Objectifs du frontend
+## Fonctionnalités principales
 
-Le frontend doit répondre à des besoins précis. Il ne s'agit pas juste de faire "un beau site", mais de créer une expérience fluide qui pousse naturellement le client à revenir :
+### Côté visiteur (sans connexion)
 
-- Présenter le menu de façon claire et appétissante
-- Permettre à n'importe qui de parcourir les plats et gérer son panier sans avoir à créer un compte
-- Faciliter la réservation d'une table en quelques clics
-- Offrir un espace personnel où l'utilisateur retrouve ses commandes et réservations passées
-- Intégrer un agent conversationnel pour le menu afin de guider l'utilisateur dans ses choix
+- Parcourir le menu par catégories et rechercher des plats
+- Ajouter, modifier ou retirer des articles du panier
+- Consulter les avis laissés par les clients
+- Discuter avec l'assistant IA intégré (recommandations, allergènes, descriptions)
+
+### Côté utilisateur connecté
+
+- Passer une commande depuis le menu ou le panier
+- Recevoir une confirmation par e-mail après commande
+- Recommander une commande passée (reorder)
+- Réserver une table en choisissant date, heure et nombre de convives
+- Modifier ou annuler une réservation depuis le profil
+- Laisser un avis (note et commentaire) sur un plat
+- Consulter l'historique des commandes, réservations et avis
+- Modifier son profil (nom, mot de passe, avatar)
+- Supprimer son compte
+
+### Authentification
+
+- Inscription et connexion par e-mail / mot de passe
+- Connexion via compte Google (OAuth 2.0)
+- Option « Se souvenir de moi » (cookie, 30 jours)
+- Mot de passe oublié avec envoi d'un lien de réinitialisation par e-mail
+- Déconnexion sécurisée
+
+### Tableau de bord administrateur
+
+- Vue d'ensemble avec statistiques (commandes en attente, utilisateurs actifs, etc.)
+- Gestion du menu (ajout, modification, suppression de plats et catégories)
+- Gestion des commandes (statuts, modification, suppression)
+- Gestion des réservations
+- Gestion des tables du restaurant (numéro, capacité, activation)
+- Gestion des avis
+- Gestion des utilisateurs (rôles, modification, suppression)
+
+### Assistant conversationnel (IA)
+
+Un agent conversationnel alimenté par **Google Gemini** est intégré à la page d'accueil. Il peut :
+
+- Répondre aux questions sur les plats et leurs ingrédients
+- Proposer des recommandations selon les préférences
+- Alerter sur les allergènes mentionnés dans le menu
+- Orienter l'utilisateur vers les autres sections du site
 
 ---
 
 ## Technologies utilisées
 
-Le frontend est développé en HTML, CSS et JavaScript avec Bootstraps.
-
-|   Technologie   |   Rôle   |
-|-----------------|----------|
-|   HTML   |   Structure des pages et balisage sémantique   |
-|   CSS   |   Mise en page, design, responsive design   |
-|   JavaScript   |   Validation des formulaires, affichage dynamique du menu, gestion du panier, etc...   |
-
-Le backend est développé en php et la base de donné se fait avec MySQL.
-
-|   Technologie   |   Rôle   |
-|-----------------|----------|
-|   PHP   |   Logique serveur, traitement des formulaires, gestion des sessions   |
-|   MySQL   |   Stockage et gestion des données (clients, plats, commandes, réservations)   |
+| Technologie | Rôle |
+|-------------|------|
+| HTML / CSS / JavaScript | Interface utilisateur, interactions dynamiques |
+| Bootstrap 5 | Mise en page responsive et composants UI |
+| Font Awesome | Icônes |
+| PHP 8+ | Logique serveur, API REST, sessions |
+| MySQL / MariaDB | Stockage des données |
+| PHPMailer | Envoi d'e-mails (réinitialisation, confirmations) |
+| Google OAuth 2.0 | Connexion via compte Google |
+| Google Gemini API | Assistant conversationnel du menu |
+| Composer | Gestion des dépendances PHP |
 
 ---
 
@@ -60,200 +94,303 @@ Le backend est développé en php et la base de donné se fait avec MySQL.
 
 | Page | Description |
 |------|-------------|
-| `index.html` | Page d'accueil — présentation du restaurant avec menu complet avec panier et serveur virtuel IA  |
-| `cart.html` | Panier pour regrouper les items à commander et avoir une prévisualisation de la commande |
+| `index.php` | Accueil — menu complet, panier et assistant IA |
+| `search-menu.php` | Recherche et filtrage des plats du menu |
+| `cart.php` | Panier — gestion des articles avant commande |
+| `purchase.php` | Récapitulatif et validation de la commande |
 | `reservation.html` | Formulaire de réservation de table |
-| `review.html` | Consulter et laisser un avis sur un item du menu |
-| `signin.html` et `signup.html` | Se connecter à son compte ou en crée un |
-| `purchase.html` | Consulter la facture avant de 'valider' le paiment |
-| `profile.html` | Page personnel — afin de consulter les commandes et le reservation passer ainsi que de modifier son compte  |
-| `dashboard.html` | Page Administrateur — pour consulter et modifier la base de donnés |
+| `review.php` | Consulter et laisser un avis sur un plat |
+| `signin.html` / `signup.html` | Connexion et inscription |
+| `forgot-password.html` | Demande de réinitialisation du mot de passe |
+| `reset-password.php` | Définition d'un nouveau mot de passe |
+| `profile.html` | Espace personnel — commandes, réservations, avis, profil |
+| `dashboard.html` | Tableau de bord administrateur |
+| `google-auth.php` | Callback OAuth pour la connexion Google |
 
 ---
 
-## Fonctionnalités frontend
+## Rôles et droits
 
-### Côté visiteur (sans connexion)
-
-- Parcourir le menu et consulter les plats
-- Ajouter ou retirer des plats du panier
-
-### Côté utilisateur connecté
-
-- Passer une commande depuis le menu
-- Réserver une table
-- Laisser un avis (commentaire et note)
-- Consulter l'historique des commandes et des réservations
-
-### Authentification
-
-- Formulaire de connexion par e-mail et mot de passe
-- Connexion via compte Google
-- Formulaire d'inscription
-- Page de modification du profil (nom d'utilisateur, mot de passe)
-- Déconnexion et suppression du compte
-
-### Serveur virtuel (IA) — pour le menu uniquement
-
-Un agent conversationnel est intégré directement dans la page index. Il peut répondre aux questions sur les plats, détailler les ingrédients et proposer des recommandations selon les préférences de l'utilisateur.
+| Rôle | Permissions |
+|------|---------------|
+| Visiteur | Consulter le site, parcourir le menu, gérer le panier, utiliser le chatbot |
+| Utilisateur | Tout ce que fait le visiteur, plus : commandes, réservations, avis, profil |
+| Administrateur | Accès complet au tableau de bord et à la gestion de la base de données |
 
 ---
 
-## Les acteurs et leurs droits
-
-|   Rôle   |    Ce qu'il peut faire    |
-|----------|---------------------------|
-| Visiteur | Consulter le site, voir le menu, gérer son panier |
-| Utilisateur | Tout ce que fait le visiteur, plus : connexion, commandes, réservations, avis |
-| Administrateur | Tout ce que fait l'utilisateur, plus : accès complet au tableau de bord et à la base de données |
-
----
-
-## Authentification
-
-La connexion standard repose sur une vérification e-mail / mot de passe avec `password_hash()` et `password_verify()` de PHP pour ne jamais stocker de mot de passe en clair.
-
-La connexion Google utilise OAuth 2.0. Une fois l'utilisateur authentifié par Google, le backend vérifie si le compte existe déjà en base (via l'e-mail), le crée si nécessaire, puis ouvre une session PHP classique.
-
-Les sessions sont gérées nativement avec `$_SESSION` et détruites proprement à la déconnexion.
-
----
-
-## Structure des fichiers
+## Structure du projet
 
 ```
 SmartBite/
+├── .env                              # Clé API Gemini
 ├── Frontend/
-│   ├── index.html
-│   ├── cart.html
+│   ├── index.php
+│   ├── search-menu.php
+│   ├── cart.php
+│   ├── purchase.php
 │   ├── reservation.html
-│   ├── review.html
+│   ├── review.php
 │   ├── signup.html
 │   ├── signin.html
-│   ├── purchase.html
+│   ├── forgot-password.html
+│   ├── reset-password.php
 │   ├── profile.html
 │   ├── dashboard.html
+│   ├── google-auth.php
 │   │
 │   ├── css/
 │   │   ├── main.css
-│   │   ├── auth.css            
-│   │   ├── index.css             
-│   │   ├── cart.css 
-│   │   ├── purchase.css 
-│   │   ├── reservation.css 
+│   │   ├── auth.css
+│   │   ├── index.css
+│   │   ├── cart.css
+│   │   ├── purchase.css
+│   │   ├── reservation.css
 │   │   ├── review.css
-│   │   ├── chatbot.css  
-│   │   ├── dashboard.css     
-│   │   └── profile.css       
+│   │   ├── chatbot.css
+│   │   ├── dashboard.css
+│   │   └── profile.css
 │   │
 │   ├── js/
-│   │   ├── script.js              
-│   │   ├── review.js  
-│   │   ├── dashboard.js              
+│   │   ├── auth.js
+│   │   ├── auth_navbar.js
+│   │   ├── chatbot.js
+│   │   ├── dashboard.js
+│   │   ├── profile.js
 │   │   ├── reservation.js
-│   │   ├── chatbot.js       
-│   │   └── profile.js          
+│   │   └── review.js
 │   │
 │   └── img/
+│       ├── menu-img/
+│       │    ├── alfredo pasta.webp
+│       │    ├── BBQ bur.webp
+│       │    ├── Bolognese pasta.avif
+│       │    ├── carbonara pasta.webp
+│       │    ├── cheese pizza.jpg
+│       │    ├── chicken bur.webp
+│       │    ├── chicken ceaser salad.jpg
+│       │    ├── chocolate cake.avif
+│       │    ├── fish bur.webp
+│       │    ├── greek salad.jpg
+│       │    ├── hawaiin pizza.webp
+│       │    ├──pesto pasta.avif
+│       │    ├── soda.jpg
+│       │    ├──strawberry smoothie.jpg
+│       │    ├── swiss roll.avif
+│       │    ├── taco salad.webp
+│       │    ├── tiramisu.jpg
+│       │    ├──tuna salad.jpg
+│       │    ├── veggie piza.jpeg
+│       │    └── watermelon smoothie.jpg
+│       │
 │       ├── MCD_SmartBite.png
+│       ├── MLD_SmartBite.png
 │       ├── google.png
-│       └── profile.jpg  
-│         
+│       └── profile.jpg
+│
 ├── Backend/
 │   ├── api/
-│   │   ├── signin.php            
-│   │   ├── logout.php            
-│   │   ├── delete_account.php
-│   │   ├── fetch_all_order.php
-│   │   ├── fetch_all_reservations.php 
-│   │   ├── fetch_all_users.php 
-│   │   ├── fetch_all_menu.php  
-│   │   ├── manage_cart.php     
-│   │   ├── fetch_all_reviews.php
-│   │   ├── fetch_user_reservations.php
-│   │   ├── fetch_user_orders.php
-│   │   ├── get_profile.php
-│   │   ├── place_order.php
-│   │   ├── make_reservation.php
-│   │   ├── reorder_order.php
-│   │   ├── make_review.php
-│   │   ├── dashboard_actions.php
-│   │   ├── check_remember_me.php
-│   │   ├── chatbot_proxy.php
-│   │   ├── session_check.php
-│   │   ├── update_profile.php
-│   │   ├── uplode_profile_avatar.php
-│   │   ├── signup.php
-│   │   └── login_google
-│   │
+│   │   ├── auth/                     # Connexion, inscription, déconnexion, mot de passe
+│   │   │   ├── forgot-password.php
+│   │   │   ├── logout.php
+│   │   │   ├── session_check.php
+│   │   │   ├── signin.php
+│   │   │   └── signup.php
+│   │   │
+│   │   ├── cart/                     # Gestion du panier
+│   │   │   └── cart-function.php
+│   │   │
+│   │   ├── chatbot/                  # Proxy vers l'API Gemini
+│   │   │   └── chatbot_proxy.php
+│   │   │
+│   │   ├── dashboard/                # Endpoints du tableau de bord admin
+│   │   │   ├── dashboard_actions.php
+│   │   │   ├── fetch_all_orders.php
+│   │   │   ├── fetch_all_reservations.php
+│   │   │   ├── fetch_all_tables.php
+│   │   │   ├── fetch_all_users.php
+│   │   │   ├── fetch_Menu_Items.php
+│   │   │   └── fetch_reviews.php
+│   │   │
+│   │   ├── menu/                     # Affichage et catégories du menu
+│   │   │   ├── get_categories.php
+│   │   │   └── index-function.php
+│   │   │
+│   │   ├── profile/                  # Profil, commandes, réservations, avis
+│   │   │   ├── delete_user_review.php
+│   │   │   ├── fetch_user_orders.php
+│   │   │   ├── feych_user_reservations.php
+│   │   │   ├── fetch_user_reviews.php
+│   │   │   ├── get_profile.php
+│   │   │   ├── profile_receipt_mails.php
+│   │   │   ├── receipt_mail_worker.php
+│   │   │   ├── reorder_order.php
+│   │   │   ├── reservation_actions.php
+│   │   │   ├── reservation_helpers.php
+│   │   │   ├── update_profile.php
+│   │   │   └── upload_profile_avatar.php
+│   │   │
+│   │   ├── purchase/                 # Validation et envoi des commandes
+│   │   │   ├── purchase-function.php
+│   │   │   └── send-order.php
+│   │   │
+│   │   ├── reservation/              # Création de réservations
+│   │   │   └── reservation.php
+│   │   │
+│   │   └── review/                   # Soumission et consultation des avis
+│   │       ├── get_menu.php
+│   │       ├── get_reviews.php
+│   │       └── submit_review.php
+│   │   
 │   ├── config/
-│   │   └── connection.php                
+│   │   ├── connection.php            # Connexion MySQL
+│   │   ├── secrets.php               # Identifiants Google OAuth et SMTP
+│   │   ├── mail_helper.php           # Envoi d'e-mails via PHPMailer
+│   │   └── check_remember.php        # Gestion du cookie « Se souvenir de moi »
 │   │
 │   ├── models/
-│   │   ├── DashboardModel.php 
+│   │   ├── DashboardModel.php
 │   │   └── ProfileModel.php
 │   │
-│   └── Database/
-│       └── smartbite.sql
-│  
+│   ├── Database/
+│   │   └── smartbite.sql
+│   │
+│   ├── uploads/
+│   │   └── avatars/                  # Photos de profil uploadées
+│   │
+│   ├── composer.json
+│   └── vendor/                       # Dépendances Composer (non versionné)
+│
 └── README.md
-
 ```
 
 ---
+
 ## Base de données
 
-La base de données MySQL centralise toutes les données du restaurant. Voici le MCD :
+La base MySQL `smartbite` centralise toutes les données du restaurant.
 
-![Model Conceptuel de Donné](./Frontend/img/MCD_SmartBite.png)
+**Tables principales :**
+
+| Table | Contenu |
+|-------|---------|
+| `users` | Comptes utilisateurs (e-mail, mot de passe hashé, rôle, avatar, Google ID) |
+| `category` | Catégories du menu |
+| `menu` | Plats (nom, description, ingrédients, prix, image) |
+| `orders` / `orderitems` | Commandes et leurs lignes |
+| `reservations` | Réservations de tables |
+| `restauranttable` | Tables du restaurant (numéro, capacité, statut) |
+| `reviews` | Avis clients sur les plats |
+
+**Modèle conceptuel de données :**
+
+![Modèle Conceptuel de Données](./Frontend/img/MCD_SmartBite.png)
+
+
+**Modèle logique de données :**
+
+![Modèle Logique de Données](./Frontend/img/MLD_SmartBite.png)
 
 ---
 
-## Lancer le projet en local
+## Installation en local
 
-# Lancer avec Live Server (VS Code) ou ouvrir index.html directement dans le navigateur pour visualiser le frontend
+### Prérequis
 
-**Clonez le repertoire git:**
+- Un serveur local avec **Apache** et **MySQL** : [XAMPP](https://www.apachefriends.org/), [WAMP](https://www.wampserver.com/) ou [MAMP](https://www.mamp.info/)
+- **PHP 8.0+** avec l'extension `mysqli`
+- **Composer** ([getcomposer.org](https://getcomposer.org/))
+- Un navigateur moderne (Chrome, Firefox, Edge…)
 
-   ```bash
-   git clone https://github.com/Emberizaelysee/SmartBite.git
-   cd SmartBite
-   ```
+### Étapes
 
-## Prerequis pour lancer le frontend et le backend
-Pour faire marcher ce projet localement, il vous faut:
-- Un serveur local comme **XAMPP**, **WAMP**, or **MAMP** (qui inclue Apache et MySQL).
-- Un navigateur moderne.
-
-## Instruction pour la mise en place du projet
-
-1. **Clonez le repertoire git:**
-   ```bash
-   git clone https://github.com/Emberizaelysee/SmartBite.git
-   cd SmartBite
-   ```
-
-2. **Aller dans le fichier du serveur local:**
-   Metter le fichier `SmartBite` dans le fichier root:
-   - Pour XAMPP: `htdocs/`
-   - Pour WAMP: `www/`
-   - Pour MAMP: `htdocs/`
-
-3. **Mise en place de la base de donnes:**
-   - Demarrer les composants Apache et MySQL depuis l'interface du serveur local.
-   - Ouvrer phpMyAdmin (`http://localhost/phpmyadmin`).
-   - Creer une dase de donne nommez `smartbite`.
-   - Improter le fichier SQL fournis dans `Backend/Database/smartbite.sql` dans l'interface phpMyAdmin.
-
-4. **Acceder a l'application:**
-   Ouvrer le navigateur et naviger vers:
-
-    `http://localhost/SmartBite/Frontend/index.html`
-
-
-
-## Pour faire fonctionner le chatbot vous dever crée un fichier .env et y mettre dedans votre clés api gemini
+**1. Cloner la repo**
 
 ```bash
-GEMINI_API_KEY="VOTRE_CLE_API"
+git clone https://github.com/Emberizaelysee/SmartBite.git
+cd SmartBite
 ```
+
+**2. Placer le projet dans le répertoire web du serveur local**
+
+- XAMPP : `htdocs/`
+- WAMP : `www/`
+- MAMP : `htdocs/`
+
+**3. Installer les dépendances PHP**
+
+```bash
+cd Backend
+composer install
+```
+
+**4. Configurer la base de données**
+
+- Démarrer Apache et MySQL depuis l'interface du serveur local
+- Ouvrir phpMyAdmin : `http://localhost/phpmyadmin`
+- Créer une base de données nommée `smartbite`
+- Importer le fichier `Backend/Database/smartbite.sql`
+
+**5. Configurer la connexion à la base de données**
+
+Vérifier les paramètres dans `Backend/config/connection.php` (par défaut : `localhost`, utilisateur `root`, mot de passe vide).
+
+**6. Configurer les secrets**
+
+Créer le fichier `Backend/config/secrets.php` avec vos identifiants :
+
+```php
+<?php
+define('MAIL_USER', 'votre-email@gmail.com');
+define('MAIL_PASS', 'votre-mot-de-passe-application');
+define('GOOGLE_CLIENT_ID', 'votre-client-id.apps.googleusercontent.com');
+define('GOOGLE_CLIENT_SECRET', 'votre-client-secret');
+define('GOOGLE_REDIRECT_URI', 'http://localhost/SmartBite/Frontend/google-auth.php');
+?>
+```
+
+> **Note :** Pour Gmail, utilisez un [mot de passe d'application](https://myaccount.google.com/apppasswords) et non votre mot de passe principal.
+
+**7. Configurer l'assistant IA (chatbot)**
+
+Créer un fichier `.env` à la racine du projet :
+
+```bash
+GEMINI_API_KEY="VOTRE_CLE_API_GEMINI"
+```
+
+Obtenir une clé sur [Google AI Studio](https://aistudio.google.com/apikey).
+
+**8. Accéder à l'application**
+
+Ouvrir dans le navigateur :
+
+```
+http://localhost/SmartBite/Frontend/index.php
+```
+
+---
+
+## Authentification — détails techniques
+
+- Les mots de passe sont hashés avec `password_hash()` / `password_verify()` (jamais stockés en clair)
+- La connexion Google utilise OAuth 2.0 : le backend crée ou récupère le compte via l'e-mail Google, puis ouvre une session PHP
+- Les sessions sont gérées avec `$_SESSION` et détruites proprement à la déconnexion
+- L'option « Se souvenir de moi » utilise un token stocké en cookie HttpOnly (durée : 30 jours)
+
+---
+
+## Envoi d'e-mails
+
+L'application envoie des e-mails automatiques via PHPMailer (SMTP Gmail) dans les cas suivants :
+
+- Réinitialisation du mot de passe
+- Confirmation de commande
+- Confirmation de recommande (reorder)
+- Confirmation, modification ou annulation de réservation
+
+---
+
+## Lien de la Repository
+
+[https://github.com/Emberizaelysee/SmartBite](https://github.com/Emberizaelysee/SmartBite)
