@@ -134,6 +134,7 @@ async function initializeProfile() {
         }
 
         populateProfileInfo(profileData);
+        updateAdminDashboardNav(profileData.role);
         fetchOrders();
         fetchReservations();
         fetchReviews();
@@ -177,6 +178,13 @@ async function requestJson(url, options = {}) {
     }
 
     return data;
+}
+
+// Affiche ou masque le lien vers le dashboard admin selon le rôle de l'utilisateur
+function updateAdminDashboardNav(role) {
+    const adminNavItem = document.getElementById('admin-dashboard-nav-item');
+    if (!adminNavItem) return;
+    adminNavItem.hidden = (role || '').toLowerCase() !== 'admin';
 }
 
 // remplissage user info dans UI
