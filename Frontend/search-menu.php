@@ -312,6 +312,6 @@ if (isset($_POST['clear_cart'])) {
    </div>
 
 </div>
-
+ <script src="js/auth_navbar.js"></script>
 </body>
 </html>
