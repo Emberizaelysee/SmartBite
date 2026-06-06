@@ -79,7 +79,8 @@ function handleQueryParams() {
     showToast(
       "success",
       `<i class="fa-solid fa-circle-check me-2"></i>
-       Reservation confirmed! <strong>Table ${table}</strong> is booked for you.`
+       Reservation confirmed! <strong>Table ${table}</strong> is booked for you.
+       A confirmation email has been sent!`
     );
  
     // Nettoyer l'URL sans recharger la page
